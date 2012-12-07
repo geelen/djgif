@@ -16,10 +16,15 @@ a { color: inherit; }
   height: 100%;
   width: 100%;
 	background-size: cover;
- 	image-rendering:-moz-crisp-edges;
-  image-rendering:-webkit-optimize-contrast;
-  -ms-interpolation-mode:nearest-neighbor; 
-  
+ 
+ 	image-rendering:optimizeSpeed;              /* Legal fallback                 */
+	image-rendering:-moz-crisp-edges;           /* Firefox                        */
+	image-rendering:-o-crisp-edges;             /* Opera                          */
+	image-rendering:-webkit-optimize-contrast;  /* Chrome (and eventually Safari) */
+	image-rendering:crisp-edges;                /* CSS3 Proposed                  */
+	-ms-interpolation-mode:bicubic;             /* IE8+                           */
+ 	
+ 	/* Bullshit hacks for AppleTV + Couchsurfer + Projector love */ 
   -webkit-transform: translate3d(0, 0, 0);
   -webkit-backface-visibility: hidden;
 	-webkit-perspective: 1000;

@@ -6,12 +6,12 @@
     imageHolder: document.querySelector( '#image-holder' ),
     postCountChangedCallback: undefined,
 
-    url: function ( offset ) {
+    url: function ( blog ) {
       return 'http://api.tumblr.com/v2' +
-             '/blog/' + Tumblr.currentBlog.name + '.tumblr.com/posts?' +
+             '/blog/' + blog.name + '.tumblr.com/posts?' +
              'api_key=' + Tumblr.apiKey +
-             '&offset=' + Tumblr.currentBlog.offset +
-             (Tumblr.currentBlog.tag.length ? '&tag=' + Tumblr.currentBlog.tag : '') +
+             '&offset=' + blog.offset +
+             (blog.tag.length ? '&tag=' + blog.tag : '') +
              '&callback=Tumblr.response';
     },
 
@@ -56,7 +56,7 @@
 
     request: function () {
       var element = document.createElement( 'script' );
-      element.setAttribute( 'src', Tumblr.url() );
+      element.setAttribute( 'src', Tumblr.url( Tumblr.currentBlog ) );
       document.documentElement.appendChild( element );
     },
 

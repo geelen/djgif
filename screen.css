@@ -31,6 +31,8 @@ a { color: inherit; }
 }
 
 .button {
+	-webkit-transition: all 250ms ease-in-out;
+
 	z-index: 1;
 	position: absolute;
 	top: 1em;
@@ -40,6 +42,10 @@ a { color: inherit; }
 
 	color: white; font-weight: bold; text-decoration: none; text-align: center;
 	background: rgba(0, 0, 0, .2); border-radius: 1em; height: 2em; width: 2em;
+}
+
+.button:hover {
+	-webkit-transform: scale(1.2);
 }
 
 #info {

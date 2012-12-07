@@ -1,7 +1,6 @@
 ( function ( window ) {
   var Tumblr = {
     apiKey: 'PyezS3Q4Smivb24d9SzZGYSuhMNPQUhMsVetMC9ksuGPkK1BTt',
-    name: '',
     hashTag: '',
     displayTime: 20000,
     refreshTime: 5000,
@@ -13,11 +12,16 @@
     imageHolder: document.querySelector( '#image-holder' ),
 
     url: function () {
-      return 'http://api.tumblr.com/v2/blog/' + Tumblr.name + '.tumblr.com/posts?api_key=' + Tumblr.apiKey + '&offset=' + Tumblr.offset + '&callback=Tumblr.response';
+      return 'http://api.tumblr.com/v2/blog/' + Tumblr.currentBlog.name + '.tumblr.com/posts?api_key=' + Tumblr.apiKey + '&offset=' + Tumblr.offset + '&callback=Tumblr.response';
     },
 
-    init: function ( name ) {
-      Tumblr.name = name;
+    init: function ( names ) {
+      if ( !Array.isArray( names ) ) {
+        names = [names];
+      }
+
+      Tumblr.blogs = Tumblr.initBlogs( names );
+      Tumblr.currentBlog = Tumblr.blogs[names[0]];
 
       Tumblr.offset = Tumblr.storage.get().offset;
       Tumblr.posts = Tumblr.storage.get().posts;
@@ -38,10 +42,22 @@
       } );
     },
 
+    initBlogs: function ( name ) {
+      return name.reduce (
+        function ( memo,  n ) {
+          memo[n] = {
+            name: n,
+            offset: 0
+          }
+          return memo;
+        }, {}
+      );
+    },
+
     updateDisplay: function () {
-      Tumblr.nameField.value = Tumblr.name;
+      Tumblr.nameField.value = Tumblr.currentBlog.name;
       if ( Tumblr.posts.length ) Tumblr.countField.innerHTML = Tumblr.posts.length;
-      Tumblr.sourceField.href = 'http://' + Tumblr.name + '.tumblr.com';
+      Tumblr.sourceField.href = 'http://' + Tumblr.currentBlog.name + '.tumblr.com';
     },
 
     request: function () {
@@ -96,11 +112,11 @@
 
     storage: {
       get: function () {
-        return JSON.parse( localStorage.getItem( Tumblr.name ) ) || { offset: 0, posts: [] };
+        return JSON.parse( localStorage.getItem( Tumblr.currentBlog.name ) ) || { offset: 0, posts: [] };
       },
 
       set: function () {
-        var store = JSON.parse( localStorage.getItem( Tumblr.name ) ) || { posts: [] };
+        var store = JSON.parse( localStorage.getItem( Tumblr.currentBlog.name ) ) || { posts: [] };
         store.offset = Tumblr.offset;
 
         for ( var i = 0; i < Tumblr.posts.length; i++ ) { 
@@ -111,7 +127,7 @@
           }
         }
 
-        localStorage.setItem( Tumblr.name, JSON.stringify( store ) );
+        localStorage.setItem( Tumblr.currentBlog.name, JSON.stringify( store ) );
       }
     }
   },

@@ -97,7 +97,7 @@
       if ( Tumblr.currentBlog.posts.length ) {
         var i = Math.floor( Tumblr.currentBlog.posts.length * Math.random() );
         
-        Tumblr.currentImage = Tumblr.posts[i];
+        Tumblr.currentImage = Tumblr.currentBlog.posts[i];
 
         var preload = new Image();
         

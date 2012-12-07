@@ -14,8 +14,6 @@
     },
 
     init: function ( name ) {
-      var storage;
-
       Tumblr.name = name;
 
       Tumblr.offset = Tumblr.storage.get().offset;

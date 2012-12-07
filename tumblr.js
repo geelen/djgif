@@ -4,6 +4,7 @@
     name: '',
     hashTag: '',
     displayTime: 20000,
+    refreshTime: 5000,
     offset: 0,
     posts: [],
     nameField: document.querySelector( 'input' ),
@@ -60,8 +61,8 @@
 
         setTimeout( function () {
           Tumblr.increaseOffset();
-          Tumblr.request(); 
-        }, 5000 );
+          Tumblr.request();
+        }, Tumblr.refreshTime );
       }
     },
 

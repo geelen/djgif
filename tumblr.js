@@ -60,6 +60,8 @@
         if ( Tumblr.postCountChangedCallback )
           Tumblr.postCountChangedCallback( Tumblr.posts.length );
 
+        if ( !Tumblr.hasImage() ) Tumblr.changeImage();
+
         setTimeout( function () {
           Tumblr.increaseOffset();
           Tumblr.request();
@@ -75,6 +77,10 @@
       rGif = /http[^"]*?\.gif/g;
 
       return blob.match( rGif );
+    },
+
+    hasImage: function() {
+      return Tumblr.imageHolder.style.backgroundImage;
     },
 
     changeImage: function () {

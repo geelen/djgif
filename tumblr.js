@@ -97,8 +97,15 @@
       if ( Tumblr.currentBlog.posts.length ) {
         var i = Math.floor( Tumblr.currentBlog.posts.length * Math.random() );
         
-        Tumblr.currentImage = Tumblr.currentBlog.posts[i];
-        Tumblr.imageHolder.style.backgroundImage = 'url(' + Tumblr.currentImage + ')'; 
+        Tumblr.currentImage = Tumblr.posts[i];
+
+        var preload = new Image();
+        
+        preload.onload = function () {
+          Tumblr.imageHolder.style.backgroundImage = 'url(' + Tumblr.currentImage + ')'; 
+        };
+
+        preload.src = Tumblr.currentImage;
       }
     },
 

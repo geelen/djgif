@@ -8,6 +8,7 @@
     offset: 0,
     posts: [],
     imageHolder: document.querySelector( '#image-holder' ),
+    postCountChangedCallback: undefined,
 
     url: function ( offset ) {
       return 'http://api.tumblr.com/v2' +
@@ -56,7 +57,8 @@
         Tumblr.posts = Tumblr.posts.concat( gifs );
 
         Tumblr.storage.set();
-        Tumblr.updateDisplay();
+        if ( Tumblr.postCountChangedCallback )
+          Tumblr.postCountChangedCallback( Tumblr.posts.length );
 
         setTimeout( function () {
           Tumblr.increaseOffset();
@@ -136,12 +138,13 @@
 
   window.Tumblr = Tumblr;
   Tumblr.init(t);
+  Tumblr.postCountChangedCallback = function ( count ) {
+    document.querySelector( '.count' ).innerHTML = count;
+  }
 
   // Update page elements
 
   document.querySelector( 'input' ).value = t;
-  if ( Tumblr.posts.length ) document.querySelector( '.count' ).innerHTML = Tumblr.posts.length;
   document.querySelector( '.source' ).href = 'http://' + Tumblr.name + '.tumblr.com';
-
 
 }( window ) );

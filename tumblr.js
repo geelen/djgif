@@ -1,6 +1,7 @@
 ( function ( window ) {
   var Tumblr = {
-    name: 'classics',
+    name: '',
+    hashTag: '',
 		displayTime: 20000,
 		offset: 0, 
 		posts: [],
@@ -12,10 +13,10 @@
 			return 'http://api.tumblr.com/v2/blog/' + Tumblr.name + '.tumblr.com/posts?api_key=PyezS3Q4Smivb24d9SzZGYSuhMNPQUhMsVetMC9ksuGPkK1BTt&offset=' + Tumblr.offset + '&callback=Tumblr.response';
 		},
 			
-		init: function () {
-			var name = Util.getParameterByName( 't' ),
-					storage;
-			Tumblr.name = ( name ) ? name : Tumblr.name;
+		init: function ( name ) {
+			var storage;
+			
+      Tumblr.name = name;
 
 			Tumblr.offset = Tumblr.storage.get().offset;
 			Tumblr.posts = Tumblr.storage.get().posts;
@@ -107,6 +108,6 @@
 	};
 
 	window.Tumblr = Tumblr;
-	Tumblr.init();
+	Tumblr.init(Util.getParameterByName( 't' ) || 'classics');
 
 }( window ) );

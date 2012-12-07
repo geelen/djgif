@@ -86,7 +86,11 @@
     },
 
     getGifs: function ( posts ) {
-      var photos = posts.reduce( function(memo, post) {
+      var postsWithPhotos = posts.filter( function(post) {
+        return post.photos.length;
+      } );
+
+      var photos = postsWithPhotos.reduce( function(memo, post) {
         return memo.concat(post.photos);
       }, [] );
 

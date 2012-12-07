@@ -1,8 +1,6 @@
 ( function ( window ) {
   var Tumblr = {
     apiKey: 'PyezS3Q4Smivb24d9SzZGYSuhMNPQUhMsVetMC9ksuGPkK1BTt',
-    name: '',
-    tag: '',
     displayTime: 20000,
     refreshTime: 5000,
     offset: 0,
@@ -12,26 +10,25 @@
 
     url: function ( offset ) {
       return 'http://api.tumblr.com/v2' +
-             '/blog/' + Tumblr.name + '.tumblr.com/posts?' +
+             '/blog/' + Tumblr.currentBlog.name + '.tumblr.com/posts?' +
              'api_key=PyezS3Q4Smivb24d9SzZGYSuhMNPQUhMsVetMC9ksuGPkK1BTt' +
              '&offset=' + Tumblr.offset +
-             (Tumblr.tag.length ? '&tag=' + Tumblr.tag : '') +
+             (Tumblr.currentBlog.tag.length ? '&tag=' + Tumblr.currentBlog.tag : '') +
              '&callback=Tumblr.response';
     },
 
-    init: function ( name ) {
-      var storage;
+    init: function ( names ) {
+      if ( !Array.isArray( names ) ) {
+        names = [names];
+      }
 
-      var nameSegments = name.split('#');
-      Tumblr.name = nameSegments[0];
-      Tumblr.tag = nameSegments[1] || '';
-
-      Tumblr.offset = Tumblr.storage.get().offset;
-      Tumblr.posts = Tumblr.storage.get().posts;
+      Tumblr.blogs       = Tumblr.initBlogs( names );
+      Tumblr.currentBlog = Tumblr.blogs[names[0]];
+      Tumblr.offset      = Tumblr.storage.get().offset;
+      Tumblr.posts       = Tumblr.storage.get().posts;
 
       Tumblr.request();
       Tumblr.changeImage();
-
       Tumblr.initKeyboard();
 
       setInterval( Tumblr.changeImage, Tumblr.displayTime );
@@ -42,6 +39,22 @@
         Tumblr.purgeCurrentImage();
         Tumblr.changeImage();
       } );
+    },
+
+    initBlogs: function ( names ) {
+      return names.reduce (
+        function ( memo,  n ) {
+          var segments = n.split( '#' );
+
+          memo[n] = {
+            name: segments[0],
+            tag: segments[1] || '',
+            offset: 0
+          }
+
+          return memo;
+        }, {}
+      );
     },
 
     request: function () {
@@ -102,10 +115,10 @@
     },
 
     storageKey: function() {
-      if ( Tumblr.tag.length ) {
-        return Tumblr.name + "#" + Tumblr.tag;
+      if ( Tumblr.currentBlog.tag.length ) {
+        return Tumblr.currentBlog.name + "#" + Tumblr.currentBlog.tag;
       } else {
-        return Tumblr.name;
+        return Tumblr.currentBlog.name;
       }
     },
 

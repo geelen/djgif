@@ -66,13 +66,17 @@
         
         console.log( "Response: " + gifs );
 
-        Tumblr.currentBlog.posts = Tumblr.currentBlog.posts.concat( gifs );
-        Tumblr.storage.set( Tumblr.currentBlog );
+        if ( gifs ) {
 
-        if ( Tumblr.postCountChangedCallback )
-          Tumblr.postCountChangedCallback( Tumblr.currentBlog.posts.length );
+          Tumblr.currentBlog.posts = Tumblr.currentBlog.posts.concat( gifs );
+          Tumblr.storage.set( Tumblr.currentBlog );
 
-        if ( !Tumblr.hasImage() ) Tumblr.changeImage();
+          if ( Tumblr.postCountChangedCallback )
+            Tumblr.postCountChangedCallback( Tumblr.currentBlog.posts.length );
+
+          if ( !Tumblr.hasImage() ) Tumblr.changeImage();
+
+        }
 
         setTimeout( Tumblr.changeBlog, Tumblr.refreshTime );
       }

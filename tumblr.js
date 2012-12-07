@@ -2,27 +2,32 @@
   var Tumblr = {
     apiKey: 'PyezS3Q4Smivb24d9SzZGYSuhMNPQUhMsVetMC9ksuGPkK1BTt',
     name: '',
-    hashTag: '',
+    tag: '',
     displayTime: 20000,
     refreshTime: 5000,
     offset: 0,
     posts: [],
-    nameField: document.querySelector( 'input' ),
-    countField: document.querySelector( '.count' ),
-    sourceField: document.querySelector( '.source' ),
     imageHolder: document.querySelector( '#image-holder' ),
 
-    url: function () {
-      return 'http://api.tumblr.com/v2/blog/' + Tumblr.name + '.tumblr.com/posts?api_key=' + Tumblr.apiKey + '&offset=' + Tumblr.offset + '&callback=Tumblr.response';
+    url: function ( offset ) {
+      return 'http://api.tumblr.com/v2' +
+             '/blog/' + Tumblr.name + '.tumblr.com/posts?' +
+             'api_key=PyezS3Q4Smivb24d9SzZGYSuhMNPQUhMsVetMC9ksuGPkK1BTt' +
+             '&offset=' + Tumblr.offset +
+             (Tumblr.tag.length ? '&tag=' + Tumblr.tag : '') +
+             '&callback=Tumblr.response';
     },
 
     init: function ( name ) {
-      Tumblr.name = name;
+      var storage;
+
+      var nameSegments = name.split('#');
+      Tumblr.name = nameSegments[0];
+      Tumblr.tag = nameSegments[1] || '';
 
       Tumblr.offset = Tumblr.storage.get().offset;
       Tumblr.posts = Tumblr.storage.get().posts;
 
-      Tumblr.updateDisplay();
       Tumblr.request();
       Tumblr.changeImage();
 
@@ -36,12 +41,6 @@
         Tumblr.purgeCurrentImage();
         Tumblr.changeImage();
       } );
-    },
-
-    updateDisplay: function () {
-      Tumblr.nameField.value = Tumblr.name;
-      if ( Tumblr.posts.length ) Tumblr.countField.innerHTML = Tumblr.posts.length;
-      Tumblr.sourceField.href = 'http://' + Tumblr.name + '.tumblr.com';
     },
 
     request: function () {
@@ -94,13 +93,21 @@
       }
     },
 
+    storageKey: function() {
+      if ( Tumblr.tag.length ) {
+        return Tumblr.name + "#" + Tumblr.tag;
+      } else {
+        return Tumblr.name;
+      }
+    },
+
     storage: {
       get: function () {
-        return JSON.parse( localStorage.getItem( Tumblr.name ) ) || { offset: 0, posts: [] };
+        return JSON.parse( localStorage.getItem( Tumblr.storageKey() ) ) || { offset: 0, posts: [] };
       },
 
       set: function () {
-        var store = JSON.parse( localStorage.getItem( Tumblr.name ) ) || { posts: [] };
+        var store = JSON.parse( localStorage.getItem( Tumblr.storageKey() ) ) || { posts: [] };
         store.offset = Tumblr.offset;
 
         for ( var i = 0; i < Tumblr.posts.length; i++ ) { 
@@ -111,7 +118,7 @@
           }
         }
 
-        localStorage.setItem( Tumblr.name, JSON.stringify( store ) );
+        localStorage.setItem( Tumblr.storageKey(), JSON.stringify( store ) );
       }
     }
   },
@@ -125,8 +132,16 @@
     }
   };
 
-  window.Tumblr = Tumblr;
+  var t = Util.getParameterByName( 't' ) || 'classics';
 
-  Tumblr.init(Util.getParameterByName( 't' ) || 'classics');
+  window.Tumblr = Tumblr;
+  Tumblr.init(t);
+
+  // Update page elements
+
+  document.querySelector( 'input' ).value = t;
+  if ( Tumblr.posts.length ) document.querySelector( '.count' ).innerHTML = Tumblr.posts.length;
+  document.querySelector( '.source' ).href = 'http://' + Tumblr.name + '.tumblr.com';
+
 
 }( window ) );

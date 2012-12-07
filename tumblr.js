@@ -1,8 +1,9 @@
 ( function ( window ) {
   var Tumblr = {
     apiKey: 'PyezS3Q4Smivb24d9SzZGYSuhMNPQUhMsVetMC9ksuGPkK1BTt',
-    displayTime: 10000,
-    refreshTime: 5000,
+    changeImageDelay: 10000,
+    requestDelay: 5000,
+    offsetIncrement: 20,
     imageHolder: document.querySelector( '#image-holder' ),
     postCountChangedCallback: undefined,
 
@@ -11,27 +12,26 @@
              '/blog/' + blog.name + '.tumblr.com/posts?' +
              'api_key=' + Tumblr.apiKey +
              '&offset=' + blog.offset +
-             (blog.tag.length ? '&tag=' + blog.tag : '') +
+             ( blog.tag.length ? '&tag=' + blog.tag : '' ) +
              '&callback=Tumblr.response';
     },
 
     init: function ( names ) {
-      if ( !Array.isArray( names ) ) { names = [names]; }
-
       Tumblr.blogs = Tumblr.initBlogs( names );
 
-      Tumblr.initKeyboard();
-      Tumblr.changeBlog();
       Tumblr.changeImage();
+      Tumblr.initKeyboard();
       Tumblr.request();
-
-      setInterval( Tumblr.refresh, Tumblr.displayTime );
     },
 
     initKeyboard: function () {
       key( 'x', function () { 
         Tumblr.purgeCurrentImage();
-        Tumblr.refresh();
+        Tumblr.changeImage();
+      } );
+
+      key( 'n', function () {
+        Tumblr.changeImage();
       } );
     },
 
@@ -65,76 +65,74 @@
         var gifs = Tumblr.getGifs( json.response.posts );
 
         if ( gifs ) {
-
           Tumblr.currentBlog.posts = Tumblr.currentBlog.posts.concat( gifs );
+          Tumblr.currentBlog.offset += Tumblr.offsetIncrement;
           Tumblr.storage.set( Tumblr.currentBlog );
 
           if ( Tumblr.postCountChangedCallback ) {
-            var postCount = Tumblr.blogs.reduce( function (memo, blog) { return memo + blog.posts.length; }, 0 );
+            var postCount = Tumblr.blogs.reduce( function ( memo, blog ) { return memo + blog.posts.length; }, 0 );
             Tumblr.postCountChangedCallback( postCount );
           }
 
-          if ( !Tumblr.hasImage() ) Tumblr.changeImage();
+          if ( !Tumblr.currentImage ) Tumblr.changeImage();
         }
 
-        setTimeout( Tumblr.refresh, Tumblr.refreshTime );
+        setTimeout( Tumblr.request, Tumblr.requestDelay );
       }
-    },
-
-    increaseOffset: function () {
-      Tumblr.currentBlog.offset += 20;
     },
 
     getGifs: function ( posts ) {
-      var postsWithPhotos = posts.filter( function(post) {
+      var postsWithPhotos = posts.filter( function( post ) {
         return post.photos && post.photos.length;
       } );
 
-      var photos = postsWithPhotos.reduce( function(memo, post) {
-        return memo.concat(post.photos);
+      var photos = postsWithPhotos.reduce( function( memo, post ) {
+        return memo.concat( post.photos );
       }, [] );
 
-      var photoUrls = photos.map( function(photo) {
+      var photoUrls = photos.map( function( photo ) {
         return photo.original_size.url;
       } );
 
-      return photoUrls.filter( function(url) {
-        return url.match(/\.gif$/);
+      return photoUrls.filter( function( url ) {
+        return url.match( /\.gif$/ );
       } );
     },
 
-    hasImage: function() {
-      return Tumblr.imageHolder.style.backgroundImage;
-    },
-
-    refresh: function () {
-      Tumblr.increaseOffset();
-      Tumblr.changeBlog();
-      Tumblr.changeImage()
-      Tumblr.request();
-    },
-
-    changeBlog: function () {
-      if ( Tumblr.blogs.length ) {
-        var i = Math.floor( Tumblr.blogs.length * Math.random() );
-        Tumblr.currentBlog = Tumblr.blogs[i];
-      }
-    },
-
     changeImage: function () {
-      if ( Tumblr.currentBlog.posts.length ) {
+      clearTimeout ( Tumblr.changeImageTimeoutId );
+
+      Tumblr.currentBlog = Tumblr.pickRandomBlog();
+      Tumblr.currentImage = Tumblr.pickRandomImage();
+
+      var preload = new Image();
+
+      preload.onload = function () {
+        Tumblr.imageHolder.style.backgroundImage = 'url(' + Tumblr.currentImage + ')';
+        Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, Tumblr.changeImageDelay );
+      };
+
+      preload.onerror = function () {
+        Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, 0 );
+      };
+
+      preload.src = Tumblr.currentImage;
+    },
+
+    pickRandomBlog: function () {
+      if ( Tumblr.blogs.length > 0 ) {
+        var i = Math.floor( Tumblr.blogs.length * Math.random() );
+        return Tumblr.blogs[i];
+      } else
+        return null;
+    },
+
+    pickRandomImage: function () {
+      if ( Tumblr.currentBlog.posts.length > 0 ) {
         var i = Math.floor( Tumblr.currentBlog.posts.length * Math.random() );
-        
-        Tumblr.currentImage = Tumblr.currentBlog.posts[i];
-
-        var preload = new Image();
-        
-        preload.onload = function () {
-          Tumblr.imageHolder.style.backgroundImage = 'url(' + Tumblr.currentImage + ')'; 
-        };
-
-        preload.src = Tumblr.currentImage;
-      }
+        return Tumblr.currentBlog.posts[i];
+      } else
+        return null;
     },
 
     purgeCurrentImage: function () {
@@ -154,6 +152,7 @@
         else
           return null;
       },
+
       set: function ( blog ) {
         localStorage.setItem( blog.storageKey, JSON.stringify( blog ) );
       }

@@ -62,7 +62,7 @@
 
     response: function ( json ) {
       if ( json.response.posts.length > 0 ) {
-        var gifs = Tumblr.getGifs( JSON.stringify( json ) );
+        var gifs = Tumblr.getGifs( json.response.posts );
 
         if ( gifs ) {
 
@@ -85,10 +85,18 @@
       Tumblr.currentBlog.offset += 20;
     },
 
-    getGifs: function ( blob ) {
-      rGif = /http[^"]*?\.gif/g;
+    getGifs: function ( posts ) {
+      var photos = posts.reduce( function(memo, post) {
+        return memo.concat(post.photos);
+      }, [] );
 
-      return blob.match( rGif );
+      var photoUrls = photos.map( function(photo) {
+        return photo.original_size.url;
+      } );
+
+      return photoUrls.filter( function(url) {
+        return url.match(/\.gif$/);
+      } );
     },
 
     hasImage: function() {

@@ -87,7 +87,7 @@
 
     getGifs: function ( posts ) {
       var postsWithPhotos = posts.filter( function(post) {
-        return post.photos.length;
+        return post.photos && post.photos.length;
       } );
 
       var photos = postsWithPhotos.reduce( function(memo, post) {

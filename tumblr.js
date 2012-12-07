@@ -1,5 +1,6 @@
 ( function ( window ) {
   var Tumblr = {
+    apiKey: 'PyezS3Q4Smivb24d9SzZGYSuhMNPQUhMsVetMC9ksuGPkK1BTt',
     name: '',
     hashTag: '',
     displayTime: 20000,
@@ -10,8 +11,8 @@
     sourceField: document.querySelector( '.source' ),
     imageHolder: document.querySelector( '#image-holder' ),
 
-    url: function ( offset ) {
-      return 'http://api.tumblr.com/v2/blog/' + Tumblr.name + '.tumblr.com/posts?api_key=PyezS3Q4Smivb24d9SzZGYSuhMNPQUhMsVetMC9ksuGPkK1BTt&offset=' + Tumblr.offset + '&callback=Tumblr.response';
+    url: function () {
+      return 'http://api.tumblr.com/v2/blog/' + Tumblr.name + '.tumblr.com/posts?api_key=' + Tumblr.apiKey + '&offset=' + Tumblr.offset + '&callback=Tumblr.response';
     },
 
     init: function ( name ) {

@@ -1,7 +1,7 @@
 ( function ( window ) {
   var Tumblr = {
     apiKey: 'PyezS3Q4Smivb24d9SzZGYSuhMNPQUhMsVetMC9ksuGPkK1BTt',
-    displayTime: 20000,
+    displayTime: 10000,
     refreshTime: 5000,
     imageHolder: document.querySelector( '#image-holder' ),
     postCountChangedCallback: undefined,
@@ -25,7 +25,7 @@
       Tumblr.changeImage();
       Tumblr.request();
 
-      setInterval( Tumblr.changeImage, Tumblr.displayTime );
+      setInterval( Tumblr.refresh, Tumblr.displayTime );
     },
 
     initKeyboard: function () {
@@ -48,14 +48,14 @@
             offset:     0,
             posts:      []
           }
-        }, {}
+        }
       );
     },
 
     request: function () {
       var element = document.createElement( 'script' );
       var url = Tumblr.url( Tumblr.currentBlog );
-      console.log( "Request: " + url );
+
       element.setAttribute( 'src', url );
       document.documentElement.appendChild( element );
     },
@@ -63,22 +63,21 @@
     response: function ( json ) {
       if ( json.response.posts.length > 0 ) {
         var gifs = Tumblr.getGifs( JSON.stringify( json ) );
-        
-        console.log( "Response: " + gifs );
 
         if ( gifs ) {
 
           Tumblr.currentBlog.posts = Tumblr.currentBlog.posts.concat( gifs );
           Tumblr.storage.set( Tumblr.currentBlog );
 
-          if ( Tumblr.postCountChangedCallback )
-            Tumblr.postCountChangedCallback( Tumblr.currentBlog.posts.length );
+          if ( Tumblr.postCountChangedCallback ) {
+            var postCount = Tumblr.blogs.reduce( function (memo, blog) { return memo + blog.posts.length; }, 0 );
+            Tumblr.postCountChangedCallback( postCount );
+          }
 
           if ( !Tumblr.hasImage() ) Tumblr.changeImage();
-
         }
 
-        setTimeout( Tumblr.changeBlog, Tumblr.refreshTime );
+        setTimeout( Tumblr.refresh, Tumblr.refreshTime );
       }
     },
 
@@ -115,8 +114,6 @@
         var i = Math.floor( Tumblr.currentBlog.posts.length * Math.random() );
         
         Tumblr.currentImage = Tumblr.currentBlog.posts[i];
-
-        console.log( 'Now using: ' + Tumblr.currentImage + ' from: ' + Tumblr.currentBlog.name );
 
         var preload = new Image();
         

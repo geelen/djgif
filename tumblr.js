@@ -10,7 +10,7 @@
       return 'http://api.tumblr.com/v2' +
              '/blog/' + Tumblr.currentBlog.name + '.tumblr.com/posts?' +
              'api_key=' + Tumblr.apiKey +
-             '&offset=' + Tumblr.offset +
+             '&offset=' + Tumblr.currentBlog.offset +
              (Tumblr.currentBlog.tag.length ? '&tag=' + Tumblr.currentBlog.tag : '') +
              '&callback=Tumblr.response';
     },
@@ -80,7 +80,7 @@
     },
 
     increaseOffset: function () {
-      Tumblr.currentBlog.offset = ( Tumblr.currentBlog.offset + 20 );
+      Tumblr.currentBlog.offset += 20;
     },
 
     getGifs: function ( blob ) {

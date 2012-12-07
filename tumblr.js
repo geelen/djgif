@@ -2,112 +2,112 @@
   var Tumblr = {
     name: '',
     hashTag: '',
-		displayTime: 20000,
-		offset: 0, 
-		posts: [],
-		nameField: document.querySelector( 'input' ),
-		countField: document.querySelector( '.count' ),
-		sourceField: document.querySelector( '.source' ),
+    displayTime: 20000,
+    offset: 0,
+    posts: [],
+    nameField: document.querySelector( 'input' ),
+    countField: document.querySelector( '.count' ),
+    sourceField: document.querySelector( '.source' ),
 
-		url: function ( offset ) {
-			return 'http://api.tumblr.com/v2/blog/' + Tumblr.name + '.tumblr.com/posts?api_key=PyezS3Q4Smivb24d9SzZGYSuhMNPQUhMsVetMC9ksuGPkK1BTt&offset=' + Tumblr.offset + '&callback=Tumblr.response';
-		},
-			
-		init: function ( name ) {
-			var storage;
-			
+    url: function ( offset ) {
+      return 'http://api.tumblr.com/v2/blog/' + Tumblr.name + '.tumblr.com/posts?api_key=PyezS3Q4Smivb24d9SzZGYSuhMNPQUhMsVetMC9ksuGPkK1BTt&offset=' + Tumblr.offset + '&callback=Tumblr.response';
+    },
+
+    init: function ( name ) {
+      var storage;
+
       Tumblr.name = name;
 
-			Tumblr.offset = Tumblr.storage.get().offset;
-			Tumblr.posts = Tumblr.storage.get().posts;
+      Tumblr.offset = Tumblr.storage.get().offset;
+      Tumblr.posts = Tumblr.storage.get().posts;
 
-			Tumblr.updateDisplay();
-			Tumblr.request();
-			Tumblr.changeImage();
+      Tumblr.updateDisplay();
+      Tumblr.request();
+      Tumblr.changeImage();
 
-			setInterval( Tumblr.changeImage, Tumblr.displayTime );
-		},
+      setInterval( Tumblr.changeImage, Tumblr.displayTime );
+    },
 
-		updateDisplay: function () {
-			Tumblr.nameField.value = Tumblr.name;
-			if ( Tumblr.posts.length ) Tumblr.countField.innerHTML = Tumblr.posts.length;
-			Tumblr.sourceField.href = 'http://' + Tumblr.name + '.tumblr.com';
-		},
+    updateDisplay: function () {
+      Tumblr.nameField.value = Tumblr.name;
+      if ( Tumblr.posts.length ) Tumblr.countField.innerHTML = Tumblr.posts.length;
+      Tumblr.sourceField.href = 'http://' + Tumblr.name + '.tumblr.com';
+    },
 
-		request: function () {
-			var element = document.createElement( 'script' );
-  		element.setAttribute( 'src', Tumblr.url() );
-			document.documentElement.appendChild( element );
-		},
+    request: function () {
+      var element = document.createElement( 'script' );
+      element.setAttribute( 'src', Tumblr.url() );
+      document.documentElement.appendChild( element );
+    },
 
-		response: function ( json ) {
-			if ( json.response.posts.length > 0 ) {
-				var gifs = Tumblr.getGifs( JSON.stringify( json ) );
-        
-				Tumblr.posts = Tumblr.posts.concat( gifs );
+    response: function ( json ) {
+      if ( json.response.posts.length > 0 ) {
+        var gifs = Tumblr.getGifs( JSON.stringify( json ) );
 
-				Tumblr.storage.set();
+        Tumblr.posts = Tumblr.posts.concat( gifs );
 
-				setTimeout( function () {
-					Tumblr.increaseOffset();
-					Tumblr.request();	
-				}, 5000 );
-			}
-		},
+        Tumblr.storage.set();
 
-		increaseOffset: function () {
-			Tumblr.offset = ( Tumblr.offset + 20 );
-		},
+        setTimeout( function () {
+          Tumblr.increaseOffset();
+          Tumblr.request();
+        }, 5000 );
+      }
+    },
 
-		getGifs: function ( blob ) {
-			rGif = /http[^"]*?\.gif/g;
+    increaseOffset: function () {
+      Tumblr.offset = ( Tumblr.offset + 20 );
+    },
 
-			return blob.match( rGif );
-		},
+    getGifs: function ( blob ) {
+      rGif = /http[^"]*?\.gif/g;
 
-		changeImage: function () {
-			if ( Tumblr.posts.length ) {
-				var i = Math.floor( Tumblr.posts.length * Math.random() ),
-						url = Tumblr.posts[i];
+      return blob.match( rGif );
+    },
 
-				document.querySelector( '#image-holder' ).style.backgroundImage = 'url(' + url + ')';	
+    changeImage: function () {
+      if ( Tumblr.posts.length ) {
+        var i = Math.floor( Tumblr.posts.length * Math.random() ),
+            url = Tumblr.posts[i];
 
-				return url;
-			}
-		},
+        document.querySelector( '#image-holder' ).style.backgroundImage = 'url(' + url + ')';
 
-		storage: {
-			get: function () {
-				return JSON.parse( localStorage.getItem( Tumblr.name ) ) || { offset: 0, posts: [] };
-			},
+        return url;
+      }
+    },
 
-			set: function () {
-				var store = JSON.parse( localStorage.getItem( Tumblr.name ) ) || { posts: [] };
-				store.offset = Tumblr.offset;
+    storage: {
+      get: function () {
+        return JSON.parse( localStorage.getItem( Tumblr.name ) ) || { offset: 0, posts: [] };
+      },
 
-				for ( var i = 0; i < Tumblr.posts.length; i++ ) { 
-					var post = Tumblr.posts[i];
+      set: function () {
+        var store = JSON.parse( localStorage.getItem( Tumblr.name ) ) || { posts: [] };
+        store.offset = Tumblr.offset;
 
-					if ( store.posts.indexOf( post ) < 0 ) {
-						store.posts.push( post );	
-					}
-				}
+        for ( var i = 0; i < Tumblr.posts.length; i++ ) {
+          var post = Tumblr.posts[i];
 
-				localStorage.setItem( Tumblr.name, JSON.stringify( store ) );
-			}
-		}
-	},
+          if ( store.posts.indexOf( post ) < 0 ) {
+            store.posts.push( post );
+          }
+        }
 
-	// General utils
-	Util = {
-		// Thanks http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values
-		getParameterByName: function ( name ) {
-  		var match = RegExp( '[?&]' + name + '=([^&]*)' ).exec( window.location.search );
-  		return match && decodeURIComponent( match[1] );
-  	}
-	};
+        localStorage.setItem( Tumblr.name, JSON.stringify( store ) );
+      }
+    }
+  },
 
-	window.Tumblr = Tumblr;
-	Tumblr.init(Util.getParameterByName( 't' ) || 'classics');
+  // General utils
+  Util = {
+    // Thanks http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values
+    getParameterByName: function ( name ) {
+      var match = RegExp( '[?&]' + name + '=([^&]*)' ).exec( window.location.search );
+      return match && decodeURIComponent( match[1] );
+    }
+  };
+
+  window.Tumblr = Tumblr;
+  Tumblr.init(Util.getParameterByName( 't' ) || 'classics');
 
 }( window ) );

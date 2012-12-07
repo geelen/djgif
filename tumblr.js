@@ -49,7 +49,14 @@
           memo[n] = {
             name: segments[0],
             tag: segments[1] || '',
-            offset: 0
+            offset: 0,
+            storageKey: function() {
+              if ( this.tag.length ) {
+                return this.name + "#" + this.tag;
+              } else {
+                return this.name;
+              }
+            }
           }
 
           return memo;
@@ -114,21 +121,13 @@
       }
     },
 
-    storageKey: function() {
-      if ( Tumblr.currentBlog.tag.length ) {
-        return Tumblr.currentBlog.name + "#" + Tumblr.currentBlog.tag;
-      } else {
-        return Tumblr.currentBlog.name;
-      }
-    },
-
     storage: {
       get: function () {
-        return JSON.parse( localStorage.getItem( Tumblr.storageKey() ) ) || { offset: 0, posts: [] };
+        return JSON.parse( localStorage.getItem( Tumblr.currentBlog.storageKey() ) ) || { offset: 0, posts: [] };
       },
 
       set: function () {
-        var store = JSON.parse( localStorage.getItem( Tumblr.storageKey() ) ) || { posts: [] };
+        var store = JSON.parse( localStorage.getItem( Tumblr.currentBlog.storageKey() ) ) || { posts: [] };
         store.offset = Tumblr.offset;
 
         for ( var i = 0; i < Tumblr.posts.length; i++ ) { 
@@ -139,7 +138,7 @@
           }
         }
 
-        localStorage.setItem( Tumblr.storageKey(), JSON.stringify( store ) );
+        localStorage.setItem( Tumblr.currentBlog.storageKey(), JSON.stringify( store ) );
       }
     }
   },

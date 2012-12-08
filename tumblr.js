@@ -87,9 +87,9 @@
     getGifs: function ( posts ) {
       return posts.reduce( function(photos, post ) {
         if ( post.photos && post.photos.length )
-        return photos.concat( Tumblr.extractGifsFromPostPhotos( post.photos ) );
-      else
-        return photos.concat( Tumblr.extractGifsFromHtml( post.body ) );
+          return photos.concat( Tumblr.extractGifsFromPostPhotos( post.photos ) );
+        else
+          return photos.concat( Tumblr.extractGifsFromHtml( post.body ) );
       }, []);
     },
 

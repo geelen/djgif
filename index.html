@@ -29,9 +29,10 @@ germanforblack.com
 				<input type="text" name="t" placeholder="Eg: 'classics'">
 				<p><span class="count"></span> gifs, from <a href="" class="source">Tumblr</a></p>
 			</form>
-			<nav class="shortcuts">
-				(x) - Remove current image
-			</nav>
+			
+			<section class="viewing-list">
+				
+			</section>
 		</section>
 		
 		<div style="display:none;" class="suggestions">
@@ -46,6 +47,15 @@ germanforblack.com
 		
 		<div id="image-holder"></div>
 	</body>
+	
+	<script id="blog" type="text/template">
+		<article class="blog" data-name="{{ name }}">
+			<button class="remove">x</button>
+			<h1>{{ name }}</h1>
+			<span class="count">{{ count }}</span> gifs
+		</article>
+	</script>
+	
 	<script>
 	  var _crashmat = {key:"dl0q"};
 

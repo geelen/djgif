@@ -1,10 +1,14 @@
 ( function ( window ) {
-  var Tumblr = {
+  var $ = function ( selector ) {
+    return document.querySelector( selector );
+  },
+
+  Tumblr = {
     apiKey: 'PyezS3Q4Smivb24d9SzZGYSuhMNPQUhMsVetMC9ksuGPkK1BTt',
     changeImageDelay: 10000,
     requestDelay: 5000,
     offsetIncrement: 20,
-    imageHolder: document.querySelector( '#image-holder' ),
+    imageHolder: $( '#image-holder' ),
     postCountChangedCallback: undefined,
 
     url: function ( blog ) {
@@ -70,8 +74,7 @@
           Tumblr.storage.set( Tumblr.currentBlog );
 
           if ( Tumblr.postCountChangedCallback ) {
-            var postCount = Tumblr.blogs.reduce( function ( memo, blog ) { return memo + blog.posts.length; }, 0 );
-            Tumblr.postCountChangedCallback( postCount );
+            Tumblr.postCountChangedCallback( Tumblr.currentBlog );
           }
 
           if ( !Tumblr.currentImage ) Tumblr.changeImage();
@@ -161,17 +164,23 @@
     }
   };
 
-  var t = Util.getParameterByName( 't' ) || 'classics';
+  var t = Util.getParameterByName( 't' ) || 'classics',
+      viewingListEl = $( '.viewing-list' ),
+      blogTemplate = $( '#blog[type="text/template"]' ).innerHTML;
 
   window.Tumblr = Tumblr;
   Tumblr.init( t.split( ',' ) );
-  Tumblr.postCountChangedCallback = function ( count ) {
-    document.querySelector( '.count' ).innerHTML = count;
+
+  Tumblr.postCountChangedCallback = function ( blog ) {
+    $( '[data-name="' + blog.name + '"] .count' ).innerHTML = blog.posts.length;
   }
 
   // Update page elements
+  Tumblr.blogs.forEach( function ( blog ) {
+    var view = blogTemplate.replace( /\{\{ name \}\}/g, blog.name ).
+               replace( /\{\{ count \}\}/g, blog.posts.length );
 
-  document.querySelector( 'input' ).value = t;
-  document.querySelector( '.source' ).href = 'http://' + Tumblr.name + '.tumblr.com';
+    viewingListEl.innerHTML += view;
+  });
 
 }( window ) );

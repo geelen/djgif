@@ -77,7 +77,9 @@
             Tumblr.postCountChangedCallback( Tumblr.currentBlog );
           }
 
-          if ( !Tumblr.currentImage ) Tumblr.changeImage();
+          if ( !Tumblr.currentImage ) {
+            Tumblr.changeImage();
+          }
         }
 
         setTimeout( Tumblr.request, Tumblr.requestDelay );
@@ -107,7 +109,7 @@
     },
 
     extractGifsFromHtml: function ( html ) {
-      return html.match(/http[^"]*?\.gif/g);
+      return html.match( /http[^"]*?\.gif/g );
     },
 
     changeImage: function () {

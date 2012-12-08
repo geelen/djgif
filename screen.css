@@ -1,10 +1,6 @@
 * { 
 	margin: 0; padding: 0;
-	box-sizing:         border-box;
-  -o-box-sizing:      border-box;
-  -ms-box-sizing:     border-box;
-  -moz-box-sizing:    border-box;
-  -webkit-box-sizing: border-box; 
+	box-sizing: border-box;
 }
 
 html { font-family: Helvetica; }
@@ -17,21 +13,21 @@ a { color: inherit; }
 	width: 100%;
 	background-size: cover;
  
- 	image-rendering:optimizeSpeed;              /* Legal fallback */
-	image-rendering:-moz-crisp-edges;           /* Firefox */
-	image-rendering:-o-crisp-edges;             /* Opera */
-	image-rendering:-webkit-optimize-contrast;  /* Chrome (and eventually Safari) */
-	image-rendering:crisp-edges;                /* CSS3 Proposed */
-	-ms-interpolation-mode:bicubic;             /* IE8+ */
+ 	image-rendering: optimizeSpeed;              /* Legal fallback */
+	image-rendering: -moz-crisp-edges;           /* Firefox */
+	image-rendering: -o-crisp-edges;             /* Opera */
+	image-rendering: -webkit-optimize-contrast;  /* Chrome (and eventually Safari) */
+	image-rendering: crisp-edges;                /* CSS3 Proposed */
+	-ms-interpolation-mode: bicubic;             /* IE8+ */
  	
  	/* Bullshit hacks for AppleTV + Couchsurfer + Projector love */
-  -webkit-transform: translate3d(0, 0, 0);
-  -webkit-backface-visibility: hidden;
-	-webkit-perspective: 1000;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+	perspective: 1000;
 }
 
 .button {
-	-webkit-transition: all 250ms ease-in-out;
+	transition: all 250ms ease-in-out;
 
 	z-index: 1;
 	position: absolute;
@@ -50,8 +46,8 @@ a { color: inherit; }
 
 #info {
 	z-index: 1;
-	-webkit-transition: all 250ms ease-in-out;
-	-webkit-transform: translate3d(0, -15em, 0);
+	transition: all 250ms ease-in-out;
+	transform: translate3d(0, -15em, 0);
 
 	position: absolute; top: 0; left: 0; right: 0; 
 	background: #006ffc; color: white;
@@ -71,8 +67,4 @@ a { color: inherit; }
 
 #info:target {
 	transform: translate3d(0, 0, 0);
-	-webkit-transform: translate3d(0, 0, 0);
-	-moz-transform: translate3d(0, 0, 0);
-	-ms-transform: translate3d(0, 0, 0);
-	-o-transform: translate3d(0, 0, 0);
 }

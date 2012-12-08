@@ -172,7 +172,7 @@
   Tumblr.init( t.split( ',' ) );
 
   Tumblr.postCountChangedCallback = function ( blog ) {
-    $( '[data-name="' + blog.name + '"] .count' ).innerHTML = blog.posts.length;
+    $( '.blog[data-name="' + blog.name + '"] .count' ).innerHTML = blog.posts.length;
   }
 
   // Update page elements

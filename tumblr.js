@@ -85,12 +85,16 @@
     },
 
     getGifs: function ( posts ) {
-      return posts.reduce( function(photos, post ) {
-        if ( post.photos && post.photos.length )
-          return photos.concat( Tumblr.extractGifsFromPostPhotos( post.photos ) );
-        else
-          return photos.concat( Tumblr.extractGifsFromHtml( post.body ) );
-      }, []);
+      return posts.reduce( function( photos, post ) {
+        switch ( post.type ) {
+          case "photo":
+            return photos.concat( Tumblr.extractGifsFromPostPhotos( post.photos ) );
+          case "text":
+            return photos.concat( Tumblr.extractGifsFromHtml( post.body ) );
+          default:
+            return photos;
+        }
+      }, [] );
     },
 
     extractGifsFromPostPhotos: function ( photos ) {

@@ -177,6 +177,25 @@
         return blog.name;
     },
 
+    listBlogs: function () {
+      return Tumblr.blogs.map( function ( blog ) { return blog.name } );
+    },
+
+    addBlog: function ( name ) {
+      var blogs = Tumblr.listBlogs();
+      blogs.push( name );
+
+      window.location.search = '?t=' + blogs;
+    },
+
+    removeBlog: function ( name ) {
+      var blogs = Tumblr.listBlogs(),
+          index = blogs.indexOf( name );
+      blogs.splice( index, 1 );
+
+      window.location.search = '?t=' + blogs;
+    },
+
     storage: {
       get: function ( storageKey ) {
         var json = localStorage.getItem( storageKey );
@@ -226,12 +245,8 @@
   }
 
   $( 'form' ).addEventListener( 'submit', function ( event ) {
-    var blogs = Tumblr.blogs.map( function ( blog ) { return blog.name } ),
-        newBlog = $( 'input', event.target ).value;
-    
-    blogs.push( newBlog );
-
-    window.location.search = '?t=' + blogs;
+    var newBlog = newBlog = $( 'input', event.target ).value;
+    Tumblr.addBlog( newBlog )
     event.preventDefault();
   });
 
@@ -242,5 +257,18 @@
 
     viewingListEl.innerHTML += view;
   });
+
+  // Remove buttons
+  $( 'html' ).addEventListener( 'click', function ( event ) { 
+    if ( [].forEach.call( document.querySelectorAll( '.remove' ), function ( button ) {
+      if ( button === event.target ) {
+        var parent = button.parentNode;
+        var blogName = parent.dataset.name;
+        parent.parentNode.removeChild( parent );
+
+        Tumblr.removeBlog( blogName );
+      }
+    } ) );
+  } );
 
 }( window ) );

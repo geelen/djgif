@@ -102,8 +102,8 @@
     changeImage: function () {
       clearTimeout ( Tumblr.changeImageTimeoutId );
 
-      Tumblr.currentBlog = Tumblr.pickRandomBlog();
-      Tumblr.currentImage = Tumblr.pickRandomImage();
+      Tumblr.currentBlog = Tumblr.blogs.rand() || null;
+      Tumblr.currentImage = Tumblr.currentBlog.posts.rand() || null;
 
       var preload = new Image();
 
@@ -117,22 +117,6 @@
       };
 
       preload.src = Tumblr.currentImage;
-    },
-
-    pickRandomBlog: function () {
-      if ( Tumblr.blogs.length > 0 ) {
-        var i = Math.floor( Tumblr.blogs.length * Math.random() );
-        return Tumblr.blogs[i];
-      } else
-        return null;
-    },
-
-    pickRandomImage: function () {
-      if ( Tumblr.currentBlog.posts.length > 0 ) {
-        var i = Math.floor( Tumblr.currentBlog.posts.length * Math.random() );
-        return Tumblr.currentBlog.posts[i];
-      } else
-        return null;
     },
 
     purgeCurrentImage: function () {
@@ -165,6 +149,15 @@
     getParameterByName: function ( name ) {
       var match = RegExp( '[?&]' + name + '=([^&]*)' ).exec( window.location.search );
       return match && decodeURIComponent( match[1] );
+    }
+  };
+
+  Array.prototype.rand = function () {
+    var index;
+
+    if ( this.length > 0 ) {
+      index = Math.floor( this.length * Math.random() );
+      return this[index];
     }
   };
 

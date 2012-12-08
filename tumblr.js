@@ -85,21 +85,25 @@
     },
 
     getGifs: function ( posts ) {
-      var postsWithPhotos = posts.filter( function( post ) {
-        return post.photos && post.photos.length;
-      } );
+      return posts.reduce( function(photos, post ) {
+        if ( post.photos && post.photos.length )
+        return photos.concat( Tumblr.extractGifsFromPostPhotos( post.photos ) );
+      else
+        return photos.concat( Tumblr.extractGifsFromHtml( post.body ) );
+      }, []);
+    },
 
-      var photos = postsWithPhotos.reduce( function( memo, post ) {
-        return memo.concat( post.photos );
-      }, [] );
-
+    extractGifsFromPostPhotos: function ( photos ) {
       var photoUrls = photos.map( function( photo ) {
         return photo.original_size.url;
       } );
-
       return photoUrls.filter( function( url ) {
         return url.match( /\.gif$/ );
       } );
+    },
+
+    extractGifsFromHtml: function ( html ) {
+      return html.match(/http[^"]*?\.gif/g);
     },
 
     changeImage: function () {

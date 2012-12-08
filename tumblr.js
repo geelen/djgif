@@ -1,6 +1,6 @@
 ( function ( window ) {
-  var $ = function ( selector ) {
-    return document.querySelector( selector );
+  var $ = function ( selector, context ) {
+    return ( context || document ).querySelector( selector );
   },
 
   Tumblr = {
@@ -174,6 +174,16 @@
   Tumblr.postCountChangedCallback = function ( blog ) {
     $( '.blog[data-name="' + blog.name + '"] .count' ).innerHTML = blog.posts.length;
   }
+
+  $( 'form' ).addEventListener( 'submit', function ( event ) {
+    var blogs = Tumblr.blogs.map( function ( blog ) { return blog.name } ),
+        newBlog = $( 'input', event.target ).value;
+    
+    blogs.push( newBlog );
+
+    window.location.search = '?t=' + blogs;
+    event.preventDefault();
+  });
 
   // Update page elements
   Tumblr.blogs.forEach( function ( blog ) {

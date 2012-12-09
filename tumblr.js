@@ -134,18 +134,20 @@
       Tumblr.currentBlog = Tumblr.blogs.rand() || null;
       Tumblr.currentImage = Tumblr.currentBlog.posts.rand() || null;
 
-      var preload = new Image();
+      if ( Tumblr.currentImage ) {
+        var preload = new Image();
 
-      preload.onload = function () {
-        Tumblr.imageHolder.style.backgroundImage = 'url(' + Tumblr.currentImage + ')';
-        Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, Tumblr.changeImageDelay );
-      };
+        preload.onload = function () {
+          Tumblr.imageHolder.style.backgroundImage = 'url(' + Tumblr.currentImage + ')';
+          Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, Tumblr.changeImageDelay );
+        };
 
-      preload.onerror = function () {
-        Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, 0 );
-      };
+        preload.onerror = function () {
+          Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, 0 );
+        };
 
-      preload.src = Tumblr.currentImage;
+        preload.src = Tumblr.currentImage;
+      }
     },
 
     purgeCurrentImage: function () {

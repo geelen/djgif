@@ -40,20 +40,18 @@
     },
 
     initBlogs: function ( names ) {
-      return names.map (
-        function ( name ) {
-          var segments = name.split( '#' );
-          var blog = Tumblr.storage.get( name );
+      return names.map ( function ( name ) {
+        var segments = name.split( '#' );
+        var blog = Tumblr.storage.get( name );
 
-          return blog || {
-            storageKey: name,
-            name:       segments[0],
-            tag:        segments[1] || '',
-            offset:     0,
-            posts:      []
-          }
+        return blog || {
+          storageKey: name,
+          name:       segments[0],
+          tag:        segments[1] || '',
+          offset:     0,
+          posts:      []
         }
-      );
+      } );
     },
 
     request: function ( blog ) {
@@ -66,7 +64,7 @@
 
     response: function ( json ) {
       var blog = Tumblr.blogs.find( function ( blog ) {
-        return (blog.name == json.response.blog.name);
+        return ( blog.name == json.response.blog.name );
       } );
 
       if ( json.response.posts.length > 0 ) {

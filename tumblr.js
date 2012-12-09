@@ -168,9 +168,9 @@
 
     storage: {
       get: function ( storageKey ) {
-        var blog = localStorage.getItem( storageKey );
-        if ( blog )
-          return JSON.parse( blog );
+        var json = localStorage.getItem( storageKey );
+        if ( json )
+          return JSON.parse( json );
         else
           return null;
       },

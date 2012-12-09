@@ -56,7 +56,6 @@
 
     refreshBlogs: function () {
       async.forEach( Tumblr.blogs, Tumblr.request, function ( error ) {
-        if ( !Tumblr.currentImage ) { Tumblr.changeImage(); }
         setTimeout( Tumblr.refreshBlogs, Tumblr.requestDelay );
       } );
     },
@@ -99,6 +98,8 @@
 
         blog.offset += Tumblr.offsetIncrement;
         Tumblr.storage.set( blog );
+
+        if ( !Tumblr.currentImage ) { Tumblr.changeImage(); }
       }
     },
 

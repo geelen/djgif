@@ -25,7 +25,7 @@
 
       Tumblr.changeImage();
       Tumblr.initKeyboard();
-      Tumblr.request();
+      Tumblr.request( Tumblr.currentBlog );
     },
 
     initKeyboard: function () {
@@ -56,25 +56,29 @@
       );
     },
 
-    request: function () {
+    request: function ( blog ) {
       var element = document.createElement( 'script' );
-      var url = Tumblr.url( Tumblr.currentBlog );
+      var url = Tumblr.url( blog );
 
       element.setAttribute( 'src', url );
       document.documentElement.appendChild( element );
     },
 
     response: function ( json ) {
+      var blog = Tumblr.blogs.find( function ( blog ) {
+        return (blog.name == json.response.blog.name);
+      } );
+
       if ( json.response.posts.length > 0 ) {
         var gifs = Tumblr.getGifs( json.response.posts );
 
-        if ( gifs ) {
-          Tumblr.currentBlog.posts = Tumblr.currentBlog.posts.concat( gifs );
-          Tumblr.currentBlog.offset += Tumblr.offsetIncrement;
-          Tumblr.storage.set( Tumblr.currentBlog );
+        if ( gifs.length > 0 ) {
+          blog.posts = blog.posts.concat( gifs );
+          blog.offset += Tumblr.offsetIncrement;
+          Tumblr.storage.set( blog );
 
           if ( Tumblr.postCountChangedCallback ) {
-            Tumblr.postCountChangedCallback( Tumblr.currentBlog );
+            Tumblr.postCountChangedCallback( blog );
           }
 
           if ( !Tumblr.currentImage ) {
@@ -82,7 +86,9 @@
           }
         }
 
-        setTimeout( Tumblr.request, Tumblr.requestDelay );
+        setTimeout( function () {
+          Tumblr.request ( blog );
+        }, Tumblr.requestDelay );
       }
     },
 

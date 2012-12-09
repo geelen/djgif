@@ -152,11 +152,13 @@
     },
 
     purgeCurrentImage: function () {
-      var imageIndex = Tumblr.currentBlog.posts.indexOf( Tumblr.currentImage );
+      if ( Tumblr.currentBlog && Tumblr.currentImage ) {
+        var imageIndex = Tumblr.currentBlog.posts.indexOf( Tumblr.currentImage );
 
-      if ( imageIndex >= 0 ) {
-        Tumblr.currentBlog.posts.splice( imageIndex, 1 );
-        Tumblr.storage.set( Tumblr.currentBlog );
+        if ( imageIndex >= 0 ) {
+          Tumblr.currentBlog.posts.splice( imageIndex, 1 );
+          Tumblr.storage.set( Tumblr.currentBlog );
+        }
       }
     },
 

@@ -9,7 +9,6 @@
     requestDelay: 5000,
     offsetIncrement: 20,
     imageHolder: $( '#image-holder' ),
-    postCountChangedCallback: undefined,
     requestCallbacks: {},
 
     url: function ( blog ) {

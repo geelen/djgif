@@ -10,6 +10,7 @@
     offsetIncrement: 20,
     imageHolder: $( '#image-holder' ),
     postCountChangedCallback: undefined,
+    requestCallbacks: {},
 
     url: function ( blog ) {
       return 'http://api.tumblr.com/v2' +
@@ -25,7 +26,7 @@
 
       Tumblr.changeImage();
       Tumblr.initKeyboard();
-      Tumblr.request( Tumblr.currentBlog );
+      Tumblr.refreshBlogs();
     },
 
     initKeyboard: function () {
@@ -54,11 +55,18 @@
       } );
     },
 
-    request: function ( blog ) {
-      var element = document.createElement( 'script' );
-      var url = Tumblr.url( blog );
+    refreshBlogs: function () {
+      async.forEach( Tumblr.blogs, Tumblr.request, function ( error ) {
+        if ( !Tumblr.currentImage ) { Tumblr.changeImage(); }
+        setTimeout( Tumblr.refreshBlogs, Tumblr.requestDelay );
+      } );
+    },
 
-      element.setAttribute( 'src', url );
+    request: function ( blog, callback ) {
+      Tumblr.requestCallbacks[blog.storageKey] = callback;
+
+      var element = document.createElement( 'script' );
+      element.setAttribute( 'src', Tumblr.url( blog ) );
       document.documentElement.appendChild( element );
     },
 
@@ -67,26 +75,26 @@
         return ( blog.name == json.response.blog.name );
       } );
 
+      Tumblr.handleResponse( blog, json );
+
+      var callback = Tumblr.requestCallbacks[blog.storageKey];
+      if ( callback ) { callback( null, blog ); }
+    },
+
+    handleResponse: function ( blog, json ) {
       if ( json.response.posts.length > 0 ) {
         var gifs = Tumblr.getGifs( json.response.posts );
 
         if ( gifs.length > 0 ) {
           blog.posts = blog.posts.concat( gifs );
-          blog.offset += Tumblr.offsetIncrement;
-          Tumblr.storage.set( blog );
 
           if ( Tumblr.postCountChangedCallback ) {
             Tumblr.postCountChangedCallback( blog );
           }
-
-          if ( !Tumblr.currentImage ) {
-            Tumblr.changeImage();
-          }
         }
 
-        setTimeout( function () {
-          Tumblr.request ( blog );
-        }, Tumblr.requestDelay );
+        blog.offset += Tumblr.offsetIncrement;
+        Tumblr.storage.set( blog );
       }
     },
 

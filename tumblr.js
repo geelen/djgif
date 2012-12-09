@@ -221,10 +221,8 @@
   };
 
   Array.prototype.rand = function () {
-    var index;
-
     if ( this.length > 0 ) {
-      index = Math.floor( this.length * Math.random() );
+      var index = Math.floor( this.length * Math.random() );
       return this[index];
     }
   };

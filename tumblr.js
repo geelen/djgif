@@ -66,6 +66,7 @@
       Tumblr.requestCallbacks[blog.storageKey] = callback;
 
       var element = document.createElement( 'script' );
+
       element.setAttribute( 'src', Tumblr.url( blog ) );
       document.documentElement.appendChild( element );
     },
@@ -78,7 +79,11 @@
       Tumblr.handleResponse( blog, json );
 
       var callback = Tumblr.requestCallbacks[blog.storageKey];
-      if ( callback ) { callback( null, blog ); }
+
+      if ( callback ) {
+        delete Tumblr.requestCallbacks[blog.storageKey];
+        callback( null, blog );
+      }
     },
 
     handleResponse: function ( blog, json ) {

@@ -42,16 +42,15 @@
 
     initBlogs: function ( names ) {
       return names.map ( function ( name ) {
-        var segments = name.split( '#' );
         var blog = Tumblr.storage.get( name );
+        var segments = name.split( '#' );
 
         return blog || {
-          storageKey: name,
-          name:       segments[0],
-          tag:        segments[1] || '',
-          offset:     0,
-          posts:      []
-        }
+          name:   segments[0],
+          tag:    segments[1] || '',
+          offset: 0,
+          posts:  []
+        };
       } );
     },
 
@@ -63,7 +62,7 @@
     },
 
     request: function ( blog, callback ) {
-      Tumblr.requestCallbacks[blog.storageKey] = callback;
+      Tumblr.requestCallbacks[blog.name] = callback;
 
       var element = document.createElement( 'script' );
 
@@ -78,10 +77,10 @@
 
       Tumblr.handleResponse( blog, json );
 
-      var callback = Tumblr.requestCallbacks[blog.storageKey];
+      var callback = Tumblr.requestCallbacks[blog.name];
 
       if ( callback ) {
-        delete Tumblr.requestCallbacks[blog.storageKey];
+        delete Tumblr.requestCallbacks[blog.name];
         callback( null, blog );
       }
     },
@@ -158,17 +157,24 @@
       }
     },
 
+    storageKey: function( blog ) {
+      if ( blog.tag.length > 0 )
+        return blog.name + "#" + blog.tag;
+      else
+        return blog.name;
+    },
+
     storage: {
       get: function ( storageKey ) {
         var blog = localStorage.getItem( storageKey );
-        if (blog)
+        if ( blog )
           return JSON.parse( blog );
         else
           return null;
       },
 
       set: function ( blog ) {
-        localStorage.setItem( blog.storageKey, JSON.stringify( blog ) );
+        localStorage.setItem( Tumblr.storageKey( blog ), JSON.stringify( blog ) );
       }
     }
   },

@@ -99,7 +99,7 @@
         blog.offset += Tumblr.offsetIncrement;
         Tumblr.storage.set( blog );
 
-        if ( !Tumblr.currentImage ) { Tumblr.changeImage(); }
+        if ( !Tumblr.current ) { Tumblr.changeImage(); }
       }
     },
 
@@ -138,16 +138,13 @@
         } ) );
       }, [] );
 
-      var pair = pairs.rand();
+      Tumblr.current = pairs.rand();
 
-      if ( pair ) {
-        Tumblr.currentBlog  = pair.blog;
-        Tumblr.currentImage = pair.post;
-
+      if ( Tumblr.current ) {
         var preload = new Image();
 
         preload.onload = function () {
-          Tumblr.imageHolder.style.backgroundImage = 'url(' + Tumblr.currentImage + ')';
+          Tumblr.imageHolder.style.backgroundImage = 'url(' + Tumblr.current.post + ')';
           Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, Tumblr.changeImageDelay );
         };
 
@@ -155,22 +152,22 @@
           Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, 0 );
         };
 
-        preload.src = Tumblr.currentImage;
+        preload.src = Tumblr.current.post;
       }
     },
 
     purgeCurrentImage: function () {
-      if ( Tumblr.currentBlog && Tumblr.currentImage ) {
-        var imageIndex = Tumblr.currentBlog.posts.indexOf( Tumblr.currentImage );
+      if ( Tumblr.current ) {
+        var posts = Tumblr.current.blog.posts.filter( function ( post ) {
+          return post != Tumblr.current.post;
+        } );
 
-        if ( imageIndex >= 0 ) {
-          Tumblr.currentBlog.posts.splice( imageIndex, 1 );
-          Tumblr.storage.set( Tumblr.currentBlog );
-        }
+        Tumblr.current.blog.posts = posts;
+        Tumblr.storage.set( Tumblr.current.blog );
       }
     },
 
-    storageKey: function( blog ) {
+    storageKey: function ( blog ) {
       if ( blog.tag.length > 0 )
         return blog.name + "#" + blog.tag;
       else

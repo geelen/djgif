@@ -132,10 +132,18 @@
     changeImage: function () {
       clearTimeout ( Tumblr.changeImageTimeoutId );
 
-      Tumblr.currentBlog = Tumblr.blogs.rand() || null;
-      Tumblr.currentImage = Tumblr.currentBlog.posts.rand() || null;
+      var pairs = Tumblr.blogs.reduce( function ( memo, blog ) {
+        return memo.concat( blog.posts.map( function ( post ) {
+          return {blog: blog, post: post};
+        } ) );
+      }, [] );
 
-      if ( Tumblr.currentImage ) {
+      var pair = pairs.rand();
+
+      if ( pair ) {
+        Tumblr.currentBlog  = pair.blog;
+        Tumblr.currentImage = pair.post;
+
         var preload = new Image();
 
         preload.onload = function () {

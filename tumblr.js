@@ -174,6 +174,10 @@
     }
   };
 
+  Array.prototype.find = function ( predicate ) {
+    return this.filter( predicate )[0];
+  };
+
   var t = Util.getParameterByName( 't' ) || 'classics',
       viewingListEl = $( '.viewing-list' ),
       blogTemplate = $( '#blog[type="text/template"]' ).innerHTML;

@@ -60,11 +60,16 @@
     },
 
     request: function ( blog, callback ) {
-      Tumblr.requestCallbacks[blog.name] = callback;
+      Tumblr.requestCallbacks[blog.name] = [];
+      Tumblr.requestCallbacks[blog.name].push( callback );
 
       var element = document.createElement( 'script' );
-
       element.setAttribute( 'src', Tumblr.url( blog ) );
+
+      Tumblr.requestCallbacks[blog.name].push( function () {
+        element.parentNode.removeChild( element );
+      });
+
       document.documentElement.appendChild( element );
     },
 
@@ -75,12 +80,11 @@
 
       Tumblr.handleResponse( blog, json );
 
-      var callback = Tumblr.requestCallbacks[blog.name];
+      var callbacks = Tumblr.requestCallbacks[blog.name];
 
-      if ( callback ) {
-        delete Tumblr.requestCallbacks[blog.name];
+      callbacks.forEach( function ( callback ) {
         callback( null, blog );
-      }
+      });
     },
 
     handleResponse: function ( blog, json ) {

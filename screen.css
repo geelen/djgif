@@ -47,7 +47,7 @@ a { color: inherit; }
 #info {
 	z-index: 1;
 	transition: all 250ms ease-in-out;
-	transform: translate3d(0, -15em, 0);
+	transform: translate3d(0, -30em, 0);
 
 	position: absolute; top: 0; left: 0; right: 0; 
 	background: #006ffc; color: white;

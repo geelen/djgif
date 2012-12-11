@@ -1,6 +1,6 @@
 * { 
-	margin: 0; padding: 0;
-	box-sizing: border-box;
+  margin: 0; padding: 0;
+  box-sizing: border-box;
 }
 
 html { font-family: Helvetica; }
@@ -8,57 +8,57 @@ html { font-family: Helvetica; }
 a { color: inherit; }
 
 #image-holder {
-	position: absolute;
-	height: 100%;
-	width: 100%;
-	background-size: cover;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-size: cover;
  
- 	image-rendering: optimizeSpeed;              /* Legal fallback */
-	image-rendering: -moz-crisp-edges;           /* Firefox */
-	image-rendering: -o-crisp-edges;             /* Opera */
-	image-rendering: -webkit-optimize-contrast;  /* Chrome (and eventually Safari) */
-	image-rendering: crisp-edges;                /* CSS3 Proposed */
-	-ms-interpolation-mode: bicubic;             /* IE8+ */
- 	
- 	/* Bullshit hacks for AppleTV + Couchsurfer + Projector love */
+  image-rendering: optimizeSpeed;              /* Legal fallback */
+  image-rendering: -moz-crisp-edges;           /* Firefox */
+  image-rendering: -o-crisp-edges;             /* Opera */
+  image-rendering: -webkit-optimize-contrast;  /* Chrome (and eventually Safari) */
+  image-rendering: crisp-edges;                /* CSS3 Proposed */
+  -ms-interpolation-mode: bicubic;             /* IE8+ */
+  
+  /* Bullshit hacks for AppleTV + Couchsurfer + Projector love */
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
-	perspective: 1000;
+  perspective: 1000;
 }
 
 .button {
-	transition: all 250ms ease-in-out;
+  transition: all 250ms ease-in-out;
 
-	z-index: 1;
-	position: absolute;
-	top: 1em;
-	right: 1em;
-	display: block;
-	padding-top: .5em;
+  z-index: 1;
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  display: block;
+  padding-top: .5em;
 
-	color: white; font-weight: bold; text-decoration: none; text-align: center;
-	background: rgba(0, 0, 0, .2); border-radius: 1em; height: 2em; width: 2em;
+  color: white; font-weight: bold; text-decoration: none; text-align: center;
+  background: rgba(0, 0, 0, .2); border-radius: 1em; height: 2em; width: 2em;
 }
 
 .button:hover {
-	-webkit-transform: scale(1.2);
+  -webkit-transform: scale(1.2);
 }
 
 #info {
-	z-index: 1;
-	transition: all 250ms ease-in-out;
-	transform: translate3d(0, -30em, 0);
+  z-index: 1;
+  transition: all 250ms ease-in-out;
+  transform: translate3d(0, -30em, 0);
 
-	position: absolute; top: 0; left: 0; right: 0; 
-	background: #006ffc; color: white;
- 	padding: 1.3em;
+  position: absolute; top: 0; left: 0; right: 0; 
+  background: #006ffc; color: white;
+  padding: 1.3em;
 }
 
 #info .close { float: right; }
 #info input[type='text'] {
-	width: auto;
-	color: white; font-weight: bold; text-transform: uppercase; font-size: 1.2em; font-family: Helvetica, Arial;
-	background: transparent; border: 0; border-bottom: 2px solid white;
+  width: auto;
+  color: white; font-weight: bold; text-transform: uppercase; font-size: 1.2em; font-family: Helvetica, Arial;
+  background: transparent; border: 0; border-bottom: 2px solid white;
 }
 
 #info input:focus {  outline: 0; } 
@@ -66,5 +66,5 @@ a { color: inherit; }
 #info p { color: white; font-size: .8em; display: inline; }
 
 #info:target {
-	transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }

@@ -3,7 +3,10 @@
   box-sizing: border-box;
 }
 
-html { font-family: Helvetica; }
+html { 
+  font-family: Helvetica;
+  background-color: black;
+}
 
 a { color: inherit; }
 
@@ -11,7 +14,10 @@ a { color: inherit; }
   position: absolute;
   height: 100%;
   width: 100%;
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
  
   image-rendering: optimizeSpeed;              /* Legal fallback */
   image-rendering: -moz-crisp-edges;           /* Firefox */

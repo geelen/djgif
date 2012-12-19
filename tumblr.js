@@ -74,6 +74,8 @@
     },
 
     response: function ( json ) {
+      if (!json.response.blog) return;
+
       var blog = Tumblr.blogs.find( function ( blog ) {
         return ( blog.name == json.response.blog.name );
       } );

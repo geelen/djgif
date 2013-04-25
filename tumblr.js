@@ -4,7 +4,8 @@
   },
 
   Tumblr = {
-    apiKey: 'PyezS3Q4Smivb24d9SzZGYSuhMNPQUhMsVetMC9ksuGPkK1BTt',
+    // toolmantim/gifcity Tumblr app
+    apiKey: 'DjfvFbmCVQB3yHER0TMUB2ndguw5wqeNDv7ywyMipM9ZQpEtYn',
     changeImageDelay: 10000,
     requestDelay: 5000,
     offsetIncrement: 20,
@@ -29,7 +30,7 @@
     },
 
     initKeyboard: function () {
-      key( 'x', function () { 
+      key( 'x', function () {
         Tumblr.purgeCurrentImage();
         Tumblr.changeImage();
       } );
@@ -259,7 +260,7 @@
   });
 
   // Remove buttons
-  $( 'html' ).addEventListener( 'click', function ( event ) { 
+  $( 'html' ).addEventListener( 'click', function ( event ) {
     if ( [].forEach.call( document.querySelectorAll( '.remove' ), function ( button ) {
       if ( button === event.target ) {
         var parent = button.parentNode;

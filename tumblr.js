@@ -38,6 +38,10 @@
       key( 'n', function () {
         Tumblr.changeImage();
       } );
+
+      key( 'f', function() {
+        Tumblr.toggleFullscreen();
+      });
     },
 
     initBlogs: function ( names ) {
@@ -159,6 +163,27 @@
         };
 
         preload.src = Tumblr.current.gif;
+      }
+    },
+
+    toggleFullscreen: function() {
+      if (document.fullScreen || document.mozFullScreen || document.webkitFullScreen || document.msFullScreen) {
+        var cancelFullScreen =
+          document.cancelFullScreen ||
+          document.mozCancelFullScreen ||
+          document.webkitCancelFullScreen ||
+          document.msCancelFullScreen;
+        cancelFullScreen.call(document);
+      } else {
+        var requestFullscreen =
+          Tumblr.imageHolder.requestFullScreen ||
+          Tumblr.imageHolder.mozRequestFullScreen ||
+          Tumblr.imageHolder.webkitRequestFullScreen ||
+          Tumblr.imageHolder.msRequestFullScreen;
+        if (!requestFullscreen)
+          alert("Your browser doesn't support fullscreen");
+        else
+          requestFullscreen.call(Tumblr.imageHolder);
       }
     },
 

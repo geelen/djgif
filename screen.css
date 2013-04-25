@@ -1,9 +1,9 @@
-* { 
+* {
   margin: 0; padding: 0;
   box-sizing: border-box;
 }
 
-html { 
+html {
   font-family: Helvetica;
   background-color: black;
 }
@@ -14,22 +14,27 @@ a { color: inherit; }
   position: absolute;
   height: 100%;
   width: 100%;
+  background-color: black;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
 
- 
+
   image-rendering: optimizeSpeed;              /* Legal fallback */
   image-rendering: -moz-crisp-edges;           /* Firefox */
   image-rendering: -o-crisp-edges;             /* Opera */
   image-rendering: -webkit-optimize-contrast;  /* Chrome (and eventually Safari) */
   image-rendering: crisp-edges;                /* CSS3 Proposed */
   -ms-interpolation-mode: bicubic;             /* IE8+ */
-  
+
   /* Bullshit hacks for AppleTV + Couchsurfer + Projector love */
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   perspective: 1000;
+}
+
+#image-holder:-webkit-full-screen {
+  position: static;
 }
 
 .button {
@@ -55,7 +60,7 @@ a { color: inherit; }
   transition: all 250ms ease-in-out;
   transform: translate3d(0, -30em, 0);
 
-  position: absolute; top: 0; left: 0; right: 0; 
+  position: absolute; top: 0; left: 0; right: 0;
   background: #006ffc; color: white;
   padding: 1.3em;
 }
@@ -67,7 +72,7 @@ a { color: inherit; }
   background: transparent; border: 0; border-bottom: 2px solid white;
 }
 
-#info input:focus {  outline: 0; } 
+#info input:focus {  outline: 0; }
 
 #info p { color: white; font-size: .8em; display: inline; }
 

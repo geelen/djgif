@@ -167,13 +167,14 @@
     },
 
     toggleFullscreen: function() {
-      if (document.fullScreen || document.mozFullScreen || document.webkitFullScreen || document.msFullScreen) {
-        var cancelFullScreen =
-          document.cancelFullScreen ||
-          document.mozCancelFullScreen ||
-          document.webkitCancelFullScreen ||
-          document.msCancelFullScreen;
-        cancelFullScreen.call(document);
+      if (document.fullscreenElement ||
+          document.webkitFullscreenElement ||
+          document.mozFullscreenElement ||
+          document.msFullscreenElement) {
+        if (document.cancelFullScreen) document.cancelFullScreen();
+        if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+        if (document.webkitCancelFullScreen) document.webkitCancelFullScreen();
+        if (document.msCancelFullScreen) document.msCancelFullScreen();
       } else {
         var requestFullscreen =
           Tumblr.imageHolder.requestFullScreen ||
@@ -183,7 +184,7 @@
         if (!requestFullscreen)
           alert("Your browser doesn't support fullscreen");
         else
-          requestFullscreen.call(Tumblr.imageHolder);
+          requestFullscreen.call(Tumblr.imageHolder, Tumblr.imageHolder.ALLOW_KEYBOARD_INPUT);
       }
     },
 

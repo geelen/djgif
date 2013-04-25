@@ -33,9 +33,10 @@ a { color: inherit; }
   perspective: 1000;
 }
 
-#image-holder:-webkit-full-screen {
-  position: static;
-}
+#image-holder:-webkit-full-screen { position: static; }
+#image-holder:-moz-full-screen    { position: static; }
+#image-holder:-ms-full-screen     { position: static; }
+#image-holder:fullscreen          { position: static; }
 
 .button {
   transition: all 250ms ease-in-out;

@@ -154,7 +154,6 @@
         var preload = new Image();
 
         preload.onload = function () {
-          console.log("wat")
           Tumblr.imageHolder.innerHTML = "" +
             "<img src='" + Tumblr.current.gif + "' class='left-image'>" +
             "<img src='" + Tumblr.current.gif + "' class='image'>" +

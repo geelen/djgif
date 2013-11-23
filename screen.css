@@ -51,7 +51,6 @@ a { color: inherit; }
 }
 .left-image, .right-image {
   transform: rotateY(180deg);
-  /*-webkit-filter: blur(50px);*/
 }
 
 .button {

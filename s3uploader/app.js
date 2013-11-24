@@ -37,7 +37,10 @@ app.get('/', function (req, res) {
 
     request.on('response', function(resp) {
       console.log('S3 status:', resp.statusCode, 'url:', request.url);
-      res.send(request.url);
+      res.send(JSON.stringify({
+        uploadedTo: request.url,
+        gifcityConvertURL: "http://gifcity-elastic-transcoder.herokuapp.com/?filename="+filename
+      }));
     });
 
     request.on('error', function(err) {

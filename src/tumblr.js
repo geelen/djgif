@@ -151,23 +151,49 @@
       // Hax for videos
       pairs = [
         {
-          rate: 0.2,
+          rate: 4.0,
           blog: 'test',
-          gif: 'http://gifcity-transcode-output.s3.amazonaws.com/ron-paul.mp4?AWSAccessKeyId=AKIAI26QQBPUNTPBCO4A&Expires=1416810335&Signature=Bw06yBGiF792CQSqOnRYmBebW%2B4%3D'
+          gif: 'http://gifcity-transcode-output.s3.amazonaws.com/ron-paul.mp4'
         },
         {
-          rate: 3.0,
+          rate: 1.0,
           blog: 'test',
-          gif: 'http://gifcity-transcode-output.s3.amazonaws.com/tumblr_lgb02mCfLm1qe0eclo1_r5_500.mp4?AWSAccessKeyId=AKIAI26QQBPUNTPBCO4A&Expires=1416810231&Signature=s9CuFP9BHQ28GU2GvPcvygp%2FmVM%3D'
+          gif: 'http://gifcity-transcode-output.s3.amazonaws.com/tumblr_lgb02mCfLm1qe0eclo1_r5_500.mp4'
         },
         {
-          rate: 2.0,
+          rate: 1.0,
           blog: 'test',
-          gif: 'http://gifcity-transcode-output.s3-us-west-1.amazonaws.com/is-it-possible.mp4?AWSAccessKeyId=AKIAI26QQBPUNTPBCO4A&Expires=1416806882&Signature=duYo0d%2FJDK6xvCLxD49HPz9impU%3D'
-//        },
-//        {
-//          blog: 'broken',
-//          gif: 'http://gifcity-transcode-output.s3-us-west-1.amazonaws.com/NOOOPE.mp4'
+          gif: 'http://gifcity-transcode-output.s3-us-west-1.amazonaws.com/is-it-possible.mp4'
+        },
+        {
+          rate: 1.0,
+          blog: 'test',
+          gif: 'http://gifcity-transcode-output.s3-us-west-1.amazonaws.com/tumblr_m9w5uaZrB11rpt9sio1_250.mp4'
+        },
+        {
+          rate: 1.0,
+          blog: 'test',
+          gif: 'http://gifcity-transcode-output.s3-us-west-1.amazonaws.com/tumblr_mvq24n1kHF1qzt4vjo1_r1_500.mp4'
+        },
+        {
+          rate: 1.0,
+          blog: 'test',
+          gif: 'http://gifcity-transcode-output.s3-us-west-1.amazonaws.com/tumblr_mvtqhbAymz1rg4djqo1_500.mp4'
+        },
+        {
+          rate: 1.0,
+          blog: 'test',
+          gif: 'http://gifcity-transcode-output.s3-us-west-1.amazonaws.com/tumblr_mwiqt5aY881qzt4vjo1_500.mp4'
+        },
+        {
+          rate: 1.0,
+          blog: 'test',
+          gif: 'http://gifcity-transcode-output.s3-us-west-1.amazonaws.com/tumblr_mwmc51icCB1qzt4vjo1_500.mp4'
+        },
+        {
+          rate: 1.0,
+          blog: 'test',
+          gif: 'http://gifcity-transcode-output.s3-us-west-1.amazonaws.com/tumblr_mwptjyzp2a1qzt4vjo1_500.mp4'
         }
       ]
 

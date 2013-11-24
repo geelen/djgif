@@ -46,10 +46,9 @@ a { color: inherit; }
 #image-holder .image {
   position: relative;
   z-index: 10;
-  /*box-shadow: 0 0 10px black;*/
-  /*transform: translate3d(0,0,0);*/
 }
-.left-image, .right-image {
+.left-image,
+.right-image {
   transform: rotateY(180deg);
 }
 

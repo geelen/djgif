@@ -1,0 +1,15 @@
+{
+  "name": "gifcity-s3uploader",
+  "version": "0.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "knox": "~0.8.7",
+    "express": "~3.4.4"
+  }
+}

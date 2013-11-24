@@ -194,6 +194,41 @@
           rate: 1.0,
           blog: 'test',
           gif: 'http://gifcity-transcode-output.s3-us-west-1.amazonaws.com/tumblr_mwptjyzp2a1qzt4vjo1_500.mp4'
+        },
+        {
+          rate: 1.0,
+          blog: 'test',
+          gif: 'http://gifcity-transcode-output.s3-us-west-1.amazonaws.com/tumblr_lhie2z5ERF1qzt4vjo1_r1_500.mp4'
+        },
+        {
+          rate: 1.0,
+          blog: 'test',
+          gif: 'http://gifcity-transcode-output.s3-us-west-1.amazonaws.com/tumblr_l8n2qmmX461qzt4vjo1_400.mp4'
+        },
+        {
+          rate: 1.0,
+          blog: 'test',
+          gif: 'http://gifcity-transcode-output.s3-us-west-1.amazonaws.com/tumblr_masqz9twyP1qzt4vjo1_500.mp4'
+        },
+        {
+          rate: 1.0,
+          blog: 'test',
+          gif: 'http://gifcity-transcode-output.s3-us-west-1.amazonaws.com/tumblr_mc5wpyZ8Xi1qzt4vjo1_500.mp4'
+        },
+        {
+          rate: 1.0,
+          blog: 'test',
+          gif: 'http://gifcity-transcode-output.s3-us-west-1.amazonaws.com/tumblr_mfegrmK1Al1qzt4vjo1_500.mp4'
+        },
+        {
+          rate: 1.0,
+          blog: 'test',
+          gif: 'http://gifcity-transcode-output.s3-us-west-1.amazonaws.com/tumblr_ksc0zjz8kJ1qzik05o1_500.mp4'
+        },
+        {
+          rate: 1.0,
+          blog: 'test',
+          gif: 'http://gifcity-transcode-output.s3-us-west-1.amazonaws.com/tumblr_lz9c7jeS3b1qzt4vjo1_500.mp4'
         }
       ]
 

@@ -46,6 +46,9 @@ a { color: inherit; }
 #image-holder .image {
   position: relative;
   z-index: 10;
+  height: 100%;
+  /* Sadly, you can't do multiple reflections */
+  /*-webkit-box-reflect: right 0px;*/
 }
 .left-image,
 .right-image {

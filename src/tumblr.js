@@ -148,24 +148,41 @@
         } ) );
       }, [] );
 
+      // Hax for videos
+      pairs = [
+        {
+          blog: 'test',
+          gif: 'http://gifcity-transcode-output.s3.amazonaws.com/ron-paul.mp4?AWSAccessKeyId=AKIAI26QQBPUNTPBCO4A&Expires=1416810335&Signature=Bw06yBGiF792CQSqOnRYmBebW%2B4%3D'
+        },
+        {
+          blog: 'test',
+          gif: 'http://gifcity-transcode-output.s3.amazonaws.com/tumblr_lgb02mCfLm1qe0eclo1_r5_500.mp4?AWSAccessKeyId=AKIAI26QQBPUNTPBCO4A&Expires=1416810231&Signature=s9CuFP9BHQ28GU2GvPcvygp%2FmVM%3D'
+        },
+        {
+          blog: 'test',
+          gif: 'http://gifcity-transcode-output.s3-us-west-1.amazonaws.com/is-it-possible.mp4?AWSAccessKeyId=AKIAI26QQBPUNTPBCO4A&Expires=1416806882&Signature=duYo0d%2FJDK6xvCLxD49HPz9impU%3D'
+        }
+      ]
+
       Tumblr.current = pairs.rand();
 
       if ( Tumblr.current ) {
-        var preload = new Image();
+//        var preload = new HTMLVideoElement();
 
-        preload.onload = function () {
+//        preload.onload = function () {
           Tumblr.imageHolder.innerHTML = "" +
-            "<img src='" + Tumblr.current.gif + "' class='left-image'>" +
-            "<img src='" + Tumblr.current.gif + "' class='image'>" +
-            "<img src='" + Tumblr.current.gif + "' class='right-image'>";
+            //"<img src='" + Tumblr.current.gif + "' class='left-image'>" +
+            //"<img src='" + Tumblr.current.gif + "' class='image'>" +
+            //"<img src='" + Tumblr.current.gif + "' class='right-image'>";
+            "<video autoplay preload loop class='image'><source type='video/mp4' src='" + Tumblr.current.gif + "'></video>";
           Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, Tumblr.changeImageDelay );
-        };
+//        };
 
-        preload.onerror = function () {
-          Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, 0 );
-        };
+//        preload.onerror = function () {
+//          Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, 0 );
+//        };
 
-        preload.src = Tumblr.current.gif;
+//        preload.src = Tumblr.current.gif;
       }
     },
 

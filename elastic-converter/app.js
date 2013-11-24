@@ -15,7 +15,10 @@ app.get('/', function (req, res) {
       console.log("Job " + data.Job.Id + " is " + data.Job.Status);
 
       if (data.Job.Status === "Complete" || data.Job.Status === "Error") {
-        res.send(JSON.stringify(data));
+        res.send(JSON.stringify({
+          gifcityWatchURL: "http://gifcity-transcode-output.s3-us-west-1.amazonaws.com/" + data.Job.Output.Key,
+          data: data
+        }));
       } else {
         setTimeout(function() {
           elastictranscoder.readJob({ Id: data.Job.Id }, jobCallback);
@@ -23,6 +26,7 @@ app.get('/', function (req, res) {
       }
     };
 
+  console.log("Transcoding " + filename);
   elastictranscoder.createJob({
     PipelineId: process.env.PIPELINE_ID,
     Input: {

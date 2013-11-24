@@ -183,13 +183,9 @@
             //"<img src='" + Tumblr.current.gif + "' class='right-image'>";
             "<video autoplay preload loop class='image'><source type='video/mp4' src='" + Tumblr.current.gif + "'></video>";
           Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, Tumblr.changeImageDelay );
-          var video = Tumblr.imageHolder.getElementsByTagName('video')[0];
-          console.log(video)
-          video.playbackRate = Tumblr.current.rate;
+          Tumblr.imageHolder.getElementsByTagName('video')[0].playbackRate = Tumblr.current.rate;
 
-          console.log(Tumblr.current.gif);
-          console.log(e);
-          console.log(preload);
+          // Need a way to detect an actual error, not just loading a video as an image.
 //          Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, 0 );
         };
 

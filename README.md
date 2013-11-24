@@ -1,6 +1,6 @@
 # GIFCITY WHAT WHAT
 
-# Transcoding to MP4 using AWS
+## Transcoding to MP4 using AWS
 
 **TL;DR** go to `http://gifcity-s3-uploader.herokuapp.com/?src=` and paste in a GIF url. Then follow the `gifcityConvertURL`, then wait for the magic then click the `gifcityWatchURL` and **BOOM**.
 

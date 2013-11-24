@@ -8,7 +8,38 @@ var elastictranscoder = new AWS.ElasticTranscoder({
 });
 
 app.get('/', function (req, res) {
+  var filename = req.query.filename,
+    jobCallback = function (error, data) {
+      if (error) throw error;
 
+      console.log("Job " + data.Job.Id + " is " + data.Job.Status);
+
+      if (data.Job.Status === "Complete" || data.Job.Status === "Error") {
+        res.send(JSON.stringify(data));
+      } else {
+        setTimeout(function() {
+          elastictranscoder.readJob({ Id: data.Job.Id }, jobCallback);
+        }, 500);
+      }
+    };
+
+  elastictranscoder.createJob({
+    PipelineId: process.env.PIPELINE_ID,
+    Input: {
+      Key: filename,
+      FrameRate: 'auto',
+      Resolution: 'auto',
+      AspectRatio: 'auto',
+      Interlaced: 'auto',
+      Container: 'auto'
+    },
+    Output: {
+      ThumbnailPattern: "",
+      Key: filename.replace(/\.gif$/i, '') + ".mp4",
+      PresetId: process.env.PRESET_ID, // specifies the output video format
+      Rotate: 'auto'
+    }
+  }, jobCallback);
 });
 
 var port = process.env.PORT || 3000;

@@ -26,7 +26,8 @@ app.get('/', function (req, res) {
   http.get(options, function(response) {
     var request = client.put(filename, {
       'Content-Length': response.headers['content-length'],
-      'Content-Type': response.headers['content-type']
+      'Content-Type': response.headers['content-type'],
+      'x-amz-acl': 'public-read'
     });
 
     response.on('data', function(data) {

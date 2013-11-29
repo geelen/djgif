@@ -154,7 +154,10 @@
         var preload = new Image();
 
         preload.onload = function () {
-          Tumblr.imageHolder.style.backgroundImage = 'url(' + Tumblr.current.gif + ')';
+          Tumblr.imageHolder.innerHTML = "" +
+            "<img src='" + Tumblr.current.gif + "' class='left-image'>" +
+            "<img src='" + Tumblr.current.gif + "' class='image'>" +
+            "<img src='" + Tumblr.current.gif + "' class='right-image'>";
           Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, Tumblr.changeImageDelay );
         };
 

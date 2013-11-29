@@ -8,17 +8,20 @@ html {
   background-color: black;
 }
 
+body {
+  overflow: hidden;
+}
+
 a { color: inherit; }
 
 #image-holder {
   position: absolute;
+  top: 0;
+  left: -450%;
   height: 100%;
-  width: 100%;
+  width: 1000%;
   background-color: black;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-
+  text-align: center;
 
   image-rendering: optimizeSpeed;              /* Legal fallback */
   image-rendering: -moz-crisp-edges;           /* Firefox */
@@ -29,7 +32,6 @@ a { color: inherit; }
 
   /* Bullshit hacks for AppleTV + Couchsurfer + Projector love */
   transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
   perspective: 1000;
 }
 
@@ -37,6 +39,18 @@ a { color: inherit; }
 #image-holder:-moz-full-screen    { position: static; }
 #image-holder:-ms-full-screen     { position: static; }
 #image-holder:fullscreen          { position: static; }
+
+#image-holder img {
+  height: 100%;
+}
+#image-holder .image {
+  position: relative;
+  z-index: 10;
+}
+.left-image,
+.right-image {
+  transform: rotateY(180deg);
+}
 
 .button {
   transition: all 250ms ease-in-out;

@@ -55,6 +55,7 @@ a { color: inherit; }
 .image-slide {
   position: absolute;
   opacity: 0;
+  left: 0;
 }
 @for $i from 0 to 100 {
   #image-holder.slide-#{$i} .image-slide:nth-child(#{$i+1}) { opacity: 1; }

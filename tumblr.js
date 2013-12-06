@@ -148,7 +148,7 @@
         } ) );
       }, [] );
 
-      Tumblr.current = pairs[0];//pairs.rand();
+      Tumblr.current = pairs.rand();
 
       if ( Tumblr.current ) {
         console.log(Tumblr.current.gif)
@@ -165,7 +165,29 @@
           var uInt8Array = new Uint8Array(this.response); // this.response == uInt8Array.buffer
           for (var i = 0, l = uInt8Array.length; i < l; i++) {
             // MAGIC GIF SIGNATURE
-            if (uInt8Array[i] === 0x21 && uInt8Array[i+1] === 0xf9 && uInt8Array[i+2] === 0x04 && uInt8Array[i+7] === 0x00) {
+//            if (uInt8Array[i] === 0x21 &&
+//              uInt8Array[i+1] === 0xFF) {
+//              hex = "" + i + ": ";
+//              for (var j = 0; j < 32; j++) hex += uInt8Array[i+j].toString(16).toUpperCase() + " "
+//              console.log(hex);
+//            }
+//            if (uInt8Array[i] === 0x21 &&
+//              uInt8Array[i+1] === 0xFF &&
+//              uInt8Array[i+2] === 0x0B &&
+//              uInt8Array[i+3] === 0x4E &&
+//              uInt8Array[i+4] === 0x45 &&
+//              uInt8Array[i+5] === 0x54 &&
+//              uInt8Array[i+6] === 0x53 &&
+//              uInt8Array[i+18] === 0x00) {
+//              console.log("HEADER LOL")
+//              frameIndices.push(i+19);
+//              frames++;
+//              i += 20;
+//            }
+            if (uInt8Array[i] === 0x21 &&
+              uInt8Array[i+1] === 0xf9 &&
+              uInt8Array[i+2] === 0x04 &&
+              uInt8Array[i+7] === 0x00) {
               frameIndices.push(i);
               frames++;
 //              uInt8Array[i+4] = 3;
@@ -197,11 +219,11 @@
 //            "<img src='" + Tumblr.current.gif + "' class='left-image'>" +
 //            "<img src='" + Tumblr.current.gif + "' class='image'>" +
 //            "<img src='" + Tumblr.current.gif + "' class='right-image'>";
-//          Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, Tumblr.changeImageDelay );
+          Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, Tumblr.changeImageDelay );
         };
 
         preload.onerror = function () {
-//          Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, 0 );
+          Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, 0 );
         };
 
         preload.send();

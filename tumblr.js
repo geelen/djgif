@@ -148,7 +148,7 @@
         } ) );
       }, [] );
 
-      Tumblr.current = pairs[1]//.rand();
+      Tumblr.current = pairs[2]//.rand();
 
       if ( Tumblr.current ) {
         console.log(Tumblr.current.gif)
@@ -203,17 +203,22 @@
           for (var i = 1; i < frameIndices.length; i++) {
             blobs.push(new Blob([ header, this.response.slice(frameIndices[i-1], frameIndices[i]), footer ], {type : 'image/gif'}));
           }
-          Tumblr.imageHolder.innerHTML =
-            "<img src='" + URL.createObjectURL(new Blob([this.response], {type : 'image/gif'})) + "' class='image'>" +
-            blobs.map(function (blob) {
+          Tumblr.imageHolder.innerHTML = blobs.map(function (blob) {
             return "<img src='" + URL.createObjectURL(blob) + "' class='image-slide'>"
-          }).join("\n");
-          var slides = Tumblr.imageHolder.children;
+          }).join("\n") +
+            "<img src='" + URL.createObjectURL(new Blob([this.response], {type : 'image/gif'})) + "' class='image'>";
+
+          var slides = Tumblr.imageHolder.querySelectorAll('.image-slide');
 //          Tumblr.imageHolder.innerHTML = "<img src='" + URL.createObjectURL(new Blob([this.response])) + "'>";
 
-          var slide = 0, changeSlide = function() {
+          var slide = 0;
+          window.changeSlide = function() {
             requestAnimationFrame(changeSlide);
-            Tumblr.imageHolder.className = "slide-" + (slide++ % slides.length);
+
+            var next = (slide + 1) % slides.length;
+            slides[slide].className = "image-slide";
+            slides[next].className = "image-slide is-visible";
+            slide = next;
           }
           requestAnimationFrame(changeSlide);
 
@@ -221,11 +226,11 @@
 //            "<img src='" + Tumblr.current.gif + "' class='left-image'>" +
 //            "<img src='" + Tumblr.current.gif + "' class='image'>" +
 //            "<img src='" + Tumblr.current.gif + "' class='right-image'>";
-          Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, Tumblr.changeImageDelay );
+//          Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, Tumblr.changeImageDelay );
         };
 
         preload.onerror = function () {
-          Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, 0 );
+//          Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, 0 );
         };
 
         preload.send();

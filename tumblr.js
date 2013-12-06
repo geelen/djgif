@@ -148,16 +148,17 @@
         } ) );
       }, [] );
 
-      Tumblr.current = pairs.rand();
+      Tumblr.current = pairs[0];//pairs.rand();
 
       if ( Tumblr.current ) {
+        console.log(Tumblr.current.gif)
+        Tumblr.current.gif = Tumblr.current.gif.replace(/^.*\.media\.tumblr\.com/, '');
+        console.log(Tumblr.current.gif)
         var preload = new XMLHttpRequest();
-        preload.open('GET', 'http://gifcity-transcode-input.s3.amazonaws.com/is-it-possible.gif', true);
+        preload.open('GET', Tumblr.current.gif, true);
         preload.responseType = 'arraybuffer';
 
         preload.onload = function (e) {
-          console.log("ALRIGHT MOTHERFUCKER")
-          window.e = e;
           var frames = 0;
 
           var uInt8Array = new Uint8Array(this.response); // this.response == uInt8Array.buffer
@@ -166,20 +167,14 @@
             if (uInt8Array[i] === 0x21 && uInt8Array[i+1] === 0xf9 && uInt8Array[i+2] === 0x04 && uInt8Array[i+7] === 0x00) {
               frames++;
               console.log(uInt8Array[i+4] + uInt8Array[i+5] * 256);
-              uInt8Array[i+4] = 6;
+//              uInt8Array[i+4] = 4;
             }
           }
           console.log("FRAMES: " + frames);
 
           var blob = new Blob([this.response]);
           var url = URL.createObjectURL(blob);
-          var changeImage = function () {
-            URL.revokeObjectURL(url);
-            url = URL.createObjectURL(blob);
-            Tumblr.imageHolder.innerHTML = "<img src='" + url + "' class='image'>";
-            setTimeout(changeImage, 1000);
-          }
-          changeImage();
+          Tumblr.imageHolder.innerHTML = "<img src='" + url + "' class='image'>";
 
 
 //          Tumblr.imageHolder.innerHTML = "" +
@@ -190,7 +185,7 @@
         };
 
         preload.onerror = function () {
-          Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, 0 );
+//          Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, 0 );
         };
 
         preload.send();

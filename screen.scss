@@ -44,8 +44,9 @@ a { color: inherit; }
   height: 100%;
 }
 #image-holder .image {
-  position: relative;
+  position: absolute;
   z-index: 10;
+  right: 0;
 }
 .left-image,
 .right-image {

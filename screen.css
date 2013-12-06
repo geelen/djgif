@@ -53,8 +53,9 @@ a {
   height: 100%; }
 
 #image-holder .image {
-  position: relative;
-  z-index: 10; }
+  position: absolute;
+  z-index: 10;
+  right: 0; }
 
 .left-image, .right-image {
   transform: rotateY(180deg); }

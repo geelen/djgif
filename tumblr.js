@@ -148,7 +148,7 @@
         } ) );
       }, [] );
 
-      Tumblr.current = pairs.rand();
+      Tumblr.current = pairs[1]//.rand();
 
       if ( Tumblr.current ) {
         console.log(Tumblr.current.gif)
@@ -203,7 +203,9 @@
           for (var i = 1; i < frameIndices.length; i++) {
             blobs.push(new Blob([ header, this.response.slice(frameIndices[i-1], frameIndices[i]), footer ], {type : 'image/gif'}));
           }
-          Tumblr.imageHolder.innerHTML = blobs.map(function (blob) {
+          Tumblr.imageHolder.innerHTML =
+            "<img src='" + URL.createObjectURL(new Blob([this.response], {type : 'image/gif'})) + "' class='image'>" +
+            blobs.map(function (blob) {
             return "<img src='" + URL.createObjectURL(blob) + "' class='image-slide'>"
           }).join("\n");
           var slides = Tumblr.imageHolder.children;

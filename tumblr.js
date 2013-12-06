@@ -158,21 +158,29 @@
         preload.open('GET', Tumblr.current.gif, true);
         preload.responseType = 'arraybuffer';
 
-        preload.onload = function (e) {
-          var frames = 0;
+        preload.onload = function () {
+          window.ajax  = this;
+          var frames = 0, frameIndices = [0];
 
           var uInt8Array = new Uint8Array(this.response); // this.response == uInt8Array.buffer
           for (var i = 0, l = uInt8Array.length; i < l; i++) {
             // MAGIC GIF SIGNATURE
             if (uInt8Array[i] === 0x21 && uInt8Array[i+1] === 0xf9 && uInt8Array[i+2] === 0x04 && uInt8Array[i+7] === 0x00) {
+              frameIndices.push(i);
               frames++;
+//              uInt8Array[i+4] = 3;
               console.log(uInt8Array[i+4] + uInt8Array[i+5] * 256);
-//              uInt8Array[i+4] = 4;
             }
           }
           console.log("FRAMES: " + frames);
+          console.log("FRAME INDICES: " + frameIndices);
 
-          var blob = new Blob([this.response]);
+          var blob = new Blob([
+            this.response.slice(frameIndices[0], frameIndices[1]),
+            this.response.slice(frameIndices[1], frameIndices[2]),
+            this.response.slice(-1)
+          ]);
+//          var blob = new Blob([this.response]);
           var url = URL.createObjectURL(blob);
           Tumblr.imageHolder.innerHTML = "<img src='" + url + "' class='image'>";
 

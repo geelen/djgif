@@ -182,10 +182,16 @@
             blobs.push(new Blob([ header, this.response.slice(frameIndices[i-1], frameIndices[i]), footer ], {type : 'image/gif'}));
           }
           Tumblr.imageHolder.innerHTML = blobs.map(function (blob) {
-            return "<img src='" + URL.createObjectURL(blob) + "' class='image'>"
+            return "<img src='" + URL.createObjectURL(blob) + "' class='image-slide'>"
           }).join("\n");
+          var slides = Tumblr.imageHolder.children;
 //          Tumblr.imageHolder.innerHTML = "<img src='" + URL.createObjectURL(new Blob([this.response])) + "'>";
 
+          var slide = 0, changeSlide = function() {
+            requestAnimationFrame(changeSlide);
+            Tumblr.imageHolder.className = "slide-" + (slide++ % slides.length);
+          }
+          requestAnimationFrame(changeSlide);
 
 //          Tumblr.imageHolder.innerHTML = "" +
 //            "<img src='" + Tumblr.current.gif + "' class='left-image'>" +

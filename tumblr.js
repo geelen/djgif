@@ -160,7 +160,7 @@
 
         preload.onload = function () {
           window.ajax  = this;
-          var frames = 0, frameIndices = [0];
+          var frames = 0, frameIndices = [];
 
           var uInt8Array = new Uint8Array(this.response); // this.response == uInt8Array.buffer
           for (var i = 0, l = uInt8Array.length; i < l; i++) {
@@ -175,14 +175,16 @@
           console.log("FRAMES: " + frames);
           console.log("FRAME INDICES: " + frameIndices);
 
-          var blob = new Blob([
-            this.response.slice(frameIndices[0], frameIndices[1]),
-            this.response.slice(frameIndices[1], frameIndices[2]),
-            this.response.slice(-1)
-          ]);
-//          var blob = new Blob([this.response]);
-          var url = URL.createObjectURL(blob);
-          Tumblr.imageHolder.innerHTML = "<img src='" + url + "' class='image'>";
+          var header = this.response.slice(0, frameIndices[0]),
+            footer =  this.response.slice(-1),
+            blobs = [];
+          for (var i = 1; i < frameIndices.length; i++) {
+            blobs.push(new Blob([ header, this.response.slice(frameIndices[i-1], frameIndices[i]), footer ], {type : 'image/gif'}));
+          }
+          Tumblr.imageHolder.innerHTML = blobs.map(function (blob) {
+            return "<img src='" + URL.createObjectURL(blob) + "' class='image'>"
+          }).join("\n");
+//          Tumblr.imageHolder.innerHTML = "<img src='" + URL.createObjectURL(new Blob([this.response])) + "'>";
 
 
 //          Tumblr.imageHolder.innerHTML = "" +

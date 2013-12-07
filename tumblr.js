@@ -148,7 +148,7 @@
         } ) );
       }, [] );
 
-      Tumblr.current = pairs[2]//.rand();
+      Tumblr.current = pairs[0]//.rand();
 
       if ( Tumblr.current ) {
         console.log(Tumblr.current.gif)
@@ -162,7 +162,58 @@
           window.ajax  = this;
           var frames = 0, frameIndices = [];
 
-          var uInt8Array = new Uint8Array(this.response); // this.response == uInt8Array.buffer
+          window.StreamReader = (function(arrayBuffer) {
+            return {
+              data: new Uint8Array(arrayBuffer),
+              index: 0,
+              readByte: function() {
+                return this.data[this.index++];
+              },
+              peekByte: function () {
+                return this.data[this.index];
+              },
+              skipBytes: function(n) {
+                this.index += n;
+              },
+              peekBit: function(i) {
+                return !!(this.peekByte() & (1 << i));
+              },
+              readAscii: function(n) {
+                var s = '';
+                for (var i = 0; i < n; i++) {
+                  s += String.fromCharCode(this.readByte());
+                }
+                return s;
+              },
+              isNext: function(array) {
+                for (var i = 0; i < array.length; i++) {
+                  if (array[i] !== this.data[this.index + i]) return false;
+                }
+                return true;
+              }
+            }
+          })(this.response);
+
+          console.log(StreamReader.readAscii(6));
+          StreamReader.skipBytes(4); // Height & Width
+          if (StreamReader.peekBit(1)) {
+            console.log("GLOBAL COLOR TABLE")
+            var colorTableSize = StreamReader.readByte() & 0x07;
+            StreamReader.skipBytes(2);
+            StreamReader.skipBytes(3 * Math.pow(2, colorTableSize + 1));
+
+            if (StreamReader.isNext([0x21, 0xFF])) {
+              console.log("APPLICATION EXTENSION")
+              StreamReader.skipBytes(2);
+              var blockSize = StreamReader.readByte();
+              console.log(StreamReader.readAscii(blockSize));
+            }
+
+
+          } else {
+            console.log("NO GLOBAL COLOR TABLE")
+          }
+
           for (var i = 0, l = uInt8Array.length; i < l; i++) {
             // MAGIC GIF SIGNATURE
 //            if (uInt8Array[i] === 0x21 &&
@@ -179,7 +230,7 @@
 //              uInt8Array[i+5] === 0x54 &&
 //              uInt8Array[i+6] === 0x53 &&
 //              uInt8Array[i+18] === 0x00) {
-//              console.log("HEADER LOL")
+//              console.log("HEADER AT " + i)
 //              frameIndices.push(i+19);
 //              frames++;
 //              i += 20;
@@ -211,9 +262,9 @@
           var slides = Tumblr.imageHolder.querySelectorAll('.image-slide');
 //          Tumblr.imageHolder.innerHTML = "<img src='" + URL.createObjectURL(new Blob([this.response])) + "'>";
 
-          var slide = 0;
+          window.slide = 0;
           window.changeSlide = function() {
-            requestAnimationFrame(changeSlide);
+//            setTimeout(changeSlide, 50)
 
             var next = (slide + 1) % slides.length;
             slides[slide].className = "image-slide";

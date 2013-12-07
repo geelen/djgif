@@ -61,11 +61,12 @@ a {
   transform: rotateY(180deg); }
 
 .image-slide {
+  -webkit-transform: translateZ(0);
   position: absolute;
-  opacity: 0;
+  opacity: 1;
   left: 0; }
-  .image-slide.is-visible {
-    opacity: 1; }
+  .image-slide.is-visible ~ .image-slide {
+    opacity: 0; }
 
 .button {
   transition: all 250ms ease-in-out;

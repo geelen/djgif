@@ -225,19 +225,38 @@
             }
           }
 
-          if (StreamReader.isNext([0x2c])) {
-            StreamReader.log("IMAGE DESCRIPTOR!")
+          var spinning = true;
+          while (spinning) {
 
-            StreamReader.skipBytes(9);
-            if (StreamReader.peekBit(1)) {
-              StreamReader.error("LOCAL COLOR TABLE FFFUUUUU");
+            if (StreamReader.isNext([0x2c])) {
+              StreamReader.log("IMAGE DESCRIPTOR!")
+
+              StreamReader.skipBytes(9);
+              if (StreamReader.peekBit(1)) {
+                StreamReader.error("LOCAL COLOR TABLE FFFUUUUU");
+              } else {
+                StreamReader.log("NO LOCAL TABLE PHEW");
+                StreamReader.skipBytes(1);
+              }
+
+              StreamReader.log("MIN CODE SIZE " + StreamReader.readByte());
+              StreamReader.log("DATA START");
+
+              while (!StreamReader.isNext([0x00])) {
+                var blockSize = StreamReader.readByte();
+                StreamReader.skipBytes(blockSize);
+              }
+              StreamReader.log("DATA END");
+              StreamReader.skipBytes(1); //NULL terminator
+            } else if (StreamReader.isNext([0x21, 0xF9, 0x04])) {
+              StreamReader.log("GRAPHICS CONTROL EXTENSION!");
+              StreamReader.skipBytes(4);
+              var delay = StreamReader.readByte() + StreamReader.readByte() * 256;
+              StreamReader.log("FRAME DELAY " + delay);
+              StreamReader.skipBytes(2);
             } else {
-              StreamReader.log("NO LOCAL TABLE PHEW");
-              StreamReader.skipBytes(1);
+              spinning = false;
             }
-
-            StreamReader.log("MIN CODE SIZE " + StreamReader.readByte());
-
           }
 
 

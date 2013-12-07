@@ -148,7 +148,7 @@
         } ) );
       }, [] );
 
-      Tumblr.current = pairs[0]//.rand();
+      Tumblr.current = pairs[161]//.rand();
 
       if ( Tumblr.current ) {
         console.log(Tumblr.current.gif)
@@ -176,7 +176,7 @@
                 this.index += n;
               },
               peekBit: function(i) {
-                return !!(this.peekByte() & (1 << i));
+                return !!(this.peekByte() & (1 << 8-i));
               },
               readAscii: function(n) {
                 var s = '';
@@ -213,24 +213,35 @@
           // WE HAVE ENOUGH FOR THE GIF HEADER!
           var gifHeader = this.response.slice(0, StreamReader.index);
 
-          if (StreamReader.isNext([0x21, 0xFF])) {
-            StreamReader.log("APPLICATION EXTENSION")
-            StreamReader.skipBytes(2);
-            var blockSize = StreamReader.readByte();
-            StreamReader.log(StreamReader.readAscii(blockSize));
-
-            if (StreamReader.isNext([0x03, 0x01])) {
-              // we cool
-              StreamReader.skipBytes(5)
-            } else {
-              StreamReader.error("Eww, this GIF has an application extension that we don't understand")
-            }
-          }
-
           var spinning = true, expectingImage = false;
           while (spinning) {
 
-            if (StreamReader.isNext([0x2c])) {
+            if (StreamReader.isNext([0x21, 0xFF])) {
+              StreamReader.log("APPLICATION EXTENSION")
+              StreamReader.skipBytes(2);
+              var blockSize = StreamReader.readByte();
+              StreamReader.log(StreamReader.readAscii(blockSize));
+
+              if (StreamReader.isNext([0x03, 0x01])) {
+                // we cool
+                StreamReader.skipBytes(5)
+              } else {
+                StreamReader.log("A weird application extension. Skip until we have 2 NULL bytes");
+                while (!(StreamReader.readByte() === 0 && StreamReader.peekByte() === 0));
+                StreamReader.log("OK moving on")
+                StreamReader.skipBytes(1);
+              }
+            } else if (StreamReader.isNext([0x21, 0xFE])) {
+              StreamReader.log("COMMENT EXTENSION")
+              StreamReader.skipBytes(2);
+
+              while (!StreamReader.isNext([0x00])) {
+                var blockSize = StreamReader.readByte();
+                StreamReader.log(StreamReader.readAscii(blockSize));
+              }
+              StreamReader.skipBytes(1); //NULL terminator
+
+            } else if (StreamReader.isNext([0x2c])) {
               StreamReader.log("IMAGE DESCRIPTOR!");
               if (!expectingImage) {
                 // This is a bare image, not prefaced with a Graphics Control Extension
@@ -288,7 +299,7 @@
 
           window.slide = 0;
           window.changeSlide = function() {
-            setTimeout(changeSlide, 200)
+            setTimeout(changeSlide, 100)
 
             var next = (slide + 1) % slides.length;
             slides[slide].className = "image-slide";
@@ -398,6 +409,7 @@
   Array.prototype.rand = function () {
     if ( this.length > 0 ) {
       var index = Math.floor( this.length * Math.random() );
+      console.log("RAND " + index);
       return this[index];
     }
   };

@@ -207,6 +207,17 @@
               StreamReader.skipBytes(2);
               var blockSize = StreamReader.readByte();
               console.log(StreamReader.readAscii(blockSize));
+
+              if (StreamReader.isNext([0x03, 0x01])) {
+                // we cool
+                StreamReader.skipBytes(5)
+              } else {
+                console.error("Eww, this GIF has an application extension that we don't understand")
+              }
+            }
+
+            if (StreamReader.isNext([0x2c])) {
+              console.log("IMAGE DESCRIPTOR!")
             }
 
 

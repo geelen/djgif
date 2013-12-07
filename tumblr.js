@@ -148,7 +148,7 @@
         } ) );
       }, [] );
 
-      Tumblr.current = pairs[161]//.rand();
+      Tumblr.current = pairs[522]//.rand();
 
       if ( Tumblr.current ) {
         console.log(Tumblr.current.gif)
@@ -252,7 +252,10 @@
 
               StreamReader.skipBytes(9);
               if (StreamReader.peekBit(1)) {
-                StreamReader.error("LOCAL COLOR TABLE FFFUUUUU");
+                StreamReader.log("LOCAL COLOR TABLE");
+                var colorTableSize = StreamReader.readByte() & 0x07;
+                StreamReader.skipBytes(2);
+                StreamReader.skipBytes(3 * Math.pow(2, colorTableSize + 1));
               } else {
                 StreamReader.log("NO LOCAL TABLE PHEW");
                 StreamReader.skipBytes(1);
@@ -299,7 +302,7 @@
 
           window.slide = 0;
           window.changeSlide = function() {
-            setTimeout(changeSlide, 100)
+
 
             var next = (slide + 1) % slides.length;
             slides[slide].className = "image-slide";

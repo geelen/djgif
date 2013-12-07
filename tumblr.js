@@ -210,6 +210,8 @@
           } else {
             StreamReader.log("NO GLOBAL COLOR TABLE")
           }
+          // WE HAVE ENOUGH FOR THE GIF HEADER!
+          var gifHeader = this.response.slice(0, StreamReader.index);
 
           if (StreamReader.isNext([0x21, 0xFF])) {
             StreamReader.log("APPLICATION EXTENSION")
@@ -225,11 +227,17 @@
             }
           }
 
-          var spinning = true;
+          var spinning = true, expectingImage = false;
           while (spinning) {
 
             if (StreamReader.isNext([0x2c])) {
-              StreamReader.log("IMAGE DESCRIPTOR!")
+              StreamReader.log("IMAGE DESCRIPTOR!");
+              if (!expectingImage) {
+                // This is a bare image, not prefaced with a Graphics Control Extension
+                // so we should treat it as a frame.
+                frameIndices.push(StreamReader.index);
+              }
+              expectingImage = false;
 
               StreamReader.skipBytes(9);
               if (StreamReader.peekBit(1)) {
@@ -250,6 +258,10 @@
               StreamReader.skipBytes(1); //NULL terminator
             } else if (StreamReader.isNext([0x21, 0xF9, 0x04])) {
               StreamReader.log("GRAPHICS CONTROL EXTENSION!");
+              // We _definitely_ have a frame. Now we're expecting an image
+              frameIndices.push(StreamReader.index);
+              expectingImage = true;
+
               StreamReader.skipBytes(4);
               var delay = StreamReader.readByte() + StreamReader.readByte() * 256;
               StreamReader.log("FRAME DELAY " + delay);
@@ -258,47 +270,13 @@
               spinning = false;
             }
           }
+          frameIndices.push(StreamReader.index);
+          console.log(frameIndices)
 
-
-          for (var i = 0, l = uInt8Array.length; i < l; i++) {
-            // MAGIC GIF SIGNATURE
-//            if (uInt8Array[i] === 0x21 &&
-//              uInt8Array[i+1] === 0xFF) {
-//              hex = "" + i + ": ";
-//              for (var j = 0; j < 32; j++) hex += uInt8Array[i+j].toString(16).toUpperCase() + " "
-//              console.log(hex);
-//            }
-//            if (uInt8Array[i] === 0x21 &&
-//              uInt8Array[i+1] === 0xFF &&
-//              uInt8Array[i+2] === 0x0B &&
-//              uInt8Array[i+3] === 0x4E &&
-//              uInt8Array[i+4] === 0x45 &&
-//              uInt8Array[i+5] === 0x54 &&
-//              uInt8Array[i+6] === 0x53 &&
-//              uInt8Array[i+18] === 0x00) {
-//              console.log("HEADER AT " + i)
-//              frameIndices.push(i+19);
-//              frames++;
-//              i += 20;
-//            }
-            if (uInt8Array[i] === 0x21 &&
-              uInt8Array[i+1] === 0xf9 &&
-              uInt8Array[i+2] === 0x04 &&
-              uInt8Array[i+7] === 0x00) {
-              frameIndices.push(i);
-              frames++;
-//              uInt8Array[i+4] = 3;
-              console.log(uInt8Array[i+4] + uInt8Array[i+5] * 256);
-            }
-          }
-          console.log("FRAMES: " + frames);
-          console.log("FRAME INDICES: " + frameIndices);
-
-          var header = this.response.slice(0, frameIndices[0]),
-            footer =  this.response.slice(-1),
+          var gifFooter = this.response.slice(-1), //last bit is all we need
             blobs = [];
           for (var i = 1; i < frameIndices.length; i++) {
-            blobs.push(new Blob([ header, this.response.slice(frameIndices[i-1], frameIndices[i]), footer ], {type : 'image/gif'}));
+            blobs.push(new Blob([ gifHeader, this.response.slice(frameIndices[i-1], frameIndices[i]), gifFooter ], {type : 'image/gif'}));
           }
           Tumblr.imageHolder.innerHTML = blobs.map(function (blob) {
             return "<img src='" + URL.createObjectURL(blob) + "' class='image-slide'>"
@@ -310,7 +288,7 @@
 
           window.slide = 0;
           window.changeSlide = function() {
-//            setTimeout(changeSlide, 50)
+            setTimeout(changeSlide, 200)
 
             var next = (slide + 1) % slides.length;
             slides[slide].className = "image-slide";

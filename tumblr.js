@@ -190,40 +190,56 @@
                   if (array[i] !== this.data[this.index + i]) return false;
                 }
                 return true;
+              },
+              log: function(str) {
+                console.log(this.index + ": " + str);
+              },
+              error: function (str) {
+                console.error(this.index + ": " + str);
               }
             }
           })(this.response);
 
-          console.log(StreamReader.readAscii(6));
+          StreamReader.log(StreamReader.readAscii(6));
           StreamReader.skipBytes(4); // Height & Width
           if (StreamReader.peekBit(1)) {
-            console.log("GLOBAL COLOR TABLE")
+            StreamReader.log("GLOBAL COLOR TABLE")
             var colorTableSize = StreamReader.readByte() & 0x07;
             StreamReader.skipBytes(2);
             StreamReader.skipBytes(3 * Math.pow(2, colorTableSize + 1));
-
-            if (StreamReader.isNext([0x21, 0xFF])) {
-              console.log("APPLICATION EXTENSION")
-              StreamReader.skipBytes(2);
-              var blockSize = StreamReader.readByte();
-              console.log(StreamReader.readAscii(blockSize));
-
-              if (StreamReader.isNext([0x03, 0x01])) {
-                // we cool
-                StreamReader.skipBytes(5)
-              } else {
-                console.error("Eww, this GIF has an application extension that we don't understand")
-              }
-            }
-
-            if (StreamReader.isNext([0x2c])) {
-              console.log("IMAGE DESCRIPTOR!")
-            }
-
-
           } else {
-            console.log("NO GLOBAL COLOR TABLE")
+            StreamReader.log("NO GLOBAL COLOR TABLE")
           }
+
+          if (StreamReader.isNext([0x21, 0xFF])) {
+            StreamReader.log("APPLICATION EXTENSION")
+            StreamReader.skipBytes(2);
+            var blockSize = StreamReader.readByte();
+            StreamReader.log(StreamReader.readAscii(blockSize));
+
+            if (StreamReader.isNext([0x03, 0x01])) {
+              // we cool
+              StreamReader.skipBytes(5)
+            } else {
+              StreamReader.error("Eww, this GIF has an application extension that we don't understand")
+            }
+          }
+
+          if (StreamReader.isNext([0x2c])) {
+            StreamReader.log("IMAGE DESCRIPTOR!")
+
+            StreamReader.skipBytes(9);
+            if (StreamReader.peekBit(1)) {
+              StreamReader.error("LOCAL COLOR TABLE FFFUUUUU");
+            } else {
+              StreamReader.log("NO LOCAL TABLE PHEW");
+              StreamReader.skipBytes(1);
+            }
+
+            StreamReader.log("MIN CODE SIZE " + StreamReader.readByte());
+
+          }
+
 
           for (var i = 0, l = uInt8Array.length; i < l; i++) {
             // MAGIC GIF SIGNATURE

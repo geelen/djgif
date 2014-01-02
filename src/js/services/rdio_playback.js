@@ -1,7 +1,7 @@
 ;(function (app) {
   'use strict';
 
-  app.factory('RdioPlayback', function ($rootScope) {
+  app.factory('RdioPlayback', function ($rootScope, Echonest) {
 
     var logger = function (msg) {
       return function () {
@@ -47,11 +47,12 @@
       positionChanged: logger("positionChanged"),
       playingSourceChanged: function (data) {
         RdioPlayback.playlist = data.tracks;
-        console.log(data)
         $rootScope.$apply();
       },
       playingTrackChanged: function (track, index) {
+        console.log("WAT")
         RdioPlayback.currentTrackIndex = index;
+        Echonest.getTrackData(track);
         $rootScope.$apply();
       },
       queueChanged: logger("queueChanged")

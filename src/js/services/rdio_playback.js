@@ -1,8 +1,7 @@
-;
-(function (app) {
+;(function (app) {
   'use strict';
 
-  app.factory('RdioPlayback', function () {
+  app.factory('RdioPlayback', function ($rootScope) {
 
     var logger = function (msg) {
       return function () {
@@ -14,6 +13,8 @@
       rdioSwf: undefined,
       ready: false,
       playing: false,
+      playlist: [],
+      currentTrackIndex: undefined,
       playNewSource: function (source) {
         if (this.ready) {
           this.rdioSwf.rdio_play(source);
@@ -30,6 +31,9 @@
           this.rdioSwf.rdio_play();
           this.playing = true;
         }
+      },
+      nextTrack: function () {
+        this.rdioSwf.rdio_next();
       }
     }
 
@@ -40,9 +44,16 @@
         if (RdioPlayback.toPlay) RdioPlayback.playNewSource(RdioPlayback.toPlay);
       },
       playStateChanged: logger("playStateChanged"),
-      playingTrackChanged: logger("playingTrackChanged"),
-      playingSourceChanged: logger("playingSourceChanged"),
       positionChanged: logger("positionChanged"),
+      playingSourceChanged: function (data) {
+        RdioPlayback.playlist = data.tracks;
+        console.log(data)
+        $rootScope.$apply();
+      },
+      playingTrackChanged: function (track, index) {
+        RdioPlayback.currentTrackIndex = index;
+        $rootScope.$apply();
+      },
       queueChanged: logger("queueChanged")
 
     }

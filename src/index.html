@@ -35,8 +35,11 @@
 
 <script type="text/javascript" charset="utf-8" src="js/vendor.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/djgif.js"></script>
-<div ng-if="isPlaying" rdio-swf>
-
-</div>
+<div ng-if="isPlaying" rdio-swf></div>
+<ul class="track-listing">
+  <li ng-repeat="track in player.playlist" ng-class="{'current-track': $index == player.currentTrackIndex}">
+    {{track.artist}} - {{ track.name }}
+  </li>
+</ul>
 </body>
 </html>

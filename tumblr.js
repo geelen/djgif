@@ -148,24 +148,181 @@
         } ) );
       }, [] );
 
-      Tumblr.current = pairs.rand();
+      Tumblr.current = pairs[522]//.rand();
 
       if ( Tumblr.current ) {
-        var preload = new Image();
+        console.log(Tumblr.current.gif)
+        Tumblr.current.gif = Tumblr.current.gif.replace(/^.*\.media\.tumblr\.com/, '');
+        console.log(Tumblr.current.gif)
+        var preload = new XMLHttpRequest();
+        preload.open('GET', Tumblr.current.gif, true);
+        preload.responseType = 'arraybuffer';
 
         preload.onload = function () {
-          Tumblr.imageHolder.innerHTML = "" +
-            "<img src='" + Tumblr.current.gif + "' class='left-image'>" +
-            "<img src='" + Tumblr.current.gif + "' class='image'>" +
-            "<img src='" + Tumblr.current.gif + "' class='right-image'>";
-          Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, Tumblr.changeImageDelay );
+          window.ajax  = this;
+          var frames = 0, frameIndices = [];
+
+          window.StreamReader = (function(arrayBuffer) {
+            return {
+              data: new Uint8Array(arrayBuffer),
+              index: 0,
+              readByte: function() {
+                return this.data[this.index++];
+              },
+              peekByte: function () {
+                return this.data[this.index];
+              },
+              skipBytes: function(n) {
+                this.index += n;
+              },
+              peekBit: function(i) {
+                return !!(this.peekByte() & (1 << 8-i));
+              },
+              readAscii: function(n) {
+                var s = '';
+                for (var i = 0; i < n; i++) {
+                  s += String.fromCharCode(this.readByte());
+                }
+                return s;
+              },
+              isNext: function(array) {
+                for (var i = 0; i < array.length; i++) {
+                  if (array[i] !== this.data[this.index + i]) return false;
+                }
+                return true;
+              },
+              log: function(str) {
+                console.log(this.index + ": " + str);
+              },
+              error: function (str) {
+                console.error(this.index + ": " + str);
+              }
+            }
+          })(this.response);
+
+          StreamReader.log(StreamReader.readAscii(6));
+          StreamReader.skipBytes(4); // Height & Width
+          if (StreamReader.peekBit(1)) {
+            StreamReader.log("GLOBAL COLOR TABLE")
+            var colorTableSize = StreamReader.readByte() & 0x07;
+            StreamReader.skipBytes(2);
+            StreamReader.skipBytes(3 * Math.pow(2, colorTableSize + 1));
+          } else {
+            StreamReader.log("NO GLOBAL COLOR TABLE")
+          }
+          // WE HAVE ENOUGH FOR THE GIF HEADER!
+          var gifHeader = this.response.slice(0, StreamReader.index);
+
+          var spinning = true, expectingImage = false;
+          while (spinning) {
+
+            if (StreamReader.isNext([0x21, 0xFF])) {
+              StreamReader.log("APPLICATION EXTENSION")
+              StreamReader.skipBytes(2);
+              var blockSize = StreamReader.readByte();
+              StreamReader.log(StreamReader.readAscii(blockSize));
+
+              if (StreamReader.isNext([0x03, 0x01])) {
+                // we cool
+                StreamReader.skipBytes(5)
+              } else {
+                StreamReader.log("A weird application extension. Skip until we have 2 NULL bytes");
+                while (!(StreamReader.readByte() === 0 && StreamReader.peekByte() === 0));
+                StreamReader.log("OK moving on")
+                StreamReader.skipBytes(1);
+              }
+            } else if (StreamReader.isNext([0x21, 0xFE])) {
+              StreamReader.log("COMMENT EXTENSION")
+              StreamReader.skipBytes(2);
+
+              while (!StreamReader.isNext([0x00])) {
+                var blockSize = StreamReader.readByte();
+                StreamReader.log(StreamReader.readAscii(blockSize));
+              }
+              StreamReader.skipBytes(1); //NULL terminator
+
+            } else if (StreamReader.isNext([0x2c])) {
+              StreamReader.log("IMAGE DESCRIPTOR!");
+              if (!expectingImage) {
+                // This is a bare image, not prefaced with a Graphics Control Extension
+                // so we should treat it as a frame.
+                frameIndices.push(StreamReader.index);
+              }
+              expectingImage = false;
+
+              StreamReader.skipBytes(9);
+              if (StreamReader.peekBit(1)) {
+                StreamReader.log("LOCAL COLOR TABLE");
+                var colorTableSize = StreamReader.readByte() & 0x07;
+                StreamReader.skipBytes(2);
+                StreamReader.skipBytes(3 * Math.pow(2, colorTableSize + 1));
+              } else {
+                StreamReader.log("NO LOCAL TABLE PHEW");
+                StreamReader.skipBytes(1);
+              }
+
+              StreamReader.log("MIN CODE SIZE " + StreamReader.readByte());
+              StreamReader.log("DATA START");
+
+              while (!StreamReader.isNext([0x00])) {
+                var blockSize = StreamReader.readByte();
+                StreamReader.skipBytes(blockSize);
+              }
+              StreamReader.log("DATA END");
+              StreamReader.skipBytes(1); //NULL terminator
+            } else if (StreamReader.isNext([0x21, 0xF9, 0x04])) {
+              StreamReader.log("GRAPHICS CONTROL EXTENSION!");
+              // We _definitely_ have a frame. Now we're expecting an image
+              frameIndices.push(StreamReader.index);
+              expectingImage = true;
+
+              StreamReader.skipBytes(4);
+              var delay = StreamReader.readByte() + StreamReader.readByte() * 256;
+              StreamReader.log("FRAME DELAY " + delay);
+              StreamReader.skipBytes(2);
+            } else {
+              spinning = false;
+            }
+          }
+          frameIndices.push(StreamReader.index);
+          console.log(frameIndices)
+
+          var gifFooter = this.response.slice(-1), //last bit is all we need
+            blobs = [];
+          for (var i = 1; i < frameIndices.length; i++) {
+            blobs.push(new Blob([ gifHeader, this.response.slice(frameIndices[i-1], frameIndices[i]), gifFooter ], {type : 'image/gif'}));
+          }
+          Tumblr.imageHolder.innerHTML = blobs.map(function (blob) {
+            return "<img src='" + URL.createObjectURL(blob) + "' class='image-slide'>"
+          }).join("\n") +
+            "<img src='" + URL.createObjectURL(new Blob([this.response], {type : 'image/gif'})) + "' class='image'>";
+
+          var slides = Tumblr.imageHolder.querySelectorAll('.image-slide');
+//          Tumblr.imageHolder.innerHTML = "<img src='" + URL.createObjectURL(new Blob([this.response])) + "'>";
+
+          window.slide = 0;
+          window.changeSlide = function() {
+
+
+            var next = (slide + 1) % slides.length;
+            slides[slide].className = "image-slide";
+            slides[next].className = "image-slide is-visible";
+            slide = next;
+          }
+          requestAnimationFrame(changeSlide);
+
+//          Tumblr.imageHolder.innerHTML = "" +
+//            "<img src='" + Tumblr.current.gif + "' class='left-image'>" +
+//            "<img src='" + Tumblr.current.gif + "' class='image'>" +
+//            "<img src='" + Tumblr.current.gif + "' class='right-image'>";
+//          Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, Tumblr.changeImageDelay );
         };
 
         preload.onerror = function () {
-          Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, 0 );
+//          Tumblr.changeImageTimeoutId = setTimeout( Tumblr.changeImage, 0 );
         };
 
-        preload.src = Tumblr.current.gif;
+        preload.send();
       }
     },
 
@@ -255,6 +412,7 @@
   Array.prototype.rand = function () {
     if ( this.length > 0 ) {
       var index = Math.floor( this.length * Math.random() );
+      console.log("RAND " + index);
       return this[index];
     }
   };

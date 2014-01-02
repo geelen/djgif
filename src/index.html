@@ -19,7 +19,7 @@
 
   <label>
     Enter an rdio key
-    <input required type="text" ng-model="rdioKey"/>
+    <input required type="text" ng-model="rdioPlaylistId"/>
   </label>
 
   <label>
@@ -34,6 +34,8 @@
 
 <script type="text/javascript" charset="utf-8" src="js/vendor.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/djgif.js"></script>
+<div ng-if="isPlaying" rdio-swf>
 
+</div>
 </body>
 </html>

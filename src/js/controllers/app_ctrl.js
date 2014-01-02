@@ -1,9 +1,9 @@
-;(function(app) {
+;(function (app) {
   'use strict';
 
   app.controller('AppCtrl', function ($scope) {
 
-    $scope.rdioKey = "p1862229";
+    $scope.rdioPlaylistId = "p1862229";
     $scope.tumblrNames = "dvdp,rekall";
 
     $scope.startSet = function () {

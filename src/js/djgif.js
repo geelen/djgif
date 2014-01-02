@@ -1,1 +1,6 @@
-console.log("OK!")
+;(function(angular) {
+  'use strict';
+
+  angular.module('djgif', [])
+
+})(angular);

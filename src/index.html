@@ -6,8 +6,26 @@
 
   <link rel="stylesheet" href="css/djgif.css"/>
 </head>
-<body>
+<body ng-app="djgif" ng-controller="AppCtrl">
 
+<h1>DJ Gif</h1>
+
+<form ng-submit="startSet()">
+
+  <label>
+    Enter an rdio key
+    <input required type="text" ng-model="rdioKey"/>
+  </label>
+
+  <label>
+    Enter a tumblr, comma-separated (e.g. 'dvdp,rekall')
+    <input required type="text" ng-model="tumblrNames"/>
+  </label>
+
+  <button type="submit">
+    PARTY
+  </button>
+</form>
 
 <script type="text/javascript" charset="utf-8" src="js/vendor.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/djgif.js"></script>

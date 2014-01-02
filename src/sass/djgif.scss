@@ -1,2 +1,25 @@
 body {
+  transition: background-color 1s;
+
+  &.now-playing {
+    background-color: black;
+    color: darken(white, 20%);
+
+    .banner-header, .start-form {
+      display: none;
+    }
+    .gif-party {
+      display: block;
+    }
+  }
+}
+
+.start-form {
+  label {
+    display: block;
+  }
+}
+
+.gif-party {
+  display: none;
 }

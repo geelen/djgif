@@ -7,8 +7,9 @@
     $scope.tumblrNames = "dvdp,rekall";
 
     $scope.startSet = function () {
-      console.log($scope.rdioKey)
-      console.log($scope.tumblrNames)
+      console.log($scope.rdioKey);
+      console.log($scope.tumblrNames);
+      $scope.isPlaying = true;
     }
 
   });

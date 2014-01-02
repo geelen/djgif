@@ -6,11 +6,16 @@
 
   <link rel="stylesheet" href="css/djgif.css"/>
 </head>
-<body ng-app="djgif" ng-controller="AppCtrl">
+<body ng-app="djgif"
+      ng-controller="AppCtrl"
+      ng-class="{'now-playing': isPlaying}">
 
-<h1>DJ Gif</h1>
+<div class="banner-header">
+  <h1>DJ Gif</h1>
+</div>
 
-<form ng-submit="startSet()">
+<form ng-submit="startSet()"
+      class="start-form">
 
   <label>
     Enter an rdio key

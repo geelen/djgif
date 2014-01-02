@@ -1,11 +1,13 @@
 var gulp = require('gulp'),
   sass = require('gulp-sass'),
-  concat = require('gulp-concat');
+  concat = require('gulp-concat'),
+  prefix = require('gulp-autoprefixer');
 
 // SASS
 gulp.task('sass', function () {
   gulp.src('src/sass/*.scss')
     .pipe(sass())
+    .pipe(prefix("last 2 versions", "> 1%"))
     .pipe(gulp.dest('dist/css'));
 });
 
@@ -22,12 +24,12 @@ gulp.task('js', function () {
   // Vendor the JS by symlinking into js/vendor/*.js
   gulp.src('src/js/vendor/*.js')
     .pipe(concat("vendor.js"))
-    .pipe(gulp.dest('dist/js'))
+    .pipe(gulp.dest('dist/js'));
 
   // Concat all the non-vendored JS into djgif.js
   gulp.src(['src/js/**/*.js', '!src/js/vendor/**'])
     .pipe(concat("djgif.js"))
-    .pipe(gulp.dest('dist/js'))
+    .pipe(gulp.dest('dist/js'));
 });
 
 gulp.task('default', function () {
@@ -48,7 +50,7 @@ gulp.task('default', function () {
   gulp.watch([
     'src/img/**',
     'src/*.html'
-  ], function(event) {
+  ], function (event) {
     gulp.run('copy');
   });
 });

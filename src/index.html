@@ -8,7 +8,8 @@
 </head>
 <body ng-app="djgif"
       ng-controller="AppCtrl"
-      ng-class="{'now-playing': isPlaying}">
+      ng-class="{'now-playing': isPlaying}"
+      ng-keypress="keyHandling($event)">
 
 <div class="banner-header">
   <h1>DJ Gif</h1>

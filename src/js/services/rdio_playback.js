@@ -1,7 +1,7 @@
 ;(function (app) {
   'use strict';
 
-  app.factory('RdioPlayback', function ($rootScope, Echonest) {
+  app.factory('RdioPlayback', function ($rootScope, Echonest, Timing) {
 
     var logger = function (msg) {
       return function () {
@@ -19,6 +19,7 @@
         if (this.ready) {
           this.rdioSwf.rdio_play(source);
           this.playing = true;
+          Timing.startPlaying();
         } else {
           this.toPlay = source;
         }
@@ -27,6 +28,7 @@
         if (this.playing) {
           this.rdioSwf.rdio_pause();
           this.playing = false;
+          Timing.stopPlaying();
         } else {
           this.rdioSwf.rdio_play();
           this.playing = true;
@@ -44,7 +46,10 @@
         if (RdioPlayback.toPlay) RdioPlayback.playNewSource(RdioPlayback.toPlay);
       },
       playStateChanged: logger("playStateChanged"),
-      positionChanged: logger("positionChanged"),
+      positionChanged: function (position) {
+        console.log("RDIO SAYS " + position)
+        Timing.adjustStartTime(position);
+      },
       playingSourceChanged: function (data) {
         RdioPlayback.playlist = data.tracks;
         $rootScope.$apply();

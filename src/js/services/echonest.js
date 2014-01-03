@@ -5,7 +5,7 @@
   var apiKey = "E5VLSCRR8XY1QDWH4",
     searchUrl = "http://developer.echonest.com/api/v4/song/search"
 
-  app.factory('Echonest', function ($http) {
+  app.factory('Echonest', function ($http, Timing) {
 
     var Echonest = {
       getTrackData: function (track) {
@@ -18,8 +18,10 @@
           bucket: 'audio_summary'
         }}).then(function (response) {
             var songData = response.data.response.songs[0]
-            console.log(songData)
-            
+            $http.get(songData.audio_summary.analysis_url)
+            console.log(songData.audio_summary.analysis_url)
+            Timing.setBPM(songData.audio_summary.tempo)
+
           })
       }
     };

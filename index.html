@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DJ Gif</title>
+
+  <link rel="stylesheet" href="css/djgif.css"/>
+</head>
+<body ng-app="djgif"
+      ng-controller="AppCtrl"
+      ng-class="{'now-playing': isPlaying}"
+      ng-keypress="keyHandling($event)">
+
+<div class="banner-header">
+  <h1>DJ Gif</h1>
+</div>
+
+<form ng-submit="startSet()"
+      class="start-form">
+
+  <label>
+    Enter an rdio key
+    <input required type="text" ng-model="rdioPlaylistId"/>
+  </label>
+
+  <label>
+    Enter a tumblr, comma-separated (e.g. 'dvdp,rekall')
+    <input required type="text" ng-model="tumblrNames"/>
+  </label>
+
+  <button type="submit">
+    PARTY
+  </button>
+</form>
+
+<script type="text/javascript" charset="utf-8" src="js/vendor.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/djgif.js"></script>
+<div ng-if="isPlaying" rdio-swf></div>
+<ul class="track-listing">
+  <li ng-repeat="track in player.playlist" ng-class="{'current-track': $index == player.currentTrackIndex}">
+    {{track.artist}} - {{ track.name }}
+  </li>
+</ul>
+
+<div class="beat-vis"></div>
+</body>
+</html>

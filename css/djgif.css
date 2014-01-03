@@ -1,0 +1,34 @@
+body {
+  -webkit-transition: background-color 1s;
+  transition: background-color 1s; }
+  body.now-playing {
+    background-color: black;
+    color: #cccccc; }
+    body.now-playing .banner-header, body.now-playing .start-form {
+      display: none; }
+    body.now-playing .gif-party {
+      display: block; }
+
+.start-form label {
+  display: block; }
+
+.gif-party {
+  display: none; }
+
+.track-listing {
+  list-style: none; }
+
+.current-track {
+  font-weight: bold; }
+  .current-track::before {
+    content: '*'; }
+
+.beat-vis {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: grey;
+  opacity: 1;
+  z-index: -1; }

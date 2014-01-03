@@ -1,0 +1,15 @@
+{
+  "name": "echonest-proxy",
+  "version": "0.0.0",
+  "description": "Combines searching & retrieving data into one request",
+  "main": "echonest-proxy.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "request": "~2.27.0",
+    "express": "~3.4.7"
+  }
+}

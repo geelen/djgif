@@ -17,14 +17,18 @@
     return {
       scope: true,
       link: function (scope, element, attrs) {
-        scope.rdioKey = "GAlNi78J_____zlyYWs5ZG02N2pkaHlhcWsyOWJtYjkyN2xvY2FsaG9zdEbwl7EHvbylWSWFWYMZwfc=";
-        scope.domain = "localhost";
+        if (location.host.match(/localhost/)) {
+          scope.rdioKey = "GAlNi78J_____zlyYWs5ZG02N2pkaHlhcWsyOWJtYjkyN2xvY2FsaG9zdEbwl7EHvbylWSWFWYMZwfc=";
+          scope.domain = "localhost";
+        } else {
+          scope.rdioKey = "GAlSxkwH_____252NGFydW1ibno0OXZ4NDhxbXgzM2VoZmRqZ2lmLmNvbewSKh7RUvt_AQcF50V6x1o=";
+          scope.domain = "djgif.com";
+        }
         scope.callbackId = '_' + (callbacks.counter++).toString(36);
 
         element[0].innerHTML = $interpolate(template)(scope);
         RdioPlayback.rdioSwf = element[0].children[0];
         callbacks[scope.callbackId] = RdioPlayback.swfCallbacks;
-
       }
     }
   })

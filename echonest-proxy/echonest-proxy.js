@@ -33,6 +33,7 @@ app.get('/search', function (req, res) {
       request.get(body.response.songs[0].audio_summary.analysis_url, function (err, data) {
         console.log("Received " + Buffer.byteLength(data.body) + " bytes");
         var analysis = JSON.parse(data.body);
+        delete analysis.track.codestring;
         delete analysis.tatums;
         delete analysis.segments;
 

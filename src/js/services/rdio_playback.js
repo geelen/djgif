@@ -19,7 +19,6 @@
         if (this.ready) {
           this.rdioSwf.rdio_play(source);
           this.playing = true;
-          Timing.startPlaying();
         } else {
           this.toPlay = source;
         }

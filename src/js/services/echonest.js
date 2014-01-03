@@ -2,8 +2,7 @@
 (function (app) {
   'use strict';
 
-  var apiKey = "E5VLSCRR8XY1QDWH4",
-    searchUrl = "http://developer.echonest.com/api/v4/song/search"
+  var searchUrl = "http://djgif-echonest-proxy.herokuapp.com/search"
 
   app.factory('Echonest', function ($http, Timing) {
 
@@ -11,17 +10,12 @@
       getTrackData: function (track) {
         console.log("Getting track", track)
         return $http.get(searchUrl, {params: {
-          api_key: apiKey,
           artist: track.artist,
-          title: track.name,
-          results: 1,
-          bucket: 'audio_summary'
+          title: track.name
         }}).then(function (response) {
-            var songData = response.data.response.songs[0]
-            $http.get(songData.audio_summary.analysis_url)
-            console.log(songData.audio_summary.analysis_url)
-            Timing.setBPM(songData.audio_summary.tempo)
-
+            var song = response.data.response.songs[0]
+            console.log(song)
+            Timing.startTrack(track, song.analysis.beats)
           })
       }
     };

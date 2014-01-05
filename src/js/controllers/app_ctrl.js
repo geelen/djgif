@@ -1,10 +1,14 @@
 ;(function (app) {
   'use strict';
 
-  app.controller('AppCtrl', function ($scope, RdioPlayback) {
+  app.controller('AppCtrl', function ($scope, RdioPlayback, GifExploder) {
     $scope.player = RdioPlayback;
     $scope.rdioPlaylistId = "p1862229";
     $scope.tumblrNames = "dvdp,rekall";
+
+    GifExploder("http://i.imgur.com/bvHrBGl.gif").then(function (frames) {
+      $scope.frames = frames;
+    });
 
     $scope.startSet = function () {
       $scope.isPlaying = true;

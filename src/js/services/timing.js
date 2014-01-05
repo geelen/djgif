@@ -1,5 +1,4 @@
-;
-(function (app) {
+;(function (app) {
   'use strict';
 
   app.factory('Timing', function () {

@@ -33,6 +33,8 @@
   </button>
 </form>
 
+<img ng-repeat="frame in frames" ng-src="{{frame.url}}"/>
+
 <script type="text/javascript" charset="utf-8" src="js/vendor.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/djgif.js"></script>
 <div ng-if="isPlaying" rdio-swf></div>

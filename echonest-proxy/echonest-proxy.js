@@ -34,6 +34,8 @@ app.get('/search', function (req, res) {
         console.log("Received " + Buffer.byteLength(data.body) + " bytes");
         var analysis = JSON.parse(data.body);
         delete analysis.track.codestring;
+        delete analysis.track.echoprintstring;
+        delete analysis.track.synchstring;
         delete analysis.tatums;
         delete analysis.segments;
 

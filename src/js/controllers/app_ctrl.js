@@ -1,13 +1,19 @@
 ;(function (app) {
   'use strict';
 
-  app.controller('AppCtrl', function ($scope, RdioPlayback, GifExploder) {
+  app.controller('AppCtrl', function ($scope, RdioPlayback, GifExploder, $timeout) {
     $scope.player = RdioPlayback;
     $scope.rdioPlaylistId = "p1862229";
     $scope.tumblrNames = "dvdp,rekall";
 
-    GifExploder("http://i.imgur.com/bvHrBGl.gif").then(function (frames) {
+    GifExploder("http://i.imgur.com/JUsZEOn.gif").then(function (frames) {
       $scope.frames = frames;
+      $scope.currentFrame = 1;
+      function nextFrame() {
+        $scope.currentFrame = ($scope.currentFrame + 1) % $scope.frames.length
+        $timeout(nextFrame, 50)
+      }
+      $timeout(nextFrame, 50)
     });
 
     $scope.startSet = function () {

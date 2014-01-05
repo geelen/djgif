@@ -118,6 +118,7 @@
 
             while (!StreamReader.isNext([0x00])) {
               var blockSize = StreamReader.readByte();
+              StreamReader.log("SKIPPING " + blockSize + " BYTES");
               StreamReader.skipBytes(blockSize);
             }
             StreamReader.log("DATA END");

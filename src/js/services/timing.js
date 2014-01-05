@@ -15,7 +15,8 @@
     Timing.frame = function () {
       if (Timing.playing) requestAnimationFrame(Timing.frame);
 
-      var positionSecs = performance.now() / 1000 - Timing.audioStartedAt;
+      // Add 8ms to compensate for display refresh
+      var positionSecs = (8 + performance.now()) / 1000 - Timing.audioStartedAt;
 
       while (Timing.beatIndex < Timing.beats.length && positionSecs > Timing.beats[Timing.beatIndex].start) {
         Timing.beatIndex++;
@@ -25,9 +26,9 @@
       var sinceLastBeat = positionSecs - beat.start,
         beatFraction = sinceLastBeat / beat.duration;
 
-      console.log(positionSecs, beat.start, beat.duration, sinceLastBeat, beatFraction)
+//      console.log(positionSecs, beat.start, beat.duration, sinceLastBeat, beatFraction)
 
-      beatVis.style.opacity = 1.0 - beatFraction
+      beatVis.style.opacity = 0.5 - beatFraction / 2
     }
 
     Timing.adjustStartTime = function(rdioTime) {

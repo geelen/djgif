@@ -30,7 +30,6 @@
     GifSequence.showGifFraction = function (fraction) {
       if (GifSequence.currentGif) {
         var currentFrame = Math.floor(GifSequence.currentGif.frames.length * fraction);
-        console.log("Playing frame " + currentFrame)
         img.className = "frame-" + currentFrame;
       }
     }

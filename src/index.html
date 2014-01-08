@@ -7,48 +7,48 @@
   <link rel="stylesheet" href="css/djgif.css"/>
 </head>
 <body ng-app="djgif"
-      ng-controller="AppCtrl"
       ng-class="{'now-playing': isPlaying}"
       ng-keypress="keyHandling($event)">
 
-<div class="banner-header">
-  <h1>DJ Gif</h1>
-</div>
+<ng-view>
+  <div class="banner-header">
+    <h1>DJ Gif</h1>
+  </div>
 
-<form ng-submit="startSet()"
-      class="start-form">
+  <form ng-submit="startSet()"
+        class="start-form">
 
-  <label>
-    Enter an rdio key
-    <input required type="text" ng-model="rdioPlaylistId"/>
-  </label>
+    <label>
+      Enter an rdio key
+      <input required type="text" ng-model="rdioPlaylistId"/>
+    </label>
 
-  <label>
-    Enter a tumblr, comma-separated (e.g. 'dvdp,rekall')
-    <input required type="text" ng-model="tumblrNames"/>
-  </label>
+    <label>
+      Enter a tumblr, comma-separated (e.g. 'dvdp,rekall')
+      <input required type="text" ng-model="tumblrNames"/>
+    </label>
 
-  <button type="submit">
-    PARTY
-  </button>
-</form>
+    <button type="submit">
+      PARTY
+    </button>
+  </form>
 
-<div id="image-holster" class="frame-0" ng-controller="GifPlaybackCtrl">
-  <img ng-repeat="frame in frames" ng-src="{{frame.url}}"/>
-</div>
+  <div id="image-holster" class="frame-0" ng-controller="GifPlaybackCtrl">
+    <img ng-repeat="frame in frames" ng-src="{{frame.url}}"/>
+  </div>
 
-<div ng-if="isPlaying" rdio-swf></div>
-
-
-<ul class="track-listing">
-  <li ng-repeat="track in player.playlist" ng-class="{'current-track': $index == player.currentTrackIndex}">
-    {{track.artist}} - {{ track.name }}
-  </li>
-</ul>
-
-<div class="beat-vis"></div>
+  <div ng-if="isPlaying" rdio-swf></div>
 
 
+  <ul class="track-listing">
+    <li ng-repeat="track in player.playlist" ng-class="{'current-track': $index == player.currentTrackIndex}">
+      {{track.artist}} - {{ track.name }}
+    </li>
+  </ul>
+
+  <div class="beat-vis"></div>
+
+</ng-view>
 
 <script type="text/javascript" charset="utf-8" src="js/vendor.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/djgif.js"></script>

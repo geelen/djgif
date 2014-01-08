@@ -33,13 +33,13 @@
   </button>
 </form>
 
-<div class="image-holster frame-{{currentFrame}}">
+<div id="image-holster" class="frame-{{currentFrame}}">
   <img ng-repeat="frame in frames" ng-src="{{frame.url}}"/>
 </div>
 
-<script type="text/javascript" charset="utf-8" src="js/vendor.js"></script>
-<script type="text/javascript" charset="utf-8" src="js/djgif.js"></script>
 <div ng-if="isPlaying" rdio-swf></div>
+
+
 <ul class="track-listing">
   <li ng-repeat="track in player.playlist" ng-class="{'current-track': $index == player.currentTrackIndex}">
     {{track.artist}} - {{ track.name }}
@@ -47,5 +47,10 @@
 </ul>
 
 <div class="beat-vis"></div>
+
+
+
+<script type="text/javascript" charset="utf-8" src="js/vendor.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/djgif.js"></script>
 </body>
 </html>

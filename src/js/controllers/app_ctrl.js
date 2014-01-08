@@ -8,12 +8,15 @@
 
     GifExploder("http://i.imgur.com/JUsZEOn.gif").then(function (frames) {
       $scope.frames = frames;
-      $scope.currentFrame = 1;
+      $scope.currentFrame = 0;
+      var img = document.getElementById("image-holster")
       function nextFrame() {
         $scope.currentFrame = ($scope.currentFrame + 1) % $scope.frames.length
-        $timeout(nextFrame, 50)
+        img.className = "frame-" + $scope.currentFrame;
+//        $scope.$apply();
+        requestAnimationFrame(nextFrame)
       }
-      $timeout(nextFrame, 50)
+      requestAnimationFrame(nextFrame)
     });
 
     $scope.startSet = function () {

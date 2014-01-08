@@ -33,7 +33,7 @@
   </button>
 </form>
 
-<div id="image-holster" class="frame-{{currentFrame}}">
+<div id="image-holster" class="frame-0" ng-controller="GifPlaybackCtrl">
   <img ng-repeat="frame in frames" ng-src="{{frame.url}}"/>
 </div>
 

@@ -44,7 +44,7 @@
               return true;
             },
             log: function (str) {
-              console.log(this.index + ": " + str);
+//              console.log(this.index + ": " + str);
             },
             error: function (str) {
               console.error(this.index + ": " + str);

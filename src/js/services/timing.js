@@ -1,15 +1,14 @@
 ;(function (app) {
   'use strict';
 
-  app.factory('Timing', function () {
+  app.factory('Timing', function ($rootScope, GifSequence) {
     var beatVis = document.querySelectorAll('.beat-vis')[0];
 
-    var Timing = {
-      audioStartedAt: 0,
-      beats: [],
-      beatIndex: 0,
-      playing: false
-    }
+    var Timing = $rootScope.$new(true);
+    Timing.audioStartedAt = 0;
+    Timing.beats = [];
+    Timing.beatIndex = 0;
+    Timing.playing = false;
 
     Timing.frame = function () {
       if (Timing.playing) requestAnimationFrame(Timing.frame);
@@ -25,9 +24,11 @@
       var sinceLastBeat = positionSecs - beat.start,
         beatFraction = sinceLastBeat / beat.duration;
 
+      GifSequence.showGifFraction(beatFraction);
+
 //      console.log(positionSecs, beat.start, beat.duration, sinceLastBeat, beatFraction)
 
-      beatVis.style.opacity = 0.5 - beatFraction / 2
+//      beatVis.style.opacity = 0.5 - beatFraction / 2
     }
 
     Timing.adjustStartTime = function(rdioTime) {

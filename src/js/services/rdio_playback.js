@@ -57,7 +57,6 @@
         console.log("WAT")
         RdioPlayback.currentTrackIndex = index;
         Echonest.getTrackData(track);
-        $rootScope.$apply();
       },
       queueChanged: logger("queueChanged")
 

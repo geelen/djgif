@@ -1,23 +1,10 @@
 ;(function (app) {
   'use strict';
 
-  app.controller('AppCtrl', function ($scope, RdioPlayback, GifExploder, $timeout) {
+  app.controller('AppCtrl', function ($scope, RdioPlayback) {
     $scope.player = RdioPlayback;
     $scope.rdioPlaylistId = "p1862229";
     $scope.tumblrNames = "dvdp,rekall";
-
-    GifExploder("http://i.imgur.com/JUsZEOn.gif").then(function (frames) {
-      $scope.frames = frames;
-      $scope.currentFrame = 0;
-      var img = document.getElementById("image-holster")
-      function nextFrame() {
-        $scope.currentFrame = ($scope.currentFrame + 1) % $scope.frames.length
-        img.className = "frame-" + $scope.currentFrame;
-//        $scope.$apply();
-        requestAnimationFrame(nextFrame)
-      }
-      requestAnimationFrame(nextFrame)
-    });
 
     $scope.startSet = function () {
       $scope.isPlaying = true;

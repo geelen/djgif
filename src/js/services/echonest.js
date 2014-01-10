@@ -3,7 +3,7 @@
 
   var searchUrl = "http://djgif-echonest-proxy.herokuapp.com/search"
 
-  app.factory('Echonest', function ($http, Timing, $q) {
+  app.factory('Echonest', function ($http, $q) {
 
     var deferreds = {},
       ready = $q.defer();

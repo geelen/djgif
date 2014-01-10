@@ -30,7 +30,9 @@
     });
 
     $q.all([RdioPlayback.ready, Echonest.ready, Tumblr.ready]).then(function (v) {
-      console.log("WE GON PARTY")
+      $scope.readyToPlay = true;
+      console.log("WE GON PARTY");
+      RdioPlayback.playPause();
     })
   });
 

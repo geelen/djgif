@@ -2,8 +2,8 @@
 (function (app) {
   'use strict';
 
-  app.factory('GifSequence', function (GifExploder, $rootScope, $q) {
-    var ready = $q.defer();
+  app.factory('GifSequence', function (GifExploder, $rootScope, $q, $timeout) {
+    var ready = $q.defer(), img;
 
     var GifSequence = $rootScope.$new()
     GifSequence.gifs = [];
@@ -12,7 +12,7 @@
 
     GifSequence.addGif = function (url) {
       GifExploder(url).then(function (frames) {
-        console.log("Downloaded and exploded " + url)
+//        console.log("Downloaded and exploded " + url)
         GifSequence.gifs.push({
           frames: frames,
           lengthSecs: frames.length * 0.1
@@ -20,13 +20,14 @@
         if (!GifSequence.currentGif) {
           GifSequence.nextGif();
           ready.resolve();
-          setInterval(GifSequence.nextGif, 10000);
         }
       });
+      img = document.getElementById("image-holster")
     };
 
     GifSequence.nextGif = function () {
-      console.log("Asking for next gif")
+      $timeout(GifSequence.nextGif, 10000);
+//      console.log("Asking for next gif");
       GifSequence.currentGif = GifSequence.gifs.shift();
     };
 

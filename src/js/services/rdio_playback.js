@@ -35,6 +35,7 @@
       } else {
         this.rdioSwf.rdio_play();
         this.playing = true;
+        Timing.startPlaying();
       }
     };
     RP.nextTrack = function () {
@@ -61,11 +62,13 @@
         Timing.adjustStartTime(position);
       },
       playingSourceChanged: function (data) {
+        console.log("source changed!")
         RP.playlist = data.tracks;
         $rootScope.$apply();
       },
       playingTrackChanged: function (track, index) {
         console.log("Playing track " + track.name);
+        Timing.setCurrentTrack(track);
         RP.currentTrackIndex = index;
       },
       queueChanged: logger("queueChanged")

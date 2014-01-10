@@ -17,7 +17,7 @@
 
     $stateProvider.state('welcome', {
       url: '/',
-      controller: 'AppCtrl',
+      controller: 'ComingSoonCtrl',
       templateUrl: 'holding.html'
     });
   })

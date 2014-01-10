@@ -1,9 +1,31 @@
 .coming-soon {
   width: 100%;
   height: 100%;
-  background-color: black;
+  display: table;
+  background: black no-repeat;
+  background-size: cover;
+  color: white;
+  font: 400 12px 'Helvetica Neue', 'Arial Narrow', sans;
 }
 
 .coming-soon-headline {
-  color: white;
+  text-shadow: 0 0 4px black;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  font-size: 48px;
+  font-weight: 100;
+  .thick {
+    font-weight: 500;
+  }
+  .thicker {
+    font-weight: 500;
+  }
+}
+
+.coming-soon-attribution {
+  display: table-row;
+  height: 10px;
+  overflow: hidden;
+  color: #808080;
 }

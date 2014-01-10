@@ -1,5 +1,13 @@
-<div class="coming-soon">
+<div class="coming-soon"
+  ng-style="{
+    backgroundImage: 'url(/img/backgrounds/' + fallbackImage.src + ')',
+    backgroundPosition: fallbackImage.position
+  }">
+
   <div class="coming-soon-headline">
-    DJGif is coming soon!
+    <span class="thick">DJ</span><span class="thicker">Gif</span> is coming soon!
+  </div>
+  <div class="coming-soon-attribution">
+    Image credit {{ fallbackImage.credit }}
   </div>
 </div>

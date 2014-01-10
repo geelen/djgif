@@ -1,14 +1,15 @@
-;
-(function (app) {
+;(function (app) {
   'use strict';
 
   var searchUrl = "http://djgif-echonest-proxy.herokuapp.com/search"
 
-  app.factory('Echonest', function ($http, Timing) {
+  app.factory('Echonest', function ($http, Timing, $q) {
 
-    var deferreds = {};
+    var deferreds = {},
+      ready = $q.defer();
 
     var Echonest = {
+      ready: ready.promise,
       getTrackData: function (track) {
         console.log(track)
         console.log("Getting metadata for track " + track.key)
@@ -23,7 +24,23 @@
             })
         }
         return deferreds[track.key];
+      },
+      getPlaylistData: function (tracks) {
+        // Load the first data
+        var firstData = Echonest.getTrackData(tracks[0])
+        // This is enough for EchoNest to be ready
+        firstData.then(function () {
+          ready.resolve();
+        });
+        // Chain up the next tracks in sequence
+        var chainPromises = function (i) {
+          firstData = firstData.then(function () {
+            return Echonest.getTrackData(tracks[i]);
+          });
+        }
+        for (var i = 1; i < tracks.length; i++) chainPromises(i)
       }
+
     };
 
     return Echonest;

@@ -1,7 +1,7 @@
 ;(function (app) {
   'use strict';
 
-  app.controller('AppCtrl', function ($scope, RdioPlayback, Echonest, $stateParams) {
+  app.controller('AppCtrl', function ($scope, RdioPlayback, Echonest, $stateParams, $q) {
     $scope.player = RdioPlayback;
     $scope.rdioPlaylistId = $stateParams.rdio;
     $scope.tumblrNames = $stateParams.tumblrs;
@@ -15,21 +15,15 @@
     });
     RdioPlayback.$watch('playlist', function (tracks) {
       if (angular.isArray(tracks) && tracks.length > 0) {
-        console.log(tracks)
-        // Load the first data
-        var firstData =  Echonest.getTrackData(tracks[0])
-        // This is enough for EchoNest to be ready
-        firstData.then(function () {
-          $scope.echoNestReady = true;
-        });
-        // Chain up the next tracks in sequence
-        var chainPromises = function (i) {
-          firstData = firstData.then(function () {
-            return Echonest.getTrackData(tracks[i]);
-          });
-        }
-        for (var i = 1; i < tracks.length; i++) chainPromises(i)
+        console.log("WE HAVE A PLAYLIST, FETCH THE METADATA")
+        Echonest.getPlaylistData(tracks)
       }
+    });
+    Echonest.ready.then(function () {
+      $scope.echoNestReady = true;
+    });
+    $q.all([RdioPlayback.ready, Echonest.ready]).then(function (v) {
+      console.log("WE GON PARTY")
     })
 
     $scope.startSet = function () {

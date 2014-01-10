@@ -46,6 +46,7 @@
       // Really a 'loaded' callback
       ready: function (user) {
         swfLoaded.resolve();
+        $rootScope.$apply();
       },
       playStateChanged: function (playState) {
         // As soon as we start playing, pause.
@@ -64,9 +65,8 @@
         $rootScope.$apply();
       },
       playingTrackChanged: function (track, index) {
-        console.log("WAT")
+        console.log("Playing track " + track.name);
         RP.currentTrackIndex = index;
-        Echonest.getTrackData(track);
       },
       queueChanged: logger("queueChanged")
 

@@ -1,10 +1,10 @@
-;(function(angular) {
+;(function (angular) {
   'use strict';
 
   var app = angular.module('djgif', ['templates', 'ui.router'])
 
   // Allow BLOB urls
-  app.config(function($compileProvider) {
+  app.config(function ($compileProvider) {
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|blob):|data:image\//);
   });
 
@@ -12,14 +12,27 @@
     $locationProvider.html5Mode(true);
   });
 
-  app.config(function($stateProvider, $urlRouterProvider) {
+  app.config(function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/");
 
-    $stateProvider.state('welcome', {
-      url: '/',
-      controller: 'ComingSoonCtrl',
-      templateUrl: 'holding.html'
-    });
+    $stateProvider
+      .state('app', {
+        url: '/?rdio&tumblrs',
+        controllerProvider: function ($stateParams) {
+          if ($stateParams.rdio && $stateParams.tumblrs) {
+            return 'AppCtrl';
+          } else {
+            return 'ComingSoonCtrl'
+          }
+        },
+        templateUrl: function (stateParams) {
+          if (stateParams.rdio && stateParams.tumblrs) {
+            return 'app.html';
+          } else {
+            return 'holding.html';
+          }
+        }
+      });
   })
 
 })(angular);

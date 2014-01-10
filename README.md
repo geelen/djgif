@@ -10,3 +10,7 @@ It's a party!
 ### Running
 
 Fire off `gulp` in the main dir then `cd dist && live-server` in another tab
+
+### Deploying
+
+    aws s3 sync dist s3://djgif --exclude '.*' --exclude '**/.*'

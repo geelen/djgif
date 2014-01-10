@@ -1,10 +1,7 @@
 ;(function (app) {
   'use strict';
 
-  app.controller('AppCtrl', function ($scope, RdioPlayback, $location) {
-    window.loc = $location;
-    console.log($location.search());
-
+  app.controller('AppCtrl', function ($scope, RdioPlayback, $stateParams) {
     $scope.player = RdioPlayback;
     $scope.rdioPlaylistId = "p1862229";
     $scope.tumblrNames = "dvdp,rekall";

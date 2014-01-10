@@ -2,10 +2,7 @@
   width: 100%;
   height: 100%;
   display: table;
-  background: black no-repeat;
   background-size: cover;
-  color: white;
-  font: 400 12px 'Helvetica Neue', 'Arial Narrow', sans;
 }
 
 .coming-soon-headline {
@@ -24,8 +21,8 @@
 }
 
 .coming-soon-attribution {
+  font-size: 16px;
   display: table-row;
-  height: 10px;
-  overflow: hidden;
+  height: 1.5em;
   color: #808080;
 }

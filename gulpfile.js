@@ -9,7 +9,7 @@ gulp.task('sass', function () {
   gulp.src('src/sass/*.scss')
     .pipe(sass({
       includePaths: ['bower_components/normalize-scss', 'src/sass']
-    }))
+    }).on('error', console.log))
     .pipe(prefix("last 2 versions", "> 1%"))
     .pipe(gulp.dest('dist/css'));
 });

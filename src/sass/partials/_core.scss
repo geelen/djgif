@@ -1,18 +1,8 @@
 
 body {
-  transition: background-color 1s;
-
-  &.now-playing {
-    background-color: black;
-    color: darken(white, 20%);
-
-    .banner-header, .start-form {
-      display: none;
-    }
-    .gif-party {
-      display: block;
-    }
-  }
+  background: black no-repeat;
+  color: white;
+  font: 400 12px 'Helvetica Neue', 'Arial Narrow', sans;
 }
 
 .start-form {

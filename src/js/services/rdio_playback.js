@@ -1,7 +1,7 @@
 ;(function (app) {
   'use strict';
 
-  app.factory('RdioPlayback', function ($rootScope, Echonest, Timing) {
+  app.factory('RdioPlayback', function ($rootScope, Timing, $q) {
 
     var logger = function (msg) {
       return function () {
@@ -9,60 +9,70 @@
       }
     }
 
-    var RdioPlayback = {
-      rdioSwf: undefined,
-      ready: false,
-      playing: false,
-      playlist: [],
-      currentTrackIndex: undefined,
-      playNewSource: function (source) {
-        if (this.ready) {
-          this.rdioSwf.rdio_play(source);
-          this.playing = true;
-        } else {
-          this.toPlay = source;
-        }
-      },
-      playPause: function () {
-        if (this.playing) {
-          this.rdioSwf.rdio_pause();
-          this.playing = false;
-          Timing.stopPlaying();
-        } else {
-          this.rdioSwf.rdio_play();
-          this.playing = true;
-        }
-      },
-      nextTrack: function () {
-        this.rdioSwf.rdio_next();
+    var swfLoaded = $q.defer();
+    var ready = $q.defer();
+
+    var RP = $rootScope.$new(true);
+
+    RP.ready = ready.promise;
+    RP.rdioSwf = undefined;
+    RP.playing = false;
+    RP.playlist = [];
+    RP.toPause = false;
+    RP.currentTrackIndex = undefined;
+
+    RP.readyNewSource = function (source) {
+      swfLoaded.promise.then(function () {
+        RP.rdioSwf.rdio_play(source);
+        RP.toPause = true;
+      });
+    };
+    RP.playPause = function () {
+      if (this.playing) {
+        this.rdioSwf.rdio_pause();
+        this.playing = false;
+        Timing.stopPlaying();
+      } else {
+        this.rdioSwf.rdio_play();
+        this.playing = true;
       }
+    };
+    RP.nextTrack = function () {
+      this.rdioSwf.rdio_next();
     }
 
     // The raw callback objects
-    RdioPlayback.swfCallbacks = {
+    RP.swfCallbacks = {
+      // Really a 'loaded' callback
       ready: function (user) {
-        RdioPlayback.ready = true;
-        if (RdioPlayback.toPlay) RdioPlayback.playNewSource(RdioPlayback.toPlay);
+        swfLoaded.resolve();
       },
-      playStateChanged: logger("playStateChanged"),
+      playStateChanged: function (playState) {
+        // As soon as we start playing, pause.
+        if (RP.toPause && playState == 1) {
+          RP.rdioSwf.rdio_pause();
+          RP.toPause = false;
+          ready.resolve();
+        }
+      },
       positionChanged: function (position) {
         console.log("RDIO SAYS " + position)
         Timing.adjustStartTime(position);
       },
       playingSourceChanged: function (data) {
-        RdioPlayback.playlist = data.tracks;
+        RP.playlist = data.tracks;
         $rootScope.$apply();
       },
       playingTrackChanged: function (track, index) {
         console.log("WAT")
-        RdioPlayback.currentTrackIndex = index;
+        RP.currentTrackIndex = index;
         Echonest.getTrackData(track);
       },
       queueChanged: logger("queueChanged")
 
     }
 
-    return RdioPlayback;
+    return RP;
   });
 
 })(angular.module('djgif'));

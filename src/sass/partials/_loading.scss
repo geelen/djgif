@@ -1,0 +1,14 @@
+.loading-info {
+  @extend .coming-soon;
+}
+
+.loading-status-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.loading-status {
+  text-align: left;
+  display: inline-block;
+}

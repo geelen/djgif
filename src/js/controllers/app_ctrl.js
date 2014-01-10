@@ -3,12 +3,19 @@
 
   app.controller('AppCtrl', function ($scope, RdioPlayback, $stateParams) {
     $scope.player = RdioPlayback;
-    $scope.rdioPlaylistId = "p1862229";
-    $scope.tumblrNames = "dvdp,rekall";
+    $scope.rdioPlaylistId = $stateParams.rdio;
+    $scope.tumblrNames = $stateParams.tumblrs;
+
+
+    RdioPlayback.readyNewSource($scope.rdioPlaylistId);
+
+    $scope.rdioReady = false;
+    RdioPlayback.ready.then(function () {
+      $scope.rdioReady = true;
+    });
 
     $scope.startSet = function () {
       $scope.isPlaying = true;
-      RdioPlayback.playNewSource($scope.rdioPlaylistId);
     }
 
     $scope.keyHandling = function (e) {

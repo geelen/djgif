@@ -1,7 +1,7 @@
 ;(function (app) {
   'use strict';
 
-  app.factory('RdioPlayback', function ($rootScope, Timing, $q) {
+  app.factory('RdioPlayback', function ($rootScope, Timing, $q, GifSequence) {
 
     var logger = function (msg) {
       return function () {

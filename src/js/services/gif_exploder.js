@@ -139,7 +139,7 @@
           }
         }
         var endOfFrames = StreamReader.index;
-        console.log(frames)
+//        console.log(frames)
 
         var gifFooter = this.response.slice(-1); //last bit is all we need
         for (var i = 0; i < frames.length; i++) {
@@ -155,7 +155,6 @@
         deferred.resolve(frames);
       }
 
-      console.log(mirroredUrl)
       preload.send();
       return deferred.promise;
     }

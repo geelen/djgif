@@ -2,23 +2,26 @@
 (function (app) {
   'use strict';
 
-  app.factory('GifSequence', function (GifExploder, $rootScope) {
-
-    var img = document.getElementById("image-holster")
+  app.factory('GifSequence', function (GifExploder, $rootScope, $q) {
+    var ready = $q.defer();
 
     var GifSequence = $rootScope.$new()
     GifSequence.gifs = [];
     GifSequence.currentGif = undefined;
+    GifSequence.ready = ready.promise;
 
     GifSequence.addGif = function (url) {
       GifExploder(url).then(function (frames) {
-        console.log("Got the gif!")
-        console.log(frames)
+        console.log("Downloaded and exploded " + url)
         GifSequence.gifs.push({
           frames: frames,
           lengthSecs: frames.length * 0.1
         })
-        if (!GifSequence.currentGif) GifSequence.nextGif();
+        if (!GifSequence.currentGif) {
+          GifSequence.nextGif();
+          ready.resolve();
+          setInterval(GifSequence.nextGif, 10000);
+        }
       });
     };
 

@@ -1,7 +1,7 @@
 ;(function (app) {
   'use strict';
 
-  app.controller('AppCtrl', function ($scope, RdioPlayback, Echonest, $stateParams, $q, Tumblr) {
+  app.controller('AppCtrl', function ($scope, RdioPlayback, Echonest, $stateParams, $q, Tumblr, GifSequence) {
     $scope.player = RdioPlayback;
     $scope.rdioPlaylistId = $stateParams.rdio;
     $scope.tumblrNames = $stateParams.tumblrs;
@@ -25,7 +25,7 @@
 
     // Load GIFs
     Tumblr.startTumblrs($scope.tumblrNames.split(','));
-    Tumblr.ready.then(function () {
+    GifSequence.ready.then(function () {
       $scope.tumblrReady = true;
     });
 

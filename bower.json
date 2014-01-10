@@ -18,6 +18,7 @@
   ],
   "dependencies": {
     "angular": "~1.2.6",
-    "angular-ui-router": "~0.2.7"
+    "angular-ui-router": "~0.2.7",
+    "normalize-scss": "~2.1.3"
   }
 }

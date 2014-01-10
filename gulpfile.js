@@ -7,7 +7,9 @@ var gulp = require('gulp'),
 // SASS
 gulp.task('sass', function () {
   gulp.src('src/sass/*.scss')
-    .pipe(sass())
+    .pipe(sass({
+      includePaths: ['bower_components/normalize-scss', 'src/sass']
+    }))
     .pipe(prefix("last 2 versions", "> 1%"))
     .pipe(gulp.dest('dist/css'));
 });
@@ -49,7 +51,7 @@ gulp.task('default', function () {
   });
 
   // Watch SASS
-  gulp.watch('src/sass/*.scss', function (e) {
+  gulp.watch('src/sass/**/*.scss', function (e) {
     gulp.run('sass');
   });
 

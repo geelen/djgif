@@ -1,9 +1,17 @@
 <div class="loading-info" ng-hide="readyToPlay">
   <div class="loading-status-wrapper">
     <div class="loading-status">
-      Loading <strong>Music</strong> from Rdio ... <strong ng-show="rdioReady">DONE</strong><br/>
-      Loading <strong>Metadata</strong> from EchoNest ... <strong ng-show="echoNestReady">DONE</strong><br/>
-      Loading <strong>GIFs</strong> from Tumblr ... <strong ng-show="tumblrReady">DONE</strong><br/>
+      Loading <strong>Music</strong> from Rdio
+        <span class="dotdotdot" ng-class="{waiting: !rdioReady}"><span>.</span></span>
+        <strong ng-show="rdioReady">DONE</strong><br/>
+
+      Loading <strong>Metadata</strong> from EchoNest
+      <span class="dotdotdot" ng-class="{waiting: !echoNestReady}"><span>.</span></span>
+      <strong ng-show="echoNestReady">DONE</strong><br/>
+
+      Loading <strong>GIFs</strong> from Tumblr
+      <span class="dotdotdot" ng-class="{waiting: !tumblrReady}"><span>.</span></span>
+      <strong ng-show="tumblrReady">DONE</strong><br/>
     </div>
   </div>
 </div>

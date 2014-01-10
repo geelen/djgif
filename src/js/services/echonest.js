@@ -18,10 +18,8 @@
             artist: track.artist,
             title: track.name
           }}).then(function (response) {
-              var song = response.data.response.songs[0]
-              console.log(song)
-              Timing.startTrack(track, song.analysis.beats)
-            })
+              return response.data.response.songs[0]
+            });
         }
         return deferreds[track.key];
       },

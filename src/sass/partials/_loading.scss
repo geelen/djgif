@@ -12,3 +12,20 @@
   text-align: left;
   display: inline-block;
 }
+
+@keyframes pulse {
+  50% { opacity: 0; }
+}
+
+.dotdotdot {
+  &::before, &::after {
+    content: '.'
+  }
+  &.waiting {
+    &::before, &::after, span {
+      animation: pulse 1s infinite;
+    }
+    span { animation-delay: 0.2s; }
+    &::after { animation-delay: 0.4s; }
+  }
+}

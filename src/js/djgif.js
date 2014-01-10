@@ -1,7 +1,7 @@
 ;(function(angular) {
   'use strict';
 
-  var app = angular.module('djgif', [])
+  var app = angular.module('djgif', ['ui.router'])
 
   // Allow BLOB urls
   app.config(function($compileProvider) {
@@ -12,9 +12,13 @@
     $locationProvider.html5Mode(true);
   });
 
-  app.config(function ($routeProvider) {
-    $routeProvider.when('/', {controller: 'AppCtrl'})
-      .otherwise({redirectTo: '/'})
-  })
+//  app.config(function($stateProvider, $urlRouterProvider) {
+//    $urlRouterProvider.otherwise("/");
+//
+//    $stateProvider.state('welcome', {
+//      url: '/',
+//      controller: 'AppCtrl'
+//    });
+//  })
 
 })(angular);

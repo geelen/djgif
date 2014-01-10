@@ -1,7 +1,8 @@
 var gulp = require('gulp'),
   sass = require('gulp-sass'),
   concat = require('gulp-concat'),
-  prefix = require('gulp-autoprefixer');
+  prefix = require('gulp-autoprefixer'),
+  templates = require('gulp-angular-templatecache');
 
 // SASS
 gulp.task('sass', function () {
@@ -32,6 +33,10 @@ gulp.task('js', function () {
   gulp.src(['src/js/**/*.js', '!src/js/vendor/**'])
     .pipe(concat("djgif.js"))
     .pipe(gulp.dest('dist/js'));
+
+  gulp.src('src/templates/*.html')
+    .pipe(templates('templates.js'))
+    .pipe(gulp.dest('dist/js'))
 });
 
 gulp.task('default', function () {
@@ -39,7 +44,7 @@ gulp.task('default', function () {
   gulp.run('sass', 'copy', 'js');
 
   // Watch JS
-  gulp.watch('src/js/**', function (e) {
+  gulp.watch(['src/js/**', 'src/templates/**'], function (e) {
     gulp.run('js');
   });
 

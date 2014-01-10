@@ -1,7 +1,7 @@
 ;(function(angular) {
   'use strict';
 
-  var app = angular.module('djgif', ['ui.router'])
+  var app = angular.module('djgif', ['templates', 'ui.router'])
 
   // Allow BLOB urls
   app.config(function($compileProvider) {
@@ -12,13 +12,14 @@
     $locationProvider.html5Mode(true);
   });
 
-//  app.config(function($stateProvider, $urlRouterProvider) {
-//    $urlRouterProvider.otherwise("/");
-//
-//    $stateProvider.state('welcome', {
-//      url: '/',
-//      controller: 'AppCtrl'
-//    });
-//  })
+  app.config(function($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise("/");
+
+    $stateProvider.state('welcome', {
+      url: '/',
+      controller: 'AppCtrl',
+      templateUrl: 'holding.html'
+    });
+  })
 
 })(angular);

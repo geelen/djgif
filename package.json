@@ -22,6 +22,7 @@
   "dependencies": {
     "gulp-sass": "~0.2.2",
     "gulp-concat": "~2.1.5",
-    "gulp-autoprefixer": "0.0.3"
+    "gulp-autoprefixer": "0.0.3",
+    "gulp-angular-templatecache": "~0.1.2"
   }
 }

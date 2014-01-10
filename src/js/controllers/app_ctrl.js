@@ -6,7 +6,6 @@
     $scope.rdioPlaylistId = $stateParams.rdio;
     $scope.tumblrNames = $stateParams.tumblrs;
 
-
     RdioPlayback.readyNewSource($scope.rdioPlaylistId);
 
     $scope.rdioReady = false;
@@ -22,24 +21,10 @@
     Echonest.ready.then(function () {
       $scope.echoNestReady = true;
     });
+
     $q.all([RdioPlayback.ready, Echonest.ready]).then(function (v) {
       console.log("WE GON PARTY")
     })
-
-    $scope.startSet = function () {
-      $scope.isPlaying = true;
-    }
-
-    $scope.keyHandling = function (e) {
-      if (e.charCode == 32) {
-        RdioPlayback.playPause();
-      } else if (e.charCode == 13) {
-        RdioPlayback.nextTrack();
-      } else {
-        console.log(e)
-      }
-    }
-
   });
 
 })(angular.module('djgif'));

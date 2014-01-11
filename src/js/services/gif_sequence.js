@@ -9,6 +9,9 @@
     GifSequence.gifs = [];
     GifSequence.currentGif = undefined;
     GifSequence.ready = ready.promise;
+    GifSequence.ready.then(function () {
+      img = document.getElementById("image-holster");
+    });
 
     GifSequence.addGif = function (url) {
       GifExploder(url).then(function (frames) {
@@ -22,13 +25,13 @@
           ready.resolve();
         }
       });
-      img = document.getElementById("image-holster")
     };
 
     GifSequence.nextGif = function () {
       $timeout(GifSequence.nextGif, 10000);
 //      console.log("Asking for next gif");
-      GifSequence.currentGif = GifSequence.gifs.shift();
+      var nextGifIndex = Math.floor(Math.random() * GifSequence.gifs.length);
+      GifSequence.currentGif = GifSequence.gifs.splice(nextGifIndex, 1)[0];
     };
 
     GifSequence.showGifFraction = function (fraction) {

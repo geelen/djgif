@@ -6,10 +6,11 @@
       Tumblr = {},
       ready = $q.defer();
 
-    var fetch = function (blog) {
+    var fetch = function (blog, page) {
       return $http.jsonp('http://api.tumblr.com/v2' +
                    '/blog/' + blog + '.tumblr.com/posts?' +
                    'api_key=' + apiKey +
+                   '&offset=' + 20 * page +
                    '&callback=JSON_CALLBACK')
     }
 
@@ -39,10 +40,12 @@
 
     Tumblr.startTumblrs = function (tumblrs) {
       angular.forEach(tumblrs, function (blog) {
-        fetch(blog).then(function (response) {
-          ready.resolve();
-          angular.forEach(response.data.response.posts, extractGif)
-        });
+        for (var i = 0; i < 5; i++) {
+          fetch(blog, i).then(function (response) {
+            ready.resolve();
+            angular.forEach(response.data.response.posts, extractGif)
+          });
+        }
       })
     };
     Tumblr.ready = ready.promise;

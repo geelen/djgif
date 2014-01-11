@@ -52,7 +52,12 @@
           }
         })(this.response);
 
-        StreamReader.log(StreamReader.readAscii(6));
+        // Ensure this is an animated GIF
+        if (StreamReader.readAscii(6) != "GIF89a") {
+          deferred.reject();
+          return;
+        }
+
         StreamReader.skipBytes(4); // Height & Width
         if (StreamReader.peekBit(1)) {
           StreamReader.log("GLOBAL COLOR TABLE")

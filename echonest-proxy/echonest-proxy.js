@@ -3,6 +3,8 @@ var http = require('http'),
   express = require('express'),
   app = express();
 
+app.use(express.compress());
+
 var apiKey = process.env.ECHONEST_API_KEY,
   searchUrl = "http://developer.echonest.com/api/v4/song/search?results=1&bucket=audio_summary&api_key=" + apiKey;
 

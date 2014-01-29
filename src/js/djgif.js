@@ -25,8 +25,8 @@
             return 'ComingSoonCtrl'
           }
         },
-        templateUrl: function (stateParams) {
-          if (stateParams.rdio && stateParams.tumblrs) {
+        templateUrl: function ($stateParams) {
+          if ($stateParams.rdio && $stateParams.tumblrs) {
             return 'app.html';
           } else {
             return 'holding.html';

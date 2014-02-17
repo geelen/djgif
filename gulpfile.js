@@ -1,16 +1,12 @@
 var gulp = require('gulp'),
-  sass = require('gulp-sass'),
-  concat = require('gulp-concat'),
-  prefix = require('gulp-autoprefixer'),
-  templates = require('gulp-angular-templatecache');
+  $ = require('gulp-load-plugins')();
 
 // SASS
 gulp.task('sass', function () {
   gulp.src('src/sass/*.scss')
-    .pipe(sass({
-      includePaths: ['bower_components/normalize-scss', 'src/sass']
-    }).on('error', console.log))
-    .pipe(prefix("last 2 versions", "> 1%"))
+    .pipe($.plumber())
+    .pipe($.sass({ includePaths: ['bower_components/normalize-scss', 'src/sass'] }))
+    .pipe($.autoprefixer("last 2 versions", "> 1%"))
     .pipe(gulp.dest('dist/css'));
 });
 
@@ -28,38 +24,28 @@ gulp.task('js', function () {
   gulp.src([
       'bower_components/angular/angular.min.js',
       'bower_components/angular-ui-router/release/angular-ui-router.min.js'])
-    .pipe(concat("vendor.js"))
+    .pipe($.concat("vendor.js"))
     .pipe(gulp.dest('dist/js'));
 
   // Concat all the non-vendored JS into djgif.js
   gulp.src(['src/js/**/*.js', '!src/js/vendor/**'])
-    .pipe(concat("djgif.js"))
+    .pipe($.concat("djgif.js"))
     .pipe(gulp.dest('dist/js'));
 
   gulp.src('src/templates/*.html')
-    .pipe(templates('templates.js'))
+    .pipe($.angularTemplatecache('templates.js'))
     .pipe(gulp.dest('dist/js'))
 });
 
-gulp.task('default', function () {
-  // Compile everything to start with
-  gulp.run('sass', 'copy', 'js');
+gulp.task('build', ['sass', 'copy', 'js']);
 
+gulp.task('default', ['build'], function () {
   // Watch JS
-  gulp.watch(['src/js/**', 'src/templates/**'], function (e) {
-    gulp.run('js');
-  });
+  gulp.watch(['src/js/**', 'src/templates/**'], ['js']);
 
   // Watch SASS
-  gulp.watch('src/sass/**/*.scss', function (e) {
-    gulp.run('sass');
-  });
+  gulp.watch('src/sass/**/*.scss', ['sass']);
 
   // Watch Static
-  gulp.watch([
-    'src/img/**',
-    'src/*.html'
-  ], function (event) {
-    gulp.run('copy');
-  });
+  gulp.watch([ 'src/img/**', 'src/*.html' ], ['copy']);
 });

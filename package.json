@@ -17,12 +17,13 @@
     "url": "https://github.com/geelen/djgif/issues"
   },
   "devDependencies": {
-    "gulp": "~3.2.2"
-  },
-  "dependencies": {
+    "gulp": "~3.5.2",
+    "gulp-mocha": "~0.4.1",
     "gulp-sass": "~0.2.2",
     "gulp-concat": "~2.1.5",
     "gulp-autoprefixer": "0.0.3",
-    "gulp-angular-templatecache": "~0.1.2"
+    "gulp-angular-templatecache": "~0.1.2",
+    "gulp-load-plugins": "~0.3.0",
+    "gulp-plumber": "~0.5.6"
   }
 }

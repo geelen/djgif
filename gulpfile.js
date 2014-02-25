@@ -19,6 +19,17 @@ gulp.task('copy', function () {
     .pipe(gulp.dest('dist'));
 });
 
+gulp.task('spec-once', function () {
+  return gulp.src('spec/**/*_spec.js')
+    .pipe($.mocha({reporter: 'dot'}).on('error', function (err) {
+      this.emit('end');
+    }));
+});
+
+gulp.task('spec', ['spec-once'], function () {
+  gulp.watch(['src/js/**/*.js', 'spec/**/*_spec.js'], ['spec-once']);
+});
+
 gulp.task('js', function () {
   // Vendor the JS by symlinking into js/vendor/*.js
   gulp.src([
@@ -39,7 +50,7 @@ gulp.task('js', function () {
 
 gulp.task('build', ['sass', 'copy', 'js']);
 
-gulp.task('default', ['build'], function () {
+gulp.task('default', ['build', 'spec'], function () {
   // Watch JS
   gulp.watch(['src/js/**', 'src/templates/**'], ['js']);
 

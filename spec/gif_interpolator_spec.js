@@ -1,5 +1,5 @@
 var expect = require('expect.js'),
-  GifInterpolator = require('../src/js/services/gif_interpolator');
+  GifInterpolator = require('../src/modules/gif_interpolator');
 
 describe('GifInterpolator', function(){
   describe('#go()', function(){

@@ -35,6 +35,4 @@
       });
   })
 
-  app.service('GifInterpolator', require('./services/gif_interpolator'));
-
 })(angular);

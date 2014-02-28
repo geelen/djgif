@@ -50,7 +50,7 @@ gulp.task('js', function () {
 
 gulp.task('build', ['sass', 'copy', 'js']);
 
-gulp.task('default', ['build', 'spec'], function () {
+gulp.task('default', ['build'], function () {
   // Watch JS
   gulp.watch(['src/js/**', 'src/templates/**'], ['js']);
 

@@ -9,13 +9,18 @@
   });
 
   app.config(function ($locationProvider) {
-    $locationProvider.html5Mode(true);
+//    $locationProvider.html5Mode(true);
   });
 
   app.config(function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/");
 
     $stateProvider
+      .state('rdiosearch', {
+        url: '/rdiosearch',
+        controller: 'RdioSearchCtrl',
+        templateUrl: 'rdio_search.html'
+      })
       .state('app', {
         url: '/?rdio&tumblrs',
         controllerProvider: function ($stateParams) {

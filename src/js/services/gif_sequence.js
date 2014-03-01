@@ -14,7 +14,7 @@
   }
   Gif.prototype.frameAt = function (fraction) {
     var offset = fraction * this.length;
-    console.log(offset)
+//    console.log(offset)
     for (var i = 1, l = this.offsets.length; i < l; i++) {
       if (this.offsets[i] > offset) break;
     }
@@ -52,7 +52,7 @@
     GifSequence.showGifFraction = function (fraction) {
       if (GifSequence.currentGif) {
         img.className = "frame-" + GifSequence.currentGif.frameAt(fraction);
-        console.log(img.className)
+//        console.log(img.className)
       }
     }
 

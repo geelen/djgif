@@ -21,11 +21,17 @@
       }
     });
 
+    var originalGifStarted;
+    document.getElementById('original-gif').onload = function () {
+      originalGifStarted = performance.now()
+    }
+
     var dddddddropTheGif = function () {
       requestAnimationFrame(dddddddropTheGif);
 
       var beatDuration = 60 * 1000 / $scope.bpm;
-      var beatFraction = (performance.now() % beatDuration) / beatDuration;
+      var timeSinceStart = (originalGifStarted) ? performance.now() - originalGifStarted : performance.now();
+      var beatFraction = (timeSinceStart % beatDuration) / beatDuration;
       GifSequence.showGifFraction(beatFraction);
 
 //      console.log(performance.now())

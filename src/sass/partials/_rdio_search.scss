@@ -1,0 +1,21 @@
+@mixin rdio-search-result {
+  img {
+    height: 40px;
+  }
+}
+
+.rdio-search-result__album {
+  @include rdio-search-result;
+}
+
+.rdio-search-result__user {
+  @include rdio-search-result;
+}
+
+.rdio-search-result__artist {
+  @include rdio-search-result;
+}
+
+.rdio-search-result__track {
+  @include rdio-search-result;
+}

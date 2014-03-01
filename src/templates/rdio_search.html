@@ -4,7 +4,7 @@
   <input ng-model="search.term" placeholder="Search for an artist, album, username, whatever."/>
 </form>
 
-<ul>
+<ul class="rdio-search-results">
   <li ng-repeat="result in results" ng-include="'result_type_' + result.type + '.html'">
   </li>
 </ul>

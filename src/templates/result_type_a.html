@@ -1,4 +1,5 @@
-<!-- ALBUM -->
-<img ng-src="{{result.icon}}"/>
-{{ result.firstName + ' ' + result.lastName }}
-{{ result.artistName }} - {{ result.name }} ({{result.trackKeys.length}} tracks)
+<div class="rdio-search-result__album">
+  <img ng-src="{{result.icon}}"/>
+  {{ result.firstName + ' ' + result.lastName }}
+  {{ result.artist }} - {{ result.name }} ({{result.trackKeys.length}} tracks)
+</div>

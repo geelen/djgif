@@ -1,0 +1,7 @@
+<div class="rdio-search-result__album">
+  <a ng-click="startPlayback(result.key)">
+    <img ng-src="{{result.icon}}"/>
+    {{ result.firstName + ' ' + result.lastName }}
+    {{ result.artist }} - {{ result.name }} ({{result.trackKeys.length}} tracks)
+  </a>
+</div>

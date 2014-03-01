@@ -3,6 +3,7 @@
 
   app.controller('BodyCtrl', function ($scope, RdioPlayback) {
     $scope.keyHandling = function (e) {
+      if (e.target.tagName == "INPUT") return;
       if (e.charCode == 32) {
         RdioPlayback.playPause();
       } else if (e.charCode == 13) {

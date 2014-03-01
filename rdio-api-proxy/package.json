@@ -1,0 +1,15 @@
+{
+  "name": "rdio-api-proxy",
+  "version": "0.0.0",
+  "description": "Bridging RDIO and DJGif",
+  "main": "rdio-api-proxy.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Glen Maddern",
+  "license": "ISC",
+  "dependencies": {
+    "node-rdio": "~0.1.1",
+    "express": "~3.4.7"
+  }
+}

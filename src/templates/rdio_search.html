@@ -1,1 +1,10 @@
-<h1>WAT</h1>
+<h1>Rdio Search</h1>
+
+<form ng-submit="searchGo()">
+  <input ng-model="search.term" placeholder="Search for an artist, album, username, whatever."/>
+</form>
+
+<ul>
+  <li ng-repeat="result in results" ng-include="'result_type_' + result.type + '.html'">
+  </li>
+</ul>

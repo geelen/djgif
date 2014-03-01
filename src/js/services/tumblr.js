@@ -40,7 +40,7 @@
 
     Tumblr.startTumblrs = function (tumblrs) {
       angular.forEach(tumblrs, function (blog) {
-        for (var i = 0; i < 1; i++) {
+        for (var i = 0; i < 5; i++) {
           fetch(blog, i).then(function (response) {
             ready.resolve();
             angular.forEach(response.data.response.posts, extractGif)

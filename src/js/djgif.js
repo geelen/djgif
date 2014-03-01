@@ -21,6 +21,11 @@
         controller: 'RdioSearchCtrl',
         templateUrl: 'rdio_search.html'
       })
+      .state('giftest', {
+        url: '/giftest?url',
+        controller: 'GifTestCtrl',
+        templateUrl: 'gif_test.html'
+      })
       .state('app', {
         url: '/?rdio&tumblrs',
         controllerProvider: function ($stateParams) {

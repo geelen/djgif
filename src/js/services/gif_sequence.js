@@ -2,6 +2,24 @@
 (function (app) {
   'use strict';
 
+  var Gif = function (frames) {
+    this.frames = frames;
+
+    this.length = 0;
+    this.offsets = []
+    angular.forEach(frames, angular.bind(this, function (frame) {
+      this.offsets.push(this.length);
+      this.length += frame.delay;
+    }));
+  }
+  Gif.prototype.frameAt = function (fraction) {
+    var offset = fraction * this.length;
+    for (var i = 1, l = this.offsets.length; i < l; i++) {
+      if (this.offsets[i] > offset) break;
+    }
+    return i - 1;
+  }
+
   app.factory('GifSequence', function (GifExploder, $rootScope, $q, $timeout) {
     var ready = $q.defer(), img;
 
@@ -15,11 +33,8 @@
 
     GifSequence.addGif = function (url) {
       GifExploder(url).then(function (frames) {
-//        console.log("Downloaded and exploded " + url)
-        GifSequence.gifs.push({
-          frames: frames,
-          lengthSecs: frames.length * 0.1
-        })
+        console.debug("Downloaded and exploded " + url)
+        GifSequence.gifs.push(new Gif(frames))
         if (!GifSequence.currentGif) {
           GifSequence.nextGif();
           ready.resolve();
@@ -36,8 +51,7 @@
 
     GifSequence.showGifFraction = function (fraction) {
       if (GifSequence.currentGif) {
-        var currentFrame = Math.floor(GifSequence.currentGif.frames.length * fraction);
-        img.className = "frame-" + currentFrame;
+        img.className = "frame-" + GifSequence.currentGif.frameAt(fraction);
       }
     }
 

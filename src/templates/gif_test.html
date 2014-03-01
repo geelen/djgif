@@ -6,6 +6,7 @@
     <img ng-repeat="frame in frames" ng-src="{{frame.url}}"/>
   </div>
   <img ng-src="{{ originalGif }}"/>
+  {{ originalBpm }}
   <div class="gif-test-frame" ng-repeat="frame in frames">
     <img ng-src="{{ frame.url }}"/>
     {{ frame.delay }}

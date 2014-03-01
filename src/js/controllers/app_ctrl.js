@@ -27,6 +27,11 @@
     Tumblr.startTumblrs($scope.tumblrNames.split(','));
     GifSequence.ready.then(function () {
       $scope.tumblrReady = true;
+      var changeGifs = function () {
+        $timeout(changeGifs, 10000);
+        GifSequence.nextGif();
+      };
+      $timeout(changeGifs, 10000);
     });
 
     $q.all([RdioPlayback.ready, Echonest.ready, Tumblr.ready]).then(function (v) {

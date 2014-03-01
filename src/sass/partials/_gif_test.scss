@@ -2,4 +2,13 @@
   min-height: 100%;
   background-color: white;
   color: black;
+
+  #image-holster {
+    height: auto;
+    width: auto;
+    img {
+      height: auto;
+    }
+  }
 }
+

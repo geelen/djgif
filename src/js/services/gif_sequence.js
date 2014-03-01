@@ -14,6 +14,7 @@
   }
   Gif.prototype.frameAt = function (fraction) {
     var offset = fraction * this.length;
+    console.log(offset)
     for (var i = 1, l = this.offsets.length; i < l; i++) {
       if (this.offsets[i] > offset) break;
     }
@@ -43,7 +44,6 @@
     };
 
     GifSequence.nextGif = function () {
-      $timeout(GifSequence.nextGif, 10000);
 //      console.log("Asking for next gif");
       var nextGifIndex = Math.floor(Math.random() * GifSequence.gifs.length);
       GifSequence.currentGif = GifSequence.gifs.splice(nextGifIndex, 1)[0];
@@ -52,6 +52,7 @@
     GifSequence.showGifFraction = function (fraction) {
       if (GifSequence.currentGif) {
         img.className = "frame-" + GifSequence.currentGif.frameAt(fraction);
+        console.log(img.className)
       }
     }
 

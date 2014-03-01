@@ -5,6 +5,7 @@
 </form>
 
 <ul class="rdio-search-results">
+  <li ng-show="results.length == 0">Loading...</li>
   <li ng-repeat="result in results" ng-include="'result_type_' + result.type + '.html'">
   </li>
 </ul>

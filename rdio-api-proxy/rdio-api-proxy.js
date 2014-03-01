@@ -40,6 +40,20 @@ app.get('/search', function (req, res) {
   }
 });
 
+app.get('/playlists', function (req, res) {
+  setCors(req, res);
+
+  if (req.query.user) {
+    rdio.call('getUserPlaylists', { user: req.query.user, extras: 'tracks,isPublished,isViewable,trackKeys' }, function (err, data) {
+      if (err) return res.send(500, { error: err });
+
+      res.send(200, data);
+    });
+  } else {
+    res.send(400, "Gimme a user to look up");
+  }
+});
+
 app.options('/search', function (req, res) {
   setCors(req, res);
   res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");

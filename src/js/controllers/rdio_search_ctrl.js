@@ -1,9 +1,10 @@
 ;(function (app) {
   'use strict';
 
-  app.controller('RdioSearchCtrl', function ($scope, $http) {
+  app.controller('RdioSearchCtrl', function ($scope, $http, $state) {
     var rdioApiProxyUrl = "http://localhost:5000";
     $scope.search = {};
+    $scope.tumblrs = "dvdp,rekall";
 
     $scope.searchGo = function () {
       $scope.results = [];
@@ -20,6 +21,10 @@
         .then(function (response) {
           user.playlists = response.data.result;
         })
+    }
+
+    $scope.startPlayback = function (key) {
+      $state.go('app', {rdio: key, tumblrs: $scope.tumblrs})
     }
   })
 

@@ -27,7 +27,7 @@ app.get('/search', function (req, res) {
   if (req.query.term) {
     var search = {
       query: req.query.term,
-      types: 'album,artist,label,playlist,track,user'
+      types: 'album,user' //artist,label,playlist,track
     };
 
     rdio.call('search', search, function (err, data) {

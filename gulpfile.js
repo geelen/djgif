@@ -1,5 +1,7 @@
 var gulp = require('gulp'),
-  $ = require('gulp-load-plugins')();
+  $ = require('gulp-load-plugins')(),
+  url = require('url'),
+  proxy = require('proxy-middleware');
 
 // SASS
 gulp.task('sass', function () {
@@ -50,7 +52,7 @@ gulp.task('js', function () {
 
 gulp.task('build', ['sass', 'copy', 'js']);
 
-gulp.task('default', ['build'], function () {
+gulp.task('default', ['build', 'connect'], function () {
   // Watch JS
   gulp.watch(['src/js/**', 'src/templates/**'], ['js']);
 
@@ -59,4 +61,23 @@ gulp.task('default', ['build'], function () {
 
   // Watch Static
   gulp.watch([ 'src/img/**', 'src/*.html' ], ['copy']);
+
+  gulp.watch('dist/**/*', function (event) {
+    return gulp.src(event.path)
+      .pipe($.connect.reload());
+  });
 });
+
+gulp.task('connect', $.connect.server({
+  root: ['dist'],
+  port: 8080,
+  livereload: true,
+  middleware: function (connect, o) {
+    var proxyTumblr = proxy(url.parse('http://25.media.tumblr.com'));
+    return [
+      function (req, res, next) {
+        (req.url.match(/\.gif$/)) ? console.log(req.url) || proxyTumblr(req, res, next) : next();
+      }
+    ]
+  }
+}));

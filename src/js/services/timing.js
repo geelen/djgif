@@ -42,7 +42,7 @@
     Timing.setCurrentTrack = function (track) {
       Timing.currentTrack = track;
       Echonest.getTrackData(track).then(function (song) {
-        console.log(song.analysis.beats)
+//        console.log(song.analysis.beats)
         Timing.beats = song.analysis.beats;
         Timing.beatIndex = 0;
       })

@@ -40,7 +40,6 @@
           console.log("wut")
           GifSequence.nextGif();
           ready.resolve();
-          $rootScope.$apply();
         }
       }, ready.reject);
     };

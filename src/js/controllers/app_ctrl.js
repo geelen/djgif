@@ -1,7 +1,7 @@
 ;(function (app) {
   'use strict';
 
-  app.controller('AppCtrl', function ($scope, RdioPlayback, Echonest, $stateParams, $q, Tumblr, GifSequence) {
+  app.controller('AppCtrl', function ($scope, RdioPlayback, Echonest, $stateParams, $q, Tumblr, GifSequence, $timeout)  {
     $scope.player = RdioPlayback;
     $scope.rdioPlaylistId = $stateParams.rdio;
     $scope.tumblrNames = $stateParams.tumblrs;
@@ -34,10 +34,12 @@
       $timeout(changeGifs, 10000);
     });
 
-    $q.all([RdioPlayback.ready, Echonest.ready, Tumblr.ready]).then(function (v) {
+    $q.all([RdioPlayback.ready, Echonest.ready, GifSequence.ready]).then(function (v) {
       $scope.readyToPlay = true;
       console.log("WE GON PARTY");
       RdioPlayback.playPause();
+    }, function (error) {
+      console.error(error)
     })
   });
 

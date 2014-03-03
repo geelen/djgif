@@ -9,7 +9,7 @@
       if (newVal) {
         $scope.frames = newVal.frames;
         $scope.originalGif = $stateParams.url;
-        $scope.originalBpm = Math.round(60 * 100 / newVal.length);
+        $scope.originalBpm = 60 * 100 / newVal.length;
         $scope.bpm = $scope.originalBpm;
         console.log(newVal)
         console.log(newVal.frameAt(0))

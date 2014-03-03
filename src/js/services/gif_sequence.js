@@ -34,13 +34,15 @@
 
     GifSequence.addGif = function (url) {
       GifExploder(url).then(function (frames) {
-        console.debug("Downloaded and exploded " + url)
+        console.log("Downloaded and exploded " + url)
         GifSequence.gifs.push(new Gif(frames))
         if (!GifSequence.currentGif) {
+          console.log("wut")
           GifSequence.nextGif();
           ready.resolve();
+          $rootScope.$apply();
         }
-      });
+      }, ready.reject);
     };
 
     GifSequence.nextGif = function () {

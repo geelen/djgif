@@ -1,12 +1,12 @@
 <div class="gif-test">
   BPM:
-  <input type="range" ng-model="bpm" min="30" max="220"/>
-  {{ bpm }}
+  <input type="range" ng-model="bpm" min="1" max="220"/>
+  {{ bpm | number:0 }}
   <div id="image-holster" class="frame-0" ng-controller="GifPlaybackCtrl">
     <img ng-repeat="frame in frames" ng-src="{{frame.url}}"/>
   </div>
   <img id="original-gif" ng-src="{{ originalGif }}"/>
-  {{ originalBpm }}
+  {{ originalBpm | number:0 }}
   <div class="gif-test-frame" ng-repeat="frame in frames">
     <img ng-src="{{ frame.url }}"/>
     {{ frame.delay }}

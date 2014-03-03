@@ -5,6 +5,7 @@
 //    GifSequence.addGif("http://i.imgur.com/Rhm49Ev.gif")
 
     GifSequence.$watch('currentGif', function (newVal) {
+      console.log(newVal)
       if (newVal) $scope.frames = newVal.frames;
     })
   });

@@ -26,14 +26,16 @@
       originalGifStarted = performance.now()
     }
 
+    var beatNr = 0, beatIndicator = document.getElementById('beat-indicator');
+    window.bi = beatIndicator;
     var dddddddropTheGif = function () {
       requestAnimationFrame(dddddddropTheGif);
 
       var beatDuration = 60 * 1000 / $scope.bpm;
       var timeSinceStart = (originalGifStarted) ? performance.now() - originalGifStarted : performance.now();
       var beatFraction = (timeSinceStart % beatDuration) / beatDuration;
-      GifSequence.showGifFraction(beatFraction);
-
+      GifSequence.showGifFraction(Math.floor(timeSinceStart / beatDuration), beatDuration, beatFraction);
+      beatIndicator.style.borderLeftWidth = 300 * (1 - beatFraction) + "px";
 //      console.log(performance.now())
     };
     requestAnimationFrame(dddddddropTheGif)

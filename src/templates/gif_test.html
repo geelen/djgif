@@ -2,6 +2,7 @@
   BPM:
   <input type="range" ng-model="bpm" min="1" max="220"/>
   {{ bpm | number:0 }}
+  <div id="beat-indicator"></div>
   <div id="image-holster" class="frame-0" ng-controller="GifPlaybackCtrl">
     <img ng-repeat="frame in frames" ng-src="{{frame.url}}"/>
   </div>

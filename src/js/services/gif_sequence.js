@@ -20,6 +20,16 @@
     }
     return i - 1;
   }
+  var logs = [], putsed = false;
+  Gif.prototype.smartFrameAt = function (beatNr, beatDuration, beatFraction) {
+    var beatSpan = 3, subBeat = beatNr % beatSpan, subFraction = (beatFraction / beatSpan) + subBeat / beatSpan;
+    if (logs.length < 100) logs.push([beatNr, beatDuration, beatFraction, beatSpan, subBeat, subFraction])
+    if (logs.length == 100 && !putsed) {
+      putsed = true;
+      console.table(logs);
+    }
+    return this.frameAt(subFraction);
+  }
 
   app.factory('GifSequence', function (GifExploder, $rootScope, $q, $timeout) {
     var ready = $q.defer(), img;
@@ -50,9 +60,10 @@
       GifSequence.currentGif = GifSequence.gifs.splice(nextGifIndex, 1)[0];
     };
 
-    GifSequence.showGifFraction = function (fraction) {
+    GifSequence.showGifFraction = function (beatNr, beatDuration, beatFraction) {
       if (GifSequence.currentGif) {
-        img.className = "frame-" + GifSequence.currentGif.frameAt(fraction);
+//        img.className = "frame-" + GifSequence.currentGif.frameAt(fraction);
+        img.className = "frame-" + GifSequence.currentGif.smartFrameAt(beatNr, beatDuration, beatFraction);
 //        console.log(img.className)
       }
     }

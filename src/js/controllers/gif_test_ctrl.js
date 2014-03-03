@@ -10,14 +10,7 @@
         $scope.frames = newVal.frames;
         $scope.originalGif = $stateParams.url;
         $scope.originalBpm = 60 * 100 / newVal.length;
-        $scope.bpm = $scope.originalBpm;
-        console.log(newVal)
-        console.log(newVal.frameAt(0))
-        console.log(newVal.frameAt(0.01))
-        console.log(newVal.frameAt(0.5))
-        console.log(newVal.frameAt(0.9))
-        console.log(newVal.frameAt(0.99))
-        console.log(newVal.frameAt(1.0))
+        $scope.bpm = $scope.originalBpm * 2;
       }
     });
 
@@ -33,8 +26,9 @@
 
       var beatDuration = 60 * 1000 / $scope.bpm;
       var timeSinceStart = (originalGifStarted) ? performance.now() - originalGifStarted : performance.now();
+      var beatNr = Math.floor(timeSinceStart / beatDuration);
       var beatFraction = (timeSinceStart % beatDuration) / beatDuration;
-      GifSequence.showGifFraction(Math.floor(timeSinceStart / beatDuration), beatDuration, beatFraction);
+      GifSequence.showGifFraction(beatNr, beatDuration, beatFraction);
       beatIndicator.style.borderLeftWidth = 300 * (1 - beatFraction) + "px";
 //      console.log(performance.now())
     };

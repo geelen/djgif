@@ -73,10 +73,14 @@ gulp.task('connect', $.connect.server({
   port: 8080,
   livereload: true,
   middleware: function (connect, o) {
-    var proxyTumblr = proxy(url.parse('http://25.media.tumblr.com'));
     return [
       function (req, res, next) {
-        (req.url.match(/\.gif$/)) ? console.log(req.url) || proxyTumblr(req, res, next) : next();
+        if (req.url.match(/\.gif$/)) {
+          console.log(req.url);
+          proxy(url.parse('http://25.media.tumblr.com'))(req, res, next);
+        } else {
+          next();
+        }
       }
     ]
   }

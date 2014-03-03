@@ -22,8 +22,10 @@
   }
   var logs = [], putsed = false;
   Gif.prototype.smartFrameAt = function (beatNr, beatDuration, beatFraction) {
-    var beatSpan = 3, subBeat = beatNr % beatSpan, subFraction = (beatFraction / beatSpan) + subBeat / beatSpan;
-    if (logs.length < 100) logs.push([beatNr, beatDuration, beatFraction, beatSpan, subBeat, subFraction])
+    var beatSpan = Math.round(10 * this.length / beatDuration),
+      subBeat = beatNr % beatSpan,
+      subFraction = (beatFraction / beatSpan) + subBeat / beatSpan;
+    if (logs.length < 100) logs.push([beatSpan, beatNr, beatDuration, this.length, beatFraction, beatSpan, subBeat, subFraction])
     if (logs.length == 100 && !putsed) {
       putsed = true;
       console.table(logs);

@@ -3,6 +3,7 @@
 
   app.factory('Timing', function ($rootScope, GifSequence, Echonest) {
     var beatVis = document.querySelectorAll('.beat-vis')[0];
+    var fallbackBpm = 120;
 
     var Timing = $rootScope.$new(true);
     Timing.audioStartedAt = 0;
@@ -25,7 +26,14 @@
         var sinceLastBeat = positionSecs - beat.start,
           beatFraction = sinceLastBeat / beat.duration;
 
-        GifSequence.showGifFraction(beatFraction);
+        GifSequence.showGifFraction(Timing.beatIndex, beat.duration * 1000, beatFraction);
+//      } else {
+//        // Keep the GIFs going, but not synched
+//        var beatDuration = 60 * 1000 / fallbackBpm;
+//        var timeSinceStart = performance.now();
+//        var beatNr = Math.floor(timeSinceStart / beatDuration);
+//        var beatFraction = (timeSinceStart % beatDuration) / beatDuration;
+//        GifSequence.showGifFraction(beatNr, beatDuration, beatFraction);
       }
 
 //      console.log(positionSecs, beat.start, beat.duration, sinceLastBeat, beatFraction)

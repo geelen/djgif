@@ -24,10 +24,11 @@
       .state('giftest', {
         url: '/giftest?url',
         controller: 'GifTestCtrl',
-        templateUrl: 'gif_test.html'
+        templateUrl: 'gif_test.html',
       })
       .state('app', {
         url: '/?rdio&tumblrs',
+        reloadOnSearch: true,
         controllerProvider: function ($stateParams) {
           if ($stateParams.rdio && $stateParams.tumblrs) {
             return 'AppCtrl';

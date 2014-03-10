@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "request": "~2.27.0",
-    "express": "~3.4.7"
+    "express": "~3.4.7",
+    "grace": "~0.2.5"
   }
 }

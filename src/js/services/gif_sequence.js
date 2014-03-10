@@ -25,11 +25,11 @@
     var lengthInBeats = Math.max(1, Math.round(0.5 * 10 * this.length / beatDuration)),
       subBeat = beatNr % lengthInBeats,
       subFraction = (beatFraction / lengthInBeats) + subBeat / lengthInBeats;
-    if (logs.length < 100) logs.push([lengthInBeats, beatNr, beatDuration, this.length, beatFraction, lengthInBeats, subBeat, subFraction])
-    if (logs.length == 100 && !putsed) {
-      putsed = true;
-      console.table(logs);
-    }
+//    if (logs.length < 100) logs.push([lengthInBeats, beatNr, beatDuration, this.length, beatFraction, lengthInBeats, subBeat, subFraction])
+//    if (logs.length == 100 && !putsed) {
+//      putsed = true;
+//      console.table(logs);
+//    }
     return this.frameAt(subFraction);
   }
 
@@ -46,10 +46,9 @@
 
     GifSequence.addGif = function (url) {
       GifExploder(url).then(function (frames) {
-        console.log("Downloaded and exploded " + url)
+//        console.log("Downloaded and exploded " + url)
         GifSequence.gifs.push(new Gif(frames))
         if (!GifSequence.currentGif) {
-          console.log("wut")
           GifSequence.nextGif();
           ready.resolve();
         }

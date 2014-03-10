@@ -2,7 +2,7 @@
   'use strict';
 
   app.controller('RdioSearchCtrl', function ($scope, $http, $state) {
-    var rdioApiProxyUrl = "http://localhost:5000";
+    var rdioApiProxyUrl = "http://rdio-api-proxy.herokuapp.com";
     $scope.search = {};
     $scope.tumblrs = "dvdp,rekall";
 

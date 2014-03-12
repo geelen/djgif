@@ -3,16 +3,23 @@
   width: 100vw;
   height: 100vh;
 
-  .frame {
+  img.frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    transform: translateZ(0);
+  }
+  div.frame {
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
     width: 100%;
-    transform: translateZ(0);
     background-size: contain;
     background-position: 50% 50%;
     background-repeat: no-repeat;
+    transform: translateZ(0);
   }
   @for $i from 0 to 100 {
     &.frame-#{$i} {

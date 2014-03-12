@@ -70,8 +70,8 @@ gulp.task('default', ['build', 'connect'], function () {
 
 gulp.task('connect', $.connect.server({
   root: ['dist'],
-  port: 8080,
-  livereload: true,
+  port: 1989,
+  livereload: {port: 2989},
   middleware: function (connect, o) {
     return [
       function (req, res, next) {

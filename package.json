@@ -17,7 +17,7 @@
     "url": "https://github.com/geelen/djgif/issues"
   },
   "devDependencies": {
-    "gulp": "~3.5.2",
+    "gulp": "~3.5.5",
     "gulp-mocha": "~0.4.1",
     "gulp-sass": "~0.2.2",
     "gulp-concat": "~2.1.5",

@@ -11,13 +11,19 @@
   display: table-cell;
   vertical-align: middle;
   text-align: center;
-  font-size: 48px;
-  font-weight: 100;
-  .thick {
-    font-weight: 500;
+  font-family: "Lakesight Personal Use Only";
+  h1 {
+    font-size: 96px;
+    font-weight: 100;
+    .thick {
+      font-weight: 900;
+    }
+    .thicker {
+      font-weight: 500;
+    }
   }
-  .thicker {
-    font-weight: 500;
+  h2 {
+    font-size: 64px;
   }
 }
 

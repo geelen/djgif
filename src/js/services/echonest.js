@@ -18,7 +18,7 @@
             artist: track.artist,
             title: track.name
           }}).then(function (response) {
-              return response.data.response.songs[0]
+              return response.data.response.track
             });
         }
         return deferreds[track.key];

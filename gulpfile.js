@@ -46,7 +46,7 @@ gulp.task('js', function () {
     .pipe(gulp.dest('dist/js'));
 
   gulp.src('src/templates/*.html')
-    .pipe($.angularTemplatecache('templates.js'))
+    .pipe($.angularTemplatecache('templates.js', {standalone: true}))
     .pipe(gulp.dest('dist/js'))
 });
 
@@ -68,7 +68,8 @@ gulp.task('default', ['build', 'connect'], function () {
   });
 });
 
-gulp.task('connect', $.connect.server({
+gulp.task('connect', function() {
+ $.connect.server({
   root: ['dist'],
   port: 1989,
   livereload: {port: 2989},
@@ -84,4 +85,5 @@ gulp.task('connect', $.connect.server({
       }
     ]
   }
-}));
+})
+});

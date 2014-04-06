@@ -17,16 +17,16 @@
     "url": "https://github.com/geelen/djgif/issues"
   },
   "devDependencies": {
-    "gulp": "~3.5.5",
+    "gulp": "~3.6.0",
     "gulp-mocha": "~0.4.1",
-    "gulp-sass": "~0.2.2",
-    "gulp-concat": "~2.1.5",
-    "gulp-autoprefixer": "0.0.3",
-    "gulp-angular-templatecache": "~0.1.2",
-    "gulp-load-plugins": "~0.3.0",
+    "gulp-sass": "~0.7.1",
+    "gulp-concat": "~2.2.0",
+    "gulp-autoprefixer": "0.0.6",
+    "gulp-angular-templatecache": "~1.1.1",
+    "gulp-load-plugins": "~0.5.0",
     "gulp-plumber": "~0.5.6",
-    "expect.js": "~0.2.0",
-    "gulp-connect": "~1.0.5",
+    "expect.js": "~0.3.1",
+    "gulp-connect": "~2.0.4",
     "connect-proxy": "~1.0.2"
   }
 }

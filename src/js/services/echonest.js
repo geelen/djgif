@@ -1,7 +1,7 @@
 ;(function (app) {
   'use strict';
 
-  var searchUrl = "http://djgif-echonest-proxy.herokuapp.com/search"
+  var searchUrl = "http://djgif-echonest-proxy.herokuapp.com/track"
 
   app.factory('Echonest', function ($http, $q) {
 
@@ -15,8 +15,7 @@
         console.log("Getting metadata for track " + track.key)
         if (!deferreds[track.key]) {
           deferreds[track.key] = $http.get(searchUrl, {params: {
-            artist: track.artist,
-            title: track.name
+            id: 'rdio-US:track:' + track.key
           }}).then(function (response) {
               return response.data.response.track
             });

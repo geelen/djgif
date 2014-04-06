@@ -5,7 +5,7 @@
   app.factory('GifExploder', function ($q) {
     return function (url) {
       var deferred = $q.defer(),
-        mirroredUrl = url.replace(/^.*\.media\.tumblr\.com/, '');
+        mirroredUrl = url.replace(/^.*(\.)?media\.tumblr\.com/, '');
 
       var preload = new XMLHttpRequest();
       preload.open('GET', mirroredUrl, true);

@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "socket.io": "~1.2.1",
+    "node-osc": "~0.3.0"
+  }
+}

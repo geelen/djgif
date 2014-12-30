@@ -1,5 +1,9 @@
 {
   "jspm": {
-    "name": "djgif"
+    "name": "djgif",
+    "dependencies": {
+      "fkit": "npm:fkit@^0.16.2",
+      "jsonp": "npm:jsonp@^0.0.4"
+    }
   }
 }

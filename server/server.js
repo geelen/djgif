@@ -4,6 +4,7 @@ var osc = require('node-osc'),
 var oscServer, oscClient;
 
 oscServer = new osc.Server(3333, '127.0.0.1');
+console.log("Listening...");
 
 io.sockets.on('connection', function (socket) {
   var messager = function (msg, rinfo) {

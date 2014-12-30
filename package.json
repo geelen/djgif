@@ -3,7 +3,8 @@
     "name": "djgif",
     "dependencies": {
       "fkit": "npm:fkit@^0.16.2",
-      "jsonp": "npm:jsonp@^0.0.4"
+      "jsonp": "npm:jsonp@^0.0.4",
+      "x-gif": "github:geelen/x-gif@^0.1.1"
     }
   }
 }

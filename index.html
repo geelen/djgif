@@ -3,15 +3,19 @@
   <head>
     <meta charset="UTF-8">
     <title>DJ Gif Take 2</title>
+    <!--<link rel="import" href="jspm_packages/github/geelen/x-gif@0.1.1/dist/x-gif.html"/>-->
   </head>
   <body>
-    <h1>OK SMARTY</h1>
+    <div id="stage">
+      <x-gif></x-gif>
+    </div>
     <script src="http://127.0.0.1:8081/socket.io/socket.io.js"></script>
     <script src="jspm_packages/system.js"></script>
     <script src="config.js"></script>
     <script>
       System.baseURL = '/';
       System.import('lib/main');
+      System.import('x-gif/src/x-gif');
     </script>
   </body>
 </html>

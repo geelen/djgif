@@ -10,11 +10,28 @@
         padding: 0;
         background-color: black;
       }
+      #stage {
+        display: flex;
+        width: 1100vw;
+        height: 100vh;
+        position: relative;
+        left: -500vw;
+        justify-content: center;
+        align-content: center;
+      }
+      #stage x-gif.left {
+        transform: perspective(100px) translateX(50%) rotateY(10deg) translateX(-50%) rotateY(180deg);
+      }
+      #stage x-gif.right {
+        transform: perspective(100px) translateX(-50%) rotateY(-10deg) translateX(50%) rotateY(180deg);
+      }
     </style>
   </head>
   <body>
     <div id="stage">
-      <x-gif sync fill></x-gif>
+      <x-gif sync class="left"></x-gif>
+      <x-gif sync></x-gif>
+      <x-gif sync class="right"></x-gif>
     </div>
     <script src="http://127.0.0.1:8081/socket.io/socket.io.js"></script>
     <script src="jspm_packages/system.js"></script>

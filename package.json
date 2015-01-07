@@ -1,32 +1,10 @@
 {
-  "name": "djgif",
-  "version": "0.0.0",
-  "description": "DJGif",
-  "main": "dist/index.html",
-  "readme": "README.md",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/geelen/djgif.git"
-  },
-  "author": "Glen Maddern",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/geelen/djgif/issues"
-  },
-  "devDependencies": {
-    "gulp": "~3.6.0",
-    "gulp-mocha": "~0.4.1",
-    "gulp-sass": "~0.7.1",
-    "gulp-concat": "~2.2.0",
-    "gulp-autoprefixer": "0.0.6",
-    "gulp-angular-templatecache": "~1.1.1",
-    "gulp-load-plugins": "~0.5.0",
-    "gulp-plumber": "~0.5.6",
-    "expect.js": "~0.3.1",
-    "gulp-connect": "~2.0.4",
-    "connect-proxy": "~1.0.2"
+  "jspm": {
+    "name": "djgif",
+    "dependencies": {
+      "fkit": "npm:fkit@^0.16.2",
+      "jsonp": "npm:jsonp@^0.0.4",
+      "x-gif": "github:geelen/x-gif@^0.1.1"
+    }
   }
 }

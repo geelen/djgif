@@ -1,4 +1,2 @@
-dist
-node_modules
-bower_components
-.env
+jspm_packages
+vendor
